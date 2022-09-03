@@ -4,4 +4,4 @@
 
 # 終了時
 
-run `exit` or Ctrl + c
+run `exit` or `Ctrl + c`
