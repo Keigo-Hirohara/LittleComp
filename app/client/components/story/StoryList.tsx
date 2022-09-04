@@ -1,10 +1,14 @@
 import React from 'react';
+import StoryItem from './StoryItem';
 
 const StoryList = () => {
   return (
-    <div>
-      
-    </div>
+    <>
+      <StoryItem />
+      <StoryItem />
+      <StoryItem />
+      <StoryItem />
+    </>
   );
 };
 
