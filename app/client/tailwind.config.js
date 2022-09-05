@@ -19,8 +19,10 @@ module.exports = {
       red3: '#FFF0EF',
       red2: '#FFC3BF',
       red1: '#FF7A72',
+      white: '#FFFFFF',
     },
     fontSize: {
+      xs: ['0.75rem', null],
       xl: ['1.25rem', null],
       '2xl': ['1.5rem', null],
     },
