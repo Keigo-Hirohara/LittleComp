@@ -3,10 +3,12 @@ import TaskListBlock from '../task/TaskListBlock';
 import { PlusSquare, Edit2, Trash2 } from 'react-feather';
 import CreateTaskModal from '../modal/CreateTaskModal';
 import EditStoryModal from '../modal/EditStoryModal';
+import DeleteStoryAlert from '../modal/DeleteStoryAlert';
 
 const StoryItem = () => {
   const [isCreateTaskModalOpen, setIsCreateTaskModalOpen] = useState(false);
   const [isEditStoryModalOpen, setIsEditStoryModalOpen] = useState(false);
+  const [isDeleteStoryAlertOpen, setIsDeleteStoryAlertOpen] = useState(false);
   return (
     // Todo: If Story Item is last one, add border-b-2
     <div className="flex border-t-2 border-black3">
@@ -21,7 +23,10 @@ const StoryItem = () => {
             className="h-7 w-7 mr-3 mb-3"
             onClick={() => setIsEditStoryModalOpen(true)}
           />
-          <Trash2 className="h-7 w-7 mr-3 mb-3" />
+          <Trash2
+            className="h-7 w-7 mr-3 mb-3"
+            onClick={() => setIsDeleteStoryAlertOpen(true)}
+          />
         </div>
       </div>
       <div className="flex justify-between w-4/5 mr-10 ml-auto">
@@ -41,6 +46,10 @@ const StoryItem = () => {
       <EditStoryModal
         isOpened={isEditStoryModalOpen}
         onClose={() => setIsEditStoryModalOpen(false)}
+      />
+      <DeleteStoryAlert
+        isOpened={isDeleteStoryAlertOpen}
+        onClose={() => setIsDeleteStoryAlertOpen(false)}
       />
     </div>
   );
