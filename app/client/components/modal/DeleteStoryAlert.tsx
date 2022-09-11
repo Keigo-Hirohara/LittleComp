@@ -21,7 +21,9 @@ const DeleteStoryAlert = (props: any) => {
           <br />
           よろしいですか？
         </h2>
-        <button className="w-4/5 bg-red1 py-2 mb-3 rounded-xl">削除</button>
+        <button className="w-4/5 bg-red1 py-2 mb-3 rounded-xl text-white">
+          削除
+        </button>
         <button
           className="w-4/5 bg-black3 py-2 rounded-xl"
           onClick={props.onClose}
