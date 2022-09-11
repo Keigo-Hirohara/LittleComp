@@ -4,7 +4,6 @@ import StoryList from '../components/story/StoryList';
 import { useState } from 'react';
 
 const Home: NextPage = () => {
-  const [isModalOpen, setIsModalModal] = useState<boolean>(false);
   return (
     <>
       <TaskBlockBar />

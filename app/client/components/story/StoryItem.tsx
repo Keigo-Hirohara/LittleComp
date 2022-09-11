@@ -4,6 +4,7 @@ import { PlusSquare, Edit2, Trash2 } from 'react-feather';
 import CreateTaskModal from '../modal/CreateTaskModal';
 import EditStoryModal from '../modal/EditStoryModal';
 import DeleteStoryAlert from '../modal/DeleteStoryAlert';
+import EditTaskModal from '../modal/EditTaskModal';
 
 const StoryItem = () => {
   const [isCreateTaskModalOpen, setIsCreateTaskModalOpen] = useState(false);
