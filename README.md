@@ -1,5 +1,5 @@
 # データベースの起動
-run mysql -uroot -p  
+run `mysql -uroot -p`
 
 # データベースの終了時
 
