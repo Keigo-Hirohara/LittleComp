@@ -1,7 +1,6 @@
-# 開発準備
+# データベースの起動
+run mysql -uroot -p  
 
-- run `docker-compose run --rm app sh`
-
-# 終了時
+# データベースの終了時
 
 run `exit` or `Ctrl + c`
