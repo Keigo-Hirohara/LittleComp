@@ -1,5 +1,6 @@
 import express from 'express';
 import mysql from 'mysql2';
+import crypto from 'crypto';
 // Todo: build server using graphQL
 import { buildSchema } from 'graphql';
 import { graphqlHTTP } from 'express-graphql';
@@ -15,11 +16,56 @@ const pool = mysql.createPool({
 });
 
 const schema = buildSchema(`
+
+  input storyInput {
+    name: String
+  }
+
   type story {
-    id: Int!,
+    id: ID!,
     name: String!
   }
+
+  type Query {
+    getStory(id: ID!): String
+  }
+
+  type Mutation {
+    createStory(name: storyInput): String
+    updateStory(id: ID!, name: storyInput): String
+  }
 `);
+
+const root = {
+  getStory: ({ id }: any) => {
+    if (!fakeDatabase[id]) {
+      throw new Error(`There is no id in database...`);
+    }
+    return `${fakeDatabase[id].name}`;
+  },
+
+  createStory: ({ name }: any) => {
+    const id = crypto.randomBytes(10).toString('hex');
+    fakeDatabase[id] = name;
+    return `new story is successfully created! id:  ${id}`;
+  },
+
+  updateStory: ({ id, name }: any) => {
+    if (!fakeDatabase[id]) {
+      throw new Error(`there is no id in database...`);
+    }
+    fakeDatabase[id] = name;
+    return `new story is successfully updated! ${fakeDatabase[id]}`;
+  },
+
+  deleteStory: ({ id }: any) => {
+    if (!fakeDatabase[id]) {
+      throw new Error(`there is no id in database...`);
+    }
+    delete fakeDatabase[id];
+    return `new story is successfully deleted! new data: ${fakeDatabase}`;
+  },
+};
 
 let fakeDatabase: any = {};
 
@@ -38,10 +84,11 @@ app.get('/', async (req, res) => {
   });
 });
 
-app.get(
+app.use(
   '/graphql',
   graphqlHTTP({
     schema,
+    rootValue: root,
     graphiql: true,
   })
 );
