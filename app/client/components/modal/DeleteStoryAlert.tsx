@@ -1,7 +1,22 @@
+import { gql, useMutation } from '@apollo/client';
 import React from 'react';
 import { AlertCircle } from 'react-feather';
+import { GET_STORIES } from '../../query';
+
+const DELETE_STORY = gql`
+  mutation RenameStory($targetId: ID!) {
+    deleteStory(targetId: $targetId) {
+      code
+      success
+      message
+    }
+  }
+`;
 
 const DeleteStoryAlert = (props: any) => {
+  const [deleteStory] = useMutation(DELETE_STORY, {
+    refetchQueries: [{ query: GET_STORIES }, 'getStories'],
+  });
   if (!props.isOpened) {
     return null;
   }
@@ -21,7 +36,15 @@ const DeleteStoryAlert = (props: any) => {
           <br />
           よろしいですか？
         </h2>
-        <button className="w-4/5 bg-red1 py-2 mb-3 rounded-xl text-white">
+        <button
+          className="w-4/5 bg-red1 py-2 mb-3 rounded-xl text-white"
+          onClick={(event) => {
+            console.log(props.storyId);
+            event.preventDefault();
+            deleteStory({ variables: { targetId: props.storyId } });
+            props.onClose();
+          }}
+        >
           削除
         </button>
         <button

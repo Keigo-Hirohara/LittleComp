@@ -1,16 +1,17 @@
 import React from 'react';
 import StoryItem from './StoryItem';
-import { gql, useQuery } from '@apollo/client';
+import { useQuery } from '@apollo/client';
+import { GET_STORIES } from '../../query';
 
 // Todo: Move to graphql folder later
-const GET_STORIES = gql`
-  query Query {
-    getStories {
-      id
-      name
-    }
-  }
-`;
+// const GET_STORIES = gql`
+//   query Query {
+//     getStories {
+//       id
+//       name
+//     }
+//   }
+// `;
 
 const StoryList = () => {
   const { loading, error, data } = useQuery(GET_STORIES);
@@ -22,8 +23,8 @@ const StoryList = () => {
   }
   return (
     <div className="z-0">
-      {data.getStories.map((story: any) => (
-        <StoryItem storyName={story.name} id={story.id} key={story.id} />
+      {data.getStories.map((story: any, index: number) => (
+        <StoryItem storyName={story.name} id={story.id} key={index} />
       ))}
     </div>
   );

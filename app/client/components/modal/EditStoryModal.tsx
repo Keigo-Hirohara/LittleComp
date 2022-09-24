@@ -1,5 +1,6 @@
 import { gql, useMutation } from '@apollo/client';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useState } from 'react';
+import { GET_STORIES } from '../../query';
 
 const EDIT_STORY = gql`
   mutation Mutation($targetId: ID!, $newName: String!) {
@@ -16,20 +17,19 @@ const EDIT_STORY = gql`
 `;
 
 const EditStoryModal = (props: any) => {
-  if (!props.isOpened) {
-    return null;
-  }
-  const [renameStory] = useMutation(EDIT_STORY);
+  const [renameStory] = useMutation(EDIT_STORY, {
+    refetchQueries: [{ query: GET_STORIES }, 'getStories'],
+  });
   const [consideredStoryName, setConsideredStoryName] = useState(
     props.storyName
   );
-  useEffect(() => {
-    console.log(props);
-  }, []);
 
   const handleStoryNameChanged = useCallback((event: any) => {
     setConsideredStoryName(event.target.value);
   }, []);
+  if (!props.isOpened) {
+    return null;
+  }
   return (
     <div
       className="flex justify-center items-center overflow-auto fixed inset-0 m-auto bg-black1 bg-opacity-20 backdrop-blur-md z-20"
@@ -43,13 +43,14 @@ const EditStoryModal = (props: any) => {
         <h2 className="mt-10 ml-12 text-xl"> ストーリーの編集</h2>
         <form
           onSubmit={(event) => {
-            event.preventDefault;
+            event.preventDefault();
             renameStory({
               variables: {
                 targetId: props.storyId,
                 newName: consideredStoryName,
               },
             });
+            props.onClose();
           }}
         >
           {/* Todo: Arrange textarea input values font-size, padding, ... */}

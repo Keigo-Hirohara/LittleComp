@@ -3,15 +3,43 @@ const { ApolloServer, gql } = require('apollo-server');
 const fakeDatabase = [
   {
     id: 'id1',
-    name: 'graphql server setup',
+    name: 'option1',
   },
   {
     id: 'id2',
-    name: 'mysql integration',
+    name: 'option2',
   },
   {
     id: 'id3',
-    name: 'implement authentication',
+    name: 'option3',
+  },
+  {
+    id: 'id4',
+    name: 'option4',
+  },
+  {
+    id: 'id5',
+    name: 'option5',
+  },
+  {
+    id: 'id6',
+    name: 'option6',
+  },
+  {
+    id: 'id7',
+    name: 'option7',
+  },
+  {
+    id: 'id8',
+    name: 'option8',
+  },
+  {
+    id: 'id9',
+    name: 'option9',
+  },
+  {
+    id: 'id10',
+    name: 'option10',
   },
 ];
 
@@ -83,7 +111,7 @@ const resolvers = {
       }
     },
     renameStory: (_: null, args: any) => {
-      const targetStory = fakeDatabase.find((elm) => (elm.id = args.targetId));
+      const targetStory = fakeDatabase.find((elm) => elm.id == args.targetId);
       if (targetStory == null) {
         return {
           code: 400,
@@ -109,9 +137,9 @@ const resolvers = {
       }
     },
     deleteStory: (_: null, args: any) => {
-      const targetStoryId = fakeDatabase.findIndex(
-        (elm) => (elm.id = args.targetId)
-      );
+      const targetStoryId = fakeDatabase.findIndex((elm) => {
+        return elm.id == args.targetId;
+      });
       if (targetStoryId == null) {
         return {
           code: 400,

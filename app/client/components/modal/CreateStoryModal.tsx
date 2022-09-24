@@ -1,5 +1,6 @@
 import { gql, useMutation } from '@apollo/client';
 import React, { useCallback, useState } from 'react';
+import { GET_STORIES } from '../../query';
 
 const MAKE_STORY = gql`
   mutation Mutation($name: String!) {
@@ -16,14 +17,17 @@ const MAKE_STORY = gql`
 `;
 
 const CreateStoryModal = (props: any) => {
-  if (!props.isOpen) {
-    return null;
-  }
-  const [makeStory] = useMutation(MAKE_STORY);
+  const [makeStory] = useMutation(MAKE_STORY, {
+    refetchQueries: [{ query: GET_STORIES }, 'getStories'],
+  });
   const [inputStoryName, setInputStoryName] = useState('');
   const handleChangeTextArea = useCallback((event: any) => {
     setInputStoryName(event.target.value);
   }, []);
+  if (!props.isOpen) {
+    return null;
+  }
+
   return (
     <div>
       <div
@@ -38,8 +42,9 @@ const CreateStoryModal = (props: any) => {
           <h2 className="mt-10 ml-12 text-xl">ストーリーの新規作成</h2>
           <form
             onSubmit={(event) => {
-              event.preventDefault;
+              event.preventDefault();
               makeStory({ variables: { name: inputStoryName } });
+              props.onClose();
             }}
           >
             {/* Todo: Arrange textarea input values font-size, padding, ... */}

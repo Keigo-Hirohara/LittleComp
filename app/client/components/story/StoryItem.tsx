@@ -4,7 +4,6 @@ import { PlusSquare, Edit2, Trash2 } from 'react-feather';
 import CreateTaskModal from '../modal/CreateTaskModal';
 import EditStoryModal from '../modal/EditStoryModal';
 import DeleteStoryAlert from '../modal/DeleteStoryAlert';
-import EditTaskModal from '../modal/EditTaskModal';
 
 const StoryItem = ({ storyName, id }: any) => {
   const [isCreateTaskModalOpen, setIsCreateTaskModalOpen] = useState(false);
@@ -53,6 +52,7 @@ const StoryItem = ({ storyName, id }: any) => {
       <DeleteStoryAlert
         isOpened={isDeleteStoryAlertOpen}
         onClose={() => setIsDeleteStoryAlertOpen(false)}
+        storyId={id}
       />
     </div>
   );
