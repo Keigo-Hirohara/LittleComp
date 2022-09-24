@@ -6,7 +6,7 @@ import EditStoryModal from '../modal/EditStoryModal';
 import DeleteStoryAlert from '../modal/DeleteStoryAlert';
 import EditTaskModal from '../modal/EditTaskModal';
 
-const StoryItem = ({ storyName }: any) => {
+const StoryItem = ({ storyName, id }: any) => {
   const [isCreateTaskModalOpen, setIsCreateTaskModalOpen] = useState(false);
   const [isEditStoryModalOpen, setIsEditStoryModalOpen] = useState(false);
   const [isDeleteStoryAlertOpen, setIsDeleteStoryAlertOpen] = useState(false);
@@ -47,6 +47,8 @@ const StoryItem = ({ storyName }: any) => {
       <EditStoryModal
         isOpened={isEditStoryModalOpen}
         onClose={() => setIsEditStoryModalOpen(false)}
+        storyName={storyName}
+        storyId={id}
       />
       <DeleteStoryAlert
         isOpened={isDeleteStoryAlertOpen}

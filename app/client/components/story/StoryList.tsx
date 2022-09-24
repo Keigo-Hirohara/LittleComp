@@ -23,7 +23,7 @@ const StoryList = () => {
   return (
     <div className="z-0">
       {data.getStories.map((story: any) => (
-        <StoryItem storyName={story.name} key={story.id} />
+        <StoryItem storyName={story.name} id={story.id} key={story.id} />
       ))}
     </div>
   );
