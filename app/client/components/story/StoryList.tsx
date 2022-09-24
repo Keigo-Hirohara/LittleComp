@@ -1,12 +1,29 @@
 import React from 'react';
 import StoryItem from './StoryItem';
-import { fakeDatabase } from '../../services/fakeDB';
+import { gql, useQuery } from '@apollo/client';
+
+// Todo: Move to graphql folder later
+const GET_STORIES = gql`
+  query Query {
+    getStories {
+      id
+      name
+    }
+  }
+`;
 
 const StoryList = () => {
+  const { loading, error, data } = useQuery(GET_STORIES);
+  if (loading) {
+    return <h1>loading</h1>;
+  }
+  if (error) {
+    return <h1>Something went wrong...</h1>;
+  }
   return (
     <div className="z-0">
-      {fakeDatabase.map((story) => (
-        <StoryItem storyName={story.name} />
+      {data.getStories.map((story: any) => (
+        <StoryItem storyName={story.name} key={story.id} />
       ))}
     </div>
   );
