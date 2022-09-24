@@ -6,7 +6,7 @@ import EditStoryModal from '../modal/EditStoryModal';
 import DeleteStoryAlert from '../modal/DeleteStoryAlert';
 import EditTaskModal from '../modal/EditTaskModal';
 
-const StoryItem = () => {
+const StoryItem = ({ storyName }: any) => {
   const [isCreateTaskModalOpen, setIsCreateTaskModalOpen] = useState(false);
   const [isEditStoryModalOpen, setIsEditStoryModalOpen] = useState(false);
   const [isDeleteStoryAlertOpen, setIsDeleteStoryAlertOpen] = useState(false);
@@ -14,7 +14,7 @@ const StoryItem = () => {
     // Todo: If Story Item is last one, add border-b-2
     <div className="flex border-t-2 border-black3">
       <div className="mt-auto mb-auto pl-3 ml-6 h-full w-48">
-        <h1 className="text-2xl">Gent開発</h1>
+        <h1 className="text-2xl">{storyName}</h1>
         <div className="flex mt-3">
           <PlusSquare
             className="h-7 w-7 mr-3 mb-3"
