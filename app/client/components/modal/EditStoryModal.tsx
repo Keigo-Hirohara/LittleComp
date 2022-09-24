@@ -1,6 +1,32 @@
-import React from 'react';
+import { gql, useMutation } from '@apollo/client';
+import React, { useCallback, useState } from 'react';
+import { GET_STORIES } from '../../query';
+
+const EDIT_STORY = gql`
+  mutation Mutation($targetId: ID!, $newName: String!) {
+    renameStory(targetId: $targetId, newName: $newName) {
+      code
+      success
+      message
+      story {
+        id
+        name
+      }
+    }
+  }
+`;
 
 const EditStoryModal = (props: any) => {
+  const [renameStory] = useMutation(EDIT_STORY, {
+    refetchQueries: [{ query: GET_STORIES }, 'getStories'],
+  });
+  const [consideredStoryName, setConsideredStoryName] = useState(
+    props.storyName
+  );
+
+  const handleStoryNameChanged = useCallback((event: any) => {
+    setConsideredStoryName(event.target.value);
+  }, []);
   if (!props.isOpened) {
     return null;
   }
@@ -15,9 +41,24 @@ const EditStoryModal = (props: any) => {
         onClick={(e) => e.stopPropagation()}
       >
         <h2 className="mt-10 ml-12 text-xl"> ストーリーの編集</h2>
-        <form action="">
+        <form
+          onSubmit={(event) => {
+            event.preventDefault();
+            renameStory({
+              variables: {
+                targetId: props.storyId,
+                newName: consideredStoryName,
+              },
+            });
+            props.onClose();
+          }}
+        >
           {/* Todo: Arrange textarea input values font-size, padding, ... */}
-          <textarea className="block mx-auto my-7 border-[1px] border-black3 rounded-2xl w-4/5 h-40 resize-none"></textarea>
+          <textarea
+            className="block mx-auto my-7 border-[1px] border-black3 rounded-2xl w-4/5 h-40 resize-none"
+            value={consideredStoryName}
+            onChange={handleStoryNameChanged}
+          ></textarea>
           <div className="text-right bg-black3 mt-5 w-full rounded-b-2xl py-5">
             <button
               className="mr-5 bg-black3 w-32 py-1 text-black2"
@@ -25,9 +66,11 @@ const EditStoryModal = (props: any) => {
             >
               キャンセル
             </button>
-            <button className="bg-green1 w-40 mr-5 py-1 rounded-xl text-white">
-              完了
-            </button>
+            <input
+              type="submit"
+              value="完了"
+              className="bg-green1 w-40 mr-5 py-1 rounded-xl text-white"
+            />
           </div>
         </form>
       </div>
