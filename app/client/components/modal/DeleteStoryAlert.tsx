@@ -1,17 +1,7 @@
-import { gql, useMutation } from '@apollo/client';
+import { useMutation } from '@apollo/client';
 import React from 'react';
 import { AlertCircle } from 'react-feather';
-import { GET_STORIES } from '../../query';
-
-const DELETE_STORY = gql`
-  mutation RenameStory($targetId: ID!) {
-    deleteStory(targetId: $targetId) {
-      code
-      success
-      message
-    }
-  }
-`;
+import { GET_STORIES, DELETE_STORY } from '../../query';
 
 const DeleteStoryAlert = (props: any) => {
   const [deleteStory] = useMutation(DELETE_STORY, {
