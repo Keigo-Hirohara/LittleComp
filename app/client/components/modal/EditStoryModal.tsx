@@ -1,20 +1,6 @@
-import { gql, useMutation } from '@apollo/client';
+import { useMutation } from '@apollo/client';
 import React, { useCallback, useState } from 'react';
-import { GET_STORIES } from '../../query';
-
-const EDIT_STORY = gql`
-  mutation Mutation($targetId: ID!, $newName: String!) {
-    renameStory(targetId: $targetId, newName: $newName) {
-      code
-      success
-      message
-      story {
-        id
-        name
-      }
-    }
-  }
-`;
+import { GET_STORIES, EDIT_STORY } from '../../query';
 
 const EditStoryModal = (props: any) => {
   const [renameStory] = useMutation(EDIT_STORY, {
@@ -50,6 +36,7 @@ const EditStoryModal = (props: any) => {
                 newName: consideredStoryName,
               },
             });
+            // Todo: Set empty value of textarea
             props.onClose();
           }}
         >

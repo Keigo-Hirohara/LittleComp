@@ -1,20 +1,6 @@
-import { gql, useMutation } from '@apollo/client';
+import { useMutation } from '@apollo/client';
 import React, { useCallback, useState } from 'react';
-import { GET_STORIES } from '../../query';
-
-const MAKE_STORY = gql`
-  mutation Mutation($name: String!) {
-    createStory(name: $name) {
-      code
-      success
-      message
-      story {
-        id
-        name
-      }
-    }
-  }
-`;
+import { GET_STORIES, MAKE_STORY } from '../../query';
 
 const CreateStoryModal = (props: any) => {
   const [makeStory] = useMutation(MAKE_STORY, {
