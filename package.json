@@ -1,0 +1,23 @@
+{
+  "name": "littlecomp",
+  "version": "1.0.0",
+  "description": "run `mysql -uroot -p`",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "db-server": "docker-compose up -d",
+    "stop-db-server": "docker-compose down --rmi local",
+    "connect-container": "docker exec -it postgresql bash"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hirokei-camel/Gent.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/hirokei-camel/Gent/issues"
+  },
+  "homepage": "https://github.com/hirokei-camel/Gent#readme"
+}
