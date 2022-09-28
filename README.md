@@ -1,6 +1,7 @@
-# データベースの起動
-run `mysql -uroot -p`
+# Initialize postgresql database and setup database server
 
-# データベースの終了時
+run `npm run db-server`
 
-run `exit` or `Ctrl + c`
+# Exit db server
+
+run `npm run stop-db-server`
