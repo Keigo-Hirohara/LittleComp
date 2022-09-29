@@ -10,9 +10,9 @@ export const resolvers = {
     getStories,
   },
   Mutation: {
-    createStory: (_: any, args: any) => {
+    createStory: async (_: any, args: any) => {
       try {
-        const story = createStory(args.name);
+        const story = await createStory(args.name);
         return {
           code: 201,
           success: true,
@@ -28,9 +28,9 @@ export const resolvers = {
         };
       }
     },
-    renameStory: (_: any, args: any) => {
+    renameStory: async (_: any, args: any) => {
       try {
-        const newStory = changeStoryName(args.targetId, args.newName);
+        const newStory = await changeStoryName(args.targetId, args.newName);
         return {
           code: 201,
           success: true,
@@ -46,9 +46,9 @@ export const resolvers = {
         };
       }
     },
-    deleteStory: (_: null, args: any) => {
+    deleteStory: async (_: null, args: any) => {
       try {
-        deleteStory(args.targetId);
+        await deleteStory(args.targetId);
         return {
           code: 204,
           success: true,
