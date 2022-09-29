@@ -5,8 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "db-server": "docker-compose up -d",
-    "stop-db-server": "docker-compose down --rmi local",
+    "devcontainer": "docker-compose up -d",
+    "stop-devcontainer": "docker-compose down --rmi local",
     "connect-container": "docker exec -it postgresql bash"
   },
   "repository": {
