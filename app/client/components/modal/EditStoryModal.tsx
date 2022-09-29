@@ -1,6 +1,7 @@
 import { useMutation } from '@apollo/client';
 import React, { useCallback, useState } from 'react';
-import { GET_STORIES, EDIT_STORY } from '../../query';
+import { GET_STORIES } from '../../query/getStories';
+import EDIT_STORY from '../../query/editStory';
 
 const EditStoryModal = (props: any) => {
   const [renameStory] = useMutation(EDIT_STORY, {
@@ -37,6 +38,7 @@ const EditStoryModal = (props: any) => {
               },
             });
             // Todo: Set empty value of textarea
+            // setConsideredStoryName('');
             props.onClose();
           }}
         >

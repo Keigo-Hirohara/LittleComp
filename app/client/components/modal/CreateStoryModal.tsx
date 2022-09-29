@@ -1,6 +1,7 @@
 import { useMutation } from '@apollo/client';
 import React, { useCallback, useState } from 'react';
-import { GET_STORIES, MAKE_STORY } from '../../query';
+import { GET_STORIES } from '../../query/getStories';
+import MAKE_STORY from '../../query/makeStory';
 
 const CreateStoryModal = (props: any) => {
   const [makeStory] = useMutation(MAKE_STORY, {

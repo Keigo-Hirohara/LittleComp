@@ -12,6 +12,7 @@
   "dependencies": {
     "apollo-server": "^3.10.2",
     "graphql": "^16.6.0",
-    "mysql2": "^2.3.3"
+    "mysql2": "^2.3.3",
+    "prisma": "^4.4.0"
   }
 }

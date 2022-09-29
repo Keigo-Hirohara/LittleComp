@@ -13,3 +13,5 @@ export const MAKE_STORY = gql`
     }
   }
 `;
+
+export default MAKE_STORY;

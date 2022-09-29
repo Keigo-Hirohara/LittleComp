@@ -13,3 +13,5 @@ export const EDIT_STORY = gql`
     }
   }
 `;
+
+export default EDIT_STORY;

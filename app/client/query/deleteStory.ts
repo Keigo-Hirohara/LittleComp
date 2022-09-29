@@ -9,3 +9,5 @@ export const DELETE_STORY = gql`
     }
   }
 `;
+
+export default DELETE_STORY;
