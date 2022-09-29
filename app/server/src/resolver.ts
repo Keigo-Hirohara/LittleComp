@@ -8,6 +8,7 @@ import {
 export const resolvers = {
   Query: {
     getStories,
+    getTasks: (_: null, args: any) => {},
   },
   Mutation: {
     createStory: async (_: any, args: any) => {
@@ -63,5 +64,9 @@ export const resolvers = {
         };
       }
     },
+    createTask: (_: null, args: any) => {},
+    renameTask: (_: null, args: any) => {},
+    updateTaskStatus: (_: null, args: any) => {},
+    deleteTask: (_: null, args: any) => {},
   },
 };

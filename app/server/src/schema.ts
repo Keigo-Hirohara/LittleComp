@@ -3,6 +3,7 @@ import { gql } from 'apollo-server';
 export const typeDefs = gql`
   type Query {
     getStories: [Story]
+
     getTasks(status: String): [Task]
   }
 
@@ -11,7 +12,10 @@ export const typeDefs = gql`
     renameStory(targetId: ID!, newName: String!): StoryResponse
     deleteStory(targetId: ID!): DeleteStoryResponse
 
-    createTask(storyid: String, taskName: String): TaskResponse
+    createTask(storyId: String, taskName: String): TaskResponse
+    renameTask(targetId: ID!, newName: String): TaskResponse
+    updateTaskStatus(targetId: ID!, newStatus: String!): TaskResponse
+    deleteTask(targetId: ID!): DeleteTaskResponse
   }
 
   type StoryResponse {
@@ -37,6 +41,12 @@ export const typeDefs = gql`
     success: Boolean!
     message: String!
     task: Task
+  }
+
+  type DeleteTaskResponse {
+    code: Int!
+    success: Boolean!
+    message: String!
   }
 
   type Task {
