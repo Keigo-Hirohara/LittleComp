@@ -1,7 +1,7 @@
 import React from 'react';
 import StoryItem from './StoryItem';
 import { useQuery } from '@apollo/client';
-import { GET_STORIES } from '../../query/getStories';
+import { GET_STORIES } from '../../query/story/getStories';
 
 const StoryList = () => {
   const { loading, error, data } = useQuery(GET_STORIES);

@@ -1,7 +1,7 @@
 import { useMutation } from '@apollo/client';
 import React, { useCallback, useState } from 'react';
-import { GET_STORIES } from '../../query/getStories';
-import EDIT_STORY from '../../query/editStory';
+import { GET_STORIES } from '../../query/story/getStories';
+import EDIT_STORY from '../../query/story/editStory';
 
 const EditStoryModal = (props: any) => {
   const [renameStory] = useMutation(EDIT_STORY, {

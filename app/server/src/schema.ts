@@ -4,7 +4,7 @@ export const typeDefs = gql`
   type Query {
     getStories: [Story]
 
-    getTasks(status: String): [Task]
+    getTasks(storyId: String, status: String): [Task]
   }
 
   type Mutation {

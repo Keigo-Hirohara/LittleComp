@@ -1,7 +1,8 @@
 {
   "scripts": {
     "dev": "nodemon src/index.ts",
-    "migrate": "npx prisma migrate dev --name init"
+    "migrate": "npx prisma migrate dev",
+    "generate": "prisma generate"
   },
   "prisma": {
     "schema": "src/prisma/schema.prisma"

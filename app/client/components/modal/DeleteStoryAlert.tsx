@@ -1,8 +1,8 @@
 import { useMutation } from '@apollo/client';
 import React from 'react';
 import { AlertCircle } from 'react-feather';
-import { GET_STORIES } from '../../query/getStories';
-import DELETE_STORY from '../../query/deleteStory';
+import { GET_STORIES } from '../../query/story/getStories';
+import DELETE_STORY from '../../query/story/deleteStory';
 
 const DeleteStoryAlert = (props: any) => {
   const [deleteStory] = useMutation(DELETE_STORY, {

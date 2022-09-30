@@ -1,11 +1,9 @@
-import { PrismaClient } from '@prisma/client';
-
-const prisma = new PrismaClient();
+import { prisma } from './prismaClient';
 
 export const getStories = async () => {
   return await prisma.story.findMany();
 };
-
+// Todo: add error handling and use these functions directly
 export const createStory = async (name: string) => {
   const id = new Date().getTime().toString();
   const newStory = await prisma.story.create({

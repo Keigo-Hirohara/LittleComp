@@ -14,3 +14,10 @@ model Story {
   id String @id
   name String
 }
+
+model Task {
+  id String @id
+  name String
+  status String @default("new")
+  story_id String
+}

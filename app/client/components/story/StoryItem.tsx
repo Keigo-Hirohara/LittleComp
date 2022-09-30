@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
-import TaskListBlock from '../task/TaskListBlock';
+import NewTaskBlock from '../task/NewTaskBlock';
+import InProgressTaskBlock from '../task/InProgressTaskBlock';
+import DoneTaskBlock from '../task/DoneTaskBlock';
 import { PlusSquare, Edit2, Trash2 } from 'react-feather';
 import CreateTaskModal from '../modal/CreateTaskModal';
 import EditStoryModal from '../modal/EditStoryModal';
@@ -31,11 +33,11 @@ const StoryItem = ({ storyName, id }: any) => {
       </div>
       <div className="flex justify-between w-4/5 mr-10 ml-auto">
         {/* New */}
-        <TaskListBlock />
+        <NewTaskBlock storyId={id} />
         {/* In Progress */}
-        <TaskListBlock />
+        <InProgressTaskBlock storyId={id} />
         {/* Done */}
-        <TaskListBlock />
+        <DoneTaskBlock storyId={id} />
       </div>
 
       <CreateTaskModal
