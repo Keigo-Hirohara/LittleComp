@@ -22,9 +22,17 @@ const NewTaskBlock = (props: any) => {
   }
   return (
     <div className="flex flex-wrap w-80 pt-3 pl-3">
-      {data.getTasks.map((task: any, index: any) => (
-        <TaskItem key={index} />
-      ))}
+      {data.getTasks.map((task: any, index: any) => {
+        return (
+          <TaskItem
+            taskName={task.name}
+            storyId={props.storyId}
+            status="new"
+            id={task.id}
+            key={index}
+          />
+        );
+      })}
     </div>
   );
 };

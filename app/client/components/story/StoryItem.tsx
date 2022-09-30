@@ -43,6 +43,7 @@ const StoryItem = ({ storyName, id }: any) => {
       <CreateTaskModal
         isOpened={isCreateTaskModalOpen}
         onClose={() => setIsCreateTaskModalOpen(false)}
+        storyId={id}
       />
 
       <EditStoryModal

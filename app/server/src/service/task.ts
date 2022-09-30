@@ -21,6 +21,7 @@ export const createTask = async (_: null, args: any) => {
       story_id: args.storyId,
     },
   });
+  console.log(newTask);
   return {
     code: 201,
     success: true,

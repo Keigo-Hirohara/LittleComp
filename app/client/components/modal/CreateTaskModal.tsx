@@ -1,7 +1,23 @@
-import React from 'react';
+import React, { useCallback, useState } from 'react';
+import { useMutation } from '@apollo/client';
+import { CREATE_TASK } from '../../query/task/createTask';
+import { GET_TASKS } from '../../query/task/getTasks';
 
 // Todo: define and specify more explicative argument type
 const CreateTaskModal = (props: any) => {
+  const [inputTaskName, setInputTaskName] = useState('');
+  const handleChangeTextArea = useCallback((event: any) => {
+    setInputTaskName(event.target.value);
+  }, []);
+  const [createTask] = useMutation(CREATE_TASK, {
+    refetchQueries: [
+      {
+        query: GET_TASKS,
+        variables: { storyId: props.storyId, status: 'new' },
+      },
+      'getTasks',
+    ],
+  });
   if (!props.isOpened) {
     return null;
   }
@@ -16,9 +32,21 @@ const CreateTaskModal = (props: any) => {
         onClick={(e) => e.stopPropagation()}
       >
         <h2 className="mt-10 ml-12 text-xl">タスクの追加</h2>
-        <form action="">
+        <form
+          onSubmit={(event) => {
+            event.preventDefault();
+            createTask({
+              variables: { storyId: props.storyId, taskName: inputTaskName },
+            });
+            props.onClose();
+          }}
+        >
           {/* Todo: Arrange textarea input values font-size, padding, ... */}
-          <textarea className="block mx-auto my-7 border-[1px] border-black3 rounded-2xl w-4/5 h-40 resize-none"></textarea>
+          <textarea
+            className="block mx-auto my-7 border-[1px] border-black3 rounded-2xl w-4/5 h-40 resize-none"
+            onChange={handleChangeTextArea}
+            value={inputTaskName}
+          ></textarea>
           <div className="text-right bg-black3 mt-5 w-full rounded-b-2xl py-5">
             <button
               className="mr-5 bg-black3 w-32 py-1 text-black2"

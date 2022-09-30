@@ -1,6 +1,19 @@
+import { useMutation } from '@apollo/client';
 import React from 'react';
+import { Trash2 } from 'react-feather';
+import { DELETE_TASK } from '../../query/task/deleteTask';
+import { GET_TASKS } from '../../query/task/getTasks';
 
 const EditTaskModal = (props: any) => {
+  const [deleteTask] = useMutation(DELETE_TASK, {
+    refetchQueries: [
+      {
+        query: GET_TASKS,
+        variables: { storyId: props.storyId, status: props.status },
+      },
+      'getTasks',
+    ],
+  });
   if (!props.isOpened) {
     return null;
   }
@@ -18,7 +31,19 @@ const EditTaskModal = (props: any) => {
         <form action="">
           {/* Todo: Arrange textarea input values font-size, padding, ... */}
           <textarea className="block mx-auto my-7 border-[1px] border-black3 rounded-2xl w-4/5 h-40 resize-none"></textarea>
-          <div className="text-right bg-black3 mt-5 w-full rounded-b-2xl py-5">
+          <div className="relative text-right bg-black3 mt-5 w-full rounded-b-2xl py-5">
+            <Trash2
+              strokeWidth={1}
+              className="absolute inline left-5 top-6"
+              onClick={(event) => {
+                console.log(props.status);
+                event.preventDefault();
+                deleteTask({
+                  variables: { targetId: props.id },
+                });
+                props.onClose();
+              }}
+            />
             <button
               className="mr-5 bg-black3 w-32 py-1 text-black2"
               onClick={props.onClose}
