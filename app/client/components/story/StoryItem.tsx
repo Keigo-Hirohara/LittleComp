@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
+import { DragDropContext } from 'react-beautiful-dnd';
 import NewTaskBlock from '../task/NewTaskBlock';
 import InProgressTaskBlock from '../task/InProgressTaskBlock';
 import DoneTaskBlock from '../task/DoneTaskBlock';
@@ -6,11 +7,45 @@ import { PlusSquare, Edit2, Trash2 } from 'react-feather';
 import CreateTaskModal from '../modal/CreateTaskModal';
 import EditStoryModal from '../modal/EditStoryModal';
 import DeleteStoryAlert from '../modal/DeleteStoryAlert';
+import { UPDATE_TASK_STATUS } from '../../query/task/updateTaskStatus';
+import { GET_TASKS } from '../../query/task/getTasks';
+import { useMutation } from '@apollo/client';
 
 const StoryItem = ({ storyName, id }: any) => {
   const [isCreateTaskModalOpen, setIsCreateTaskModalOpen] = useState(false);
   const [isEditStoryModalOpen, setIsEditStoryModalOpen] = useState(false);
   const [isDeleteStoryAlertOpen, setIsDeleteStoryAlertOpen] = useState(false);
+
+  const [updateTaskStatus] = useMutation(UPDATE_TASK_STATUS, {
+    refetchQueries: [
+      { query: GET_TASKS, variables: { storyId: id, status: 'new' } },
+      { query: GET_TASKS, variables: { storyId: id, status: 'inprogress' } },
+      { query: GET_TASKS, variables: { storyId: id, status: 'done' } },
+      'getStories',
+    ],
+  });
+
+  const onDragEnd = useCallback((result: any) => {
+    if (!result) {
+      console.log('resultがnull');
+      return;
+    }
+    // console.log(`result: ${JSON.stringify(result)}`);
+    console.log(result.draggableId);
+    console.log(result.destination.droppableId);
+    try {
+      updateTaskStatus({
+        variables: {
+          // use child components task id
+          targetId: result.draggableId,
+          newStatus: result.destination.droppableId,
+        },
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  }, []);
+
   return (
     // Todo: If Story Item is last one, add border-b-2
     <div className="flex border-t-2 border-black3">
@@ -32,12 +67,11 @@ const StoryItem = ({ storyName, id }: any) => {
         </div>
       </div>
       <div className="flex justify-between w-4/5 mr-10 ml-auto">
-        {/* New */}
-        <NewTaskBlock storyId={id} />
-        {/* In Progress */}
-        <InProgressTaskBlock storyId={id} />
-        {/* Done */}
-        <DoneTaskBlock storyId={id} />
+        <DragDropContext onDragEnd={onDragEnd}>
+          <NewTaskBlock storyId={id} />
+          <InProgressTaskBlock storyId={id} />
+          <DoneTaskBlock storyId={id} />
+        </DragDropContext>
       </div>
 
       <CreateTaskModal
