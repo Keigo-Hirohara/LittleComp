@@ -1,16 +1,11 @@
-import React from 'react';
+import { LayoutArgsType } from '../types/LayoutArgsType';
 import Navbar from './Navbar';
 
-const Layout = ({children}: any): JSX.Element => {
+const Layout = ({ children }: LayoutArgsType): JSX.Element => {
   return (
     <>
       <Navbar />
-      <div>
-        
-      </div>
-      <div className="">
-        {children}
-      </div>
+      <div className="">{children}</div>
     </>
   );
 };
