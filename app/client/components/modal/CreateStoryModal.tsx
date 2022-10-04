@@ -1,17 +1,20 @@
 import { useMutation } from '@apollo/client';
-import React, { useCallback, useState } from 'react';
+import { ChangeEventHandler, ChangeEvent, useState } from 'react';
 import { GET_STORIES } from '../../query/story/getStories';
 import MAKE_STORY from '../../query/story/makeStory';
+import { StoryModalArgsType } from '../../types/StoryModalArgsType';
 
-const CreateStoryModal = (props: any) => {
+const CreateStoryModal = ({ isOpen, onClose }: StoryModalArgsType) => {
   const [makeStory] = useMutation(MAKE_STORY, {
     refetchQueries: [{ query: GET_STORIES }, 'getStories'],
   });
   const [inputStoryName, setInputStoryName] = useState('');
-  const handleChangeTextArea = useCallback((event: any) => {
+  const handleChangeTextArea: ChangeEventHandler<HTMLElement> = (
+    event: ChangeEvent<HTMLInputElement>
+  ): void => {
     setInputStoryName(event.target.value);
-  }, []);
-  if (!props.isOpen) {
+  };
+  if (!isOpen) {
     return null;
   }
 
@@ -19,7 +22,7 @@ const CreateStoryModal = (props: any) => {
     <div>
       <div
         className="flex justify-center items-center overflow-auto fixed inset-0 m-auto bg-black1 bg-opacity-20 backdrop-blur-md z-20"
-        onClick={props.onClose}
+        onClick={onClose}
       >
         {/* Todo: Add new custom margin and width value to tailwind.config.js not use [] */}
         <div
@@ -31,7 +34,7 @@ const CreateStoryModal = (props: any) => {
             onSubmit={(event) => {
               event.preventDefault();
               makeStory({ variables: { name: inputStoryName } });
-              props.onClose();
+              onClose();
             }}
           >
             {/* Todo: Arrange textarea input values font-size, padding, ... */}
@@ -43,7 +46,7 @@ const CreateStoryModal = (props: any) => {
             <div className="text-right bg-black3 mt-5 w-full rounded-b-2xl py-5">
               <button
                 className="mr-5 bg-black3 w-32 py-1 text-black2"
-                onClick={props.onClose}
+                onClick={onClose}
               >
                 キャンセル
               </button>

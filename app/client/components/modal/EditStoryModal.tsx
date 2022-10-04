@@ -1,20 +1,21 @@
 import { useMutation } from '@apollo/client';
-import React, { useCallback, useState } from 'react';
+import { ChangeEvent, ChangeEventHandler, useState } from 'react';
 import { GET_STORIES } from '../../query/story/getStories';
 import EDIT_STORY from '../../query/story/editStory';
+import { StoryModalArgsType } from '../../types/StoryModalArgsType';
 
-const EditStoryModal = (props: any) => {
+const EditStoryModal = (props: StoryModalArgsType) => {
   const [renameStory] = useMutation(EDIT_STORY, {
     refetchQueries: [{ query: GET_STORIES }, 'getStories'],
   });
-  const [consideredStoryName, setConsideredStoryName] = useState(
-    props.storyName
-  );
+  const [consideredStoryName, setConsideredStoryName] = useState(props.name);
 
-  const handleStoryNameChanged = useCallback((event: any) => {
+  const handleStoryNameChanged: ChangeEventHandler<HTMLElement> = (
+    event: ChangeEvent<HTMLInputElement>
+  ) => {
     setConsideredStoryName(event.target.value);
-  }, []);
-  if (!props.isOpened) {
+  };
+  if (!props.isOpen) {
     return null;
   }
   return (

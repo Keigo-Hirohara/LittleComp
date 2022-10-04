@@ -15,7 +15,7 @@ const TaskItem = (props: TaskType): JSX.Element => {
         className=" w-4 h-4 absolute bottom-1.5 right-1.5 text-white"
       />
       <EditTaskModal
-        isOpened={isEditTaskModalOpen}
+        isOpen={isEditTaskModalOpen}
         onClose={() => setIsEditTaskModalOpen(false)}
         id={props.id}
         status={props.status}

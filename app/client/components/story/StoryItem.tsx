@@ -73,20 +73,21 @@ const StoryItem = ({ name, id }: StoryType): JSX.Element => {
       </div>
 
       <CreateTaskModal
-        isOpened={isCreateTaskModalOpen}
+        isOpen={isCreateTaskModalOpen}
         onClose={() => setIsCreateTaskModalOpen(false)}
         storyId={id}
       />
 
       <EditStoryModal
-        isOpened={isEditStoryModalOpen}
+        isOpen={isEditStoryModalOpen}
         onClose={() => setIsEditStoryModalOpen(false)}
-        storyName={name}
+        name={name}
         storyId={id}
       />
       <DeleteStoryAlert
-        isOpened={isDeleteStoryAlertOpen}
+        isOpen={isDeleteStoryAlertOpen}
         onClose={() => setIsDeleteStoryAlertOpen(false)}
+        name={name}
         storyId={id}
       />
     </div>

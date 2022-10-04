@@ -1,14 +1,17 @@
-import React, { useCallback, useState } from 'react';
+import { ChangeEventHandler, ChangeEvent, useState } from 'react';
 import { useMutation } from '@apollo/client';
 import { CREATE_TASK } from '../../query/task/createTask';
 import { GET_TASKS } from '../../query/task/getTasks';
+import { TaskModalArgsType } from '../../types/TaskModalArgsType';
 
 // Todo: define and specify more explicative argument type
-const CreateTaskModal = (props: any) => {
+const CreateTaskModal = (props: TaskModalArgsType) => {
   const [inputTaskName, setInputTaskName] = useState('');
-  const handleChangeTextArea = useCallback((event: any) => {
+  const handleChangeTextArea: ChangeEventHandler<HTMLElement> = (
+    event: ChangeEvent<HTMLInputElement>
+  ): void => {
     setInputTaskName(event.target.value);
-  }, []);
+  };
   const [createTask] = useMutation(CREATE_TASK, {
     refetchQueries: [
       {

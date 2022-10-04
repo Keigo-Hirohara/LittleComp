@@ -3,8 +3,9 @@ import React from 'react';
 import { Trash2 } from 'react-feather';
 import { DELETE_TASK } from '../../query/task/deleteTask';
 import { GET_TASKS } from '../../query/task/getTasks';
+import { TaskModalArgsType } from '../../types/TaskModalArgsType';
 
-const EditTaskModal = (props: any) => {
+const EditTaskModal = (props: TaskModalArgsType) => {
   const [deleteTask] = useMutation(DELETE_TASK, {
     refetchQueries: [
       {
@@ -14,7 +15,7 @@ const EditTaskModal = (props: any) => {
       'getTasks',
     ],
   });
-  if (!props.isOpened) {
+  if (!props.isOpen) {
     return null;
   }
   return (

@@ -3,12 +3,13 @@ import React from 'react';
 import { AlertCircle } from 'react-feather';
 import { GET_STORIES } from '../../query/story/getStories';
 import DELETE_STORY from '../../query/story/deleteStory';
+import { StoryModalArgsType } from '../../types/StoryModalArgsType';
 
-const DeleteStoryAlert = (props: any) => {
+const DeleteStoryAlert = (props: StoryModalArgsType) => {
   const [deleteStory] = useMutation(DELETE_STORY, {
     refetchQueries: [{ query: GET_STORIES }, 'getStories'],
   });
-  if (!props.isOpened) {
+  if (!props.isOpen) {
     return null;
   }
   return (
@@ -23,7 +24,7 @@ const DeleteStoryAlert = (props: any) => {
       >
         <AlertCircle className="w-14 h-14 text-red1 mt-12 mb-7" />
         <h2 className="text-xl mb-16">
-          ストーリーを削除して
+          ストーリー: {props.name}を削除して
           <br />
           よろしいですか？
         </h2>
