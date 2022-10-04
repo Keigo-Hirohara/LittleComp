@@ -4,11 +4,14 @@ import { GET_STORIES } from '../../query/story/getStories';
 import MAKE_STORY from '../../query/story/makeStory';
 import { StoryModalArgsType } from '../../types/StoryModalArgsType';
 
-const CreateStoryModal = ({ isOpen, onClose }: StoryModalArgsType) => {
+const CreateStoryModal = ({
+  isOpen,
+  onClose,
+}: StoryModalArgsType): JSX.Element | null => {
   const [makeStory] = useMutation(MAKE_STORY, {
     refetchQueries: [{ query: GET_STORIES }, 'getStories'],
   });
-  const [inputStoryName, setInputStoryName] = useState('');
+  const [inputStoryName, setInputStoryName] = useState<string>('');
   const handleChangeTextArea: ChangeEventHandler<HTMLElement> = (
     event: ChangeEvent<HTMLInputElement>
   ): void => {

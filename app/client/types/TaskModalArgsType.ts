@@ -4,4 +4,5 @@ export type TaskModalArgsType = {
   onClose: () => void;
   status?: string;
   id?: string;
+  name?: string;
 };

@@ -4,24 +4,31 @@ import { GET_STORIES } from '../../query/story/getStories';
 import EDIT_STORY from '../../query/story/editStory';
 import { StoryModalArgsType } from '../../types/StoryModalArgsType';
 
-const EditStoryModal = (props: StoryModalArgsType) => {
+const EditStoryModal = ({
+  name,
+  isOpen,
+  onClose,
+  storyId,
+}: StoryModalArgsType): JSX.Element | null => {
   const [renameStory] = useMutation(EDIT_STORY, {
     refetchQueries: [{ query: GET_STORIES }, 'getStories'],
   });
-  const [consideredStoryName, setConsideredStoryName] = useState(props.name);
+  const [consideredStoryName, setConsideredStoryName] = useState<
+    string | undefined
+  >(name);
 
   const handleStoryNameChanged: ChangeEventHandler<HTMLElement> = (
     event: ChangeEvent<HTMLInputElement>
   ) => {
     setConsideredStoryName(event.target.value);
   };
-  if (!props.isOpen) {
+  if (!isOpen) {
     return null;
   }
   return (
     <div
       className="flex justify-center items-center overflow-auto fixed inset-0 m-auto bg-black1 bg-opacity-20 backdrop-blur-md z-20"
-      onClick={props.onClose}
+      onClick={onClose}
     >
       {/* Todo: Add new custom margin and width value to tailwind.config.js not use [] */}
       <div
@@ -34,13 +41,13 @@ const EditStoryModal = (props: StoryModalArgsType) => {
             event.preventDefault();
             renameStory({
               variables: {
-                targetId: props.storyId,
+                targetId: storyId,
                 newName: consideredStoryName,
               },
             });
             // Todo: Set empty value of textarea
             // setConsideredStoryName('');
-            props.onClose();
+            onClose();
           }}
         >
           {/* Todo: Arrange textarea input values font-size, padding, ... */}
@@ -52,7 +59,7 @@ const EditStoryModal = (props: StoryModalArgsType) => {
           <div className="text-right bg-black3 mt-5 w-full rounded-b-2xl py-5">
             <button
               className="mr-5 bg-black3 w-32 py-1 text-black2"
-              onClick={props.onClose}
+              onClick={onClose}
             >
               キャンセル
             </button>

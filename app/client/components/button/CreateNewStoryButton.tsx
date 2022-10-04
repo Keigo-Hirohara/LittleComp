@@ -2,8 +2,9 @@ import React, { useState } from 'react';
 import { PlusCircle } from 'react-feather';
 import CreateStoryModal from '../modal/CreateStoryModal';
 
-const CreateNewStoryButton = () => {
-  const [isCreateStoryModalOpen, setIsCreateStoryModalOpen] = useState(false);
+const CreateNewStoryButton = (): JSX.Element => {
+  const [isCreateStoryModalOpen, setIsCreateStoryModalOpen] =
+    useState<boolean>(false);
   return (
     <div className="relative">
       {/* Todo: Re-exam which method should use Icons size prop or tailwind calssName styling... */}

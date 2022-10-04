@@ -5,8 +5,12 @@ import { GET_TASKS } from '../../query/task/getTasks';
 import { TaskModalArgsType } from '../../types/TaskModalArgsType';
 
 // Todo: define and specify more explicative argument type
-const CreateTaskModal = (props: TaskModalArgsType) => {
-  const [inputTaskName, setInputTaskName] = useState('');
+const CreateTaskModal = ({
+  storyId,
+  isOpen,
+  onClose,
+}: TaskModalArgsType): JSX.Element | null => {
+  const [inputTaskName, setInputTaskName] = useState<string>('');
   const handleChangeTextArea: ChangeEventHandler<HTMLElement> = (
     event: ChangeEvent<HTMLInputElement>
   ): void => {
@@ -16,18 +20,18 @@ const CreateTaskModal = (props: TaskModalArgsType) => {
     refetchQueries: [
       {
         query: GET_TASKS,
-        variables: { storyId: props.storyId, status: 'new' },
+        variables: { storyId: storyId, status: 'new' },
       },
       'getTasks',
     ],
   });
-  if (!props.isOpened) {
+  if (!isOpen) {
     return null;
   }
   return (
     <div
       className="flex justify-center items-center overflow-auto fixed inset-0 m-auto bg-black1 bg-opacity-20 backdrop-blur-md z-20"
-      onClick={props.onClose}
+      onClick={onClose}
     >
       {/* Todo: Add new custom margin and width value to tailwind.config.js not use [] */}
       <div
@@ -39,9 +43,9 @@ const CreateTaskModal = (props: TaskModalArgsType) => {
           onSubmit={(event) => {
             event.preventDefault();
             createTask({
-              variables: { storyId: props.storyId, taskName: inputTaskName },
+              variables: { storyId: storyId, taskName: inputTaskName },
             });
-            props.onClose();
+            onClose();
           }}
         >
           {/* Todo: Arrange textarea input values font-size, padding, ... */}
@@ -53,7 +57,7 @@ const CreateTaskModal = (props: TaskModalArgsType) => {
           <div className="text-right bg-black3 mt-5 w-full rounded-b-2xl py-5">
             <button
               className="mr-5 bg-black3 w-32 py-1 text-black2"
-              onClick={props.onClose}
+              onClick={onClose}
             >
               キャンセル
             </button>

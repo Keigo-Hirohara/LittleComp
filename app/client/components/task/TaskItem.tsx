@@ -20,6 +20,7 @@ const TaskItem = (props: TaskType): JSX.Element => {
         id={props.id}
         status={props.status}
         storyId={props.storyId}
+        name={props.name}
       />
     </div>
   );
