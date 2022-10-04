@@ -1,5 +1,5 @@
 import React, { useState, useCallback } from 'react';
-import { DragDropContext } from 'react-beautiful-dnd';
+import { DragDropContext, DropResult } from 'react-beautiful-dnd';
 import NewTaskBlock from '../task/NewTaskBlock';
 import InProgressTaskBlock from '../task/InProgressTaskBlock';
 import DoneTaskBlock from '../task/DoneTaskBlock';
@@ -10,8 +10,9 @@ import DeleteStoryAlert from '../modal/DeleteStoryAlert';
 import { UPDATE_TASK_STATUS } from '../../query/task/updateTaskStatus';
 import { GET_TASKS } from '../../query/task/getTasks';
 import { useMutation } from '@apollo/client';
+import { StoryType } from '../../types/StoryType';
 
-const StoryItem = ({ storyName, id }: any) => {
+const StoryItem = ({ name, id }: StoryType): JSX.Element => {
   const [isCreateTaskModalOpen, setIsCreateTaskModalOpen] = useState(false);
   const [isEditStoryModalOpen, setIsEditStoryModalOpen] = useState(false);
   const [isDeleteStoryAlertOpen, setIsDeleteStoryAlertOpen] = useState(false);
@@ -25,18 +26,15 @@ const StoryItem = ({ storyName, id }: any) => {
     ],
   });
 
-  const onDragEnd = useCallback((result: any) => {
-    if (!result) {
-      console.log('resultがnull');
+  const onDragEnd = useCallback((result: DropResult) => {
+    if (!result.destination) {
       return;
     }
-    // console.log(`result: ${JSON.stringify(result)}`);
     console.log(result.draggableId);
     console.log(result.destination.droppableId);
     try {
       updateTaskStatus({
         variables: {
-          // use child components task id
           targetId: result.draggableId,
           newStatus: result.destination.droppableId,
         },
@@ -50,7 +48,7 @@ const StoryItem = ({ storyName, id }: any) => {
     // Todo: If Story Item is last one, add border-b-2
     <div className="flex border-t-2 border-black3">
       <div className="mt-auto mb-auto pl-3 ml-6 h-full w-48">
-        <h1 className="text-2xl">{storyName}</h1>
+        <h1 className="text-2xl">{name}</h1>
         <div className="flex mt-3">
           <PlusSquare
             className="h-7 w-7 mr-3 mb-3"
@@ -83,7 +81,7 @@ const StoryItem = ({ storyName, id }: any) => {
       <EditStoryModal
         isOpened={isEditStoryModalOpen}
         onClose={() => setIsEditStoryModalOpen(false)}
-        storyName={storyName}
+        storyName={name}
         storyId={id}
       />
       <DeleteStoryAlert

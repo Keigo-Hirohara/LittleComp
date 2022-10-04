@@ -49,20 +49,24 @@ export const renameTask = async (_: null, args: any) => {
 };
 
 export const updateTaskStatus = async (_: null, args: any) => {
-  const movedTask = await prisma.task.update({
-    where: {
-      id: args.targetId,
-    },
-    data: {
-      status: args.newStatus,
-    },
-  });
-  return {
-    code: 201,
-    success: true,
-    message: 'The task was successfully renamed!',
-    story: movedTask,
-  };
+  try {
+    const movedTask = await prisma.task.update({
+      where: {
+        id: args.targetId,
+      },
+      data: {
+        status: args.newStatus,
+      },
+    });
+    return {
+      code: 201,
+      success: true,
+      message: 'The task was successfully renamed!',
+      story: movedTask,
+    };
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 export const deleteTask = async (_: null, args: any) => {

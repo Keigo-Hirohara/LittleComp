@@ -6,7 +6,7 @@ import { GET_TASKS } from '../../query/task/getTasks';
 import { TaskBlockArgsType } from '../../types/TaskBlockArgsType';
 import { TaskType } from '../../types/TaskType';
 
-const InProgressTaskBlock = ({ storyId }: TaskBlockArgsType) => {
+const InProgressTaskBlock = ({ storyId }: TaskBlockArgsType): JSX.Element => {
   const { loading, error, data } = useQuery(GET_TASKS, {
     variables: {
       storyId: storyId,

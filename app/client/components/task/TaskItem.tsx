@@ -3,7 +3,7 @@ import { Edit2 } from 'react-feather';
 import { TaskType } from '../../types/TaskType';
 import EditTaskModal from '../modal/EditTaskModal';
 
-const TaskItem = (props: TaskType) => {
+const TaskItem = (props: TaskType): JSX.Element => {
   const [isEditTaskModalOpen, setIsEditTaskModalOpen] = useState(false);
   return (
     <div className="relative w-20 h-20 bg-green1 rounded-3xl ml-3 mb-3">

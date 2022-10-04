@@ -8,7 +8,7 @@ import { TaskType } from '../../types/TaskType';
 
 // Todo: Integrate into one component new, inprogress, done
 
-const NewTaskBlock = ({ storyId }: TaskBlockArgsType) => {
+const NewTaskBlock = ({ storyId }: TaskBlockArgsType): JSX.Element => {
   const { loading, error, data } = useQuery(GET_TASKS, {
     variables: {
       storyId: storyId,
