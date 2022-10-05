@@ -13,11 +13,14 @@ datasource db {
 model Story {
   id String @id
   name String
+  tasks Task[]
 }
 
 model Task {
   id String @id
   name String
   status String @default("new")
+  story Story @relation(fields: [story_id], references: [id], onDelete: Cascade)
   story_id String
+  
 }
