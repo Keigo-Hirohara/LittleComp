@@ -10,7 +10,7 @@ const CreateNewStoryButton = (): JSX.Element => {
       {/* Todo: Re-exam which method should use Icons size prop or tailwind calssName styling... */}
       <PlusCircle
         strokeWidth={1}
-        className="fixed bottom-4 right-4 w-20 h-20 text-blue1 bg-blue3 rounded-full shadow-xl opacity-80"
+        className="fixed bottom-13 right-13 w-64 h-64 text-blue1 bg-blue3 rounded-full shadow-xl opacity-80"
         onClick={() => setIsCreateStoryModalOpen(true)}
       />
       <CreateStoryModal
