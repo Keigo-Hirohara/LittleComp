@@ -13,7 +13,7 @@ const StoryList = (): JSX.Element => {
     return <h1>Something went wrong...</h1>;
   }
   return (
-    <div className="z-0">
+    <div className="z-0 border-b-2 border-black3">
       {data.getStories.map(({ name, id }: StoryType, index: number) => (
         <StoryItem name={name} id={id} key={index} />
       ))}

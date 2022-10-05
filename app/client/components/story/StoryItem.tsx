@@ -45,21 +45,20 @@ const StoryItem = ({ name, id }: StoryType): JSX.Element => {
   }, []);
 
   return (
-    // Todo: If Story Item is last one, add border-b-2
     <div className="flex border-t-2 border-black3">
-      <div className="mt-auto mb-auto pl-3 ml-6 h-full w-48">
+      <div className="mt-auto mb-auto pl-10 ml-19 h-full w-154">
         <h1 className="text-2xl">{name}</h1>
-        <div className="flex mt-3">
+        <div className="flex mt-10">
           <PlusSquare
-            className="h-7 w-7 mr-3 mb-3"
+            className="h-22 w-22 mr-10 mb-10"
             onClick={() => setIsCreateTaskModalOpen(true)}
           />
           <Edit2
-            className="h-7 w-7 mr-3 mb-3"
+            className="h-22 w-22 mr-10 mb-10"
             onClick={() => setIsEditStoryModalOpen(true)}
           />
           <Trash2
-            className="h-7 w-7 mr-3 mb-3"
+            className="h-22 w-22 mr-10 mb-10"
             onClick={() => setIsDeleteStoryAlertOpen(true)}
           />
         </div>
