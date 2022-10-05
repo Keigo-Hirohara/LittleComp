@@ -1,3 +1,4 @@
+import { CreateStoryArgsType } from './types/CreateStoryArgsType';
 import {
   getStories,
   createStory,
@@ -12,6 +13,8 @@ import {
   updateTaskStatus,
   deleteTask,
 } from './service/task';
+import { RenameStoryArgsType } from './types/RenameStoryArgsType';
+import { DeleteStoryArgsType } from './types/DeleteStoryArgsType';
 
 export const resolvers = {
   Query: {
@@ -19,9 +22,9 @@ export const resolvers = {
     getTasks,
   },
   Mutation: {
-    createStory: async (_: any, args: any) => {
+    createStory: async (_: null, { name }: CreateStoryArgsType) => {
       try {
-        const story = await createStory(args.name);
+        const story = await createStory(name);
         return {
           code: 201,
           success: true,
@@ -37,9 +40,12 @@ export const resolvers = {
         };
       }
     },
-    renameStory: async (_: any, args: any) => {
+    renameStory: async (
+      _: null,
+      { targetId, newName }: RenameStoryArgsType
+    ) => {
       try {
-        const newStory = await changeStoryName(args.targetId, args.newName);
+        const newStory = await changeStoryName(targetId, newName);
         return {
           code: 201,
           success: true,
@@ -55,9 +61,9 @@ export const resolvers = {
         };
       }
     },
-    deleteStory: async (_: null, args: any) => {
+    deleteStory: async (_: null, { targetId }: DeleteStoryArgsType) => {
       try {
-        await deleteStory(args.targetId);
+        await deleteStory(targetId);
         return {
           code: 204,
           success: true,
