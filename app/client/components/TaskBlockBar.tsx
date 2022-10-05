@@ -2,7 +2,7 @@ import TaskBlockBarItem from './TaskBlockBarItam';
 
 const TaskBlockBar = (): JSX.Element => {
   return (
-    <div className="flex justify-between w-4/5 mr-10 ml-auto mt-3 mb-3">
+    <div className="flex justify-between w-4/5 mr-32 ml-auto mt-10 mb-10">
       <TaskBlockBarItem className="bg-green3" text="New" color="text-green1" />
       <TaskBlockBarItem
         className="bg-blue3"

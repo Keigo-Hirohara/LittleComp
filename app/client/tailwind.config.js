@@ -5,7 +5,13 @@ module.exports = {
     './components/**/*.{js,ts,jsx,tsx}',
   ],
   theme: {
-    extend: {},
+    extend: {
+      spacing: {
+        19: '19px',
+        32: '32px',
+        10: '10px',
+      },
+    },
     colors: {
       black3: '#f4f4f4',
       black2: '#AAAAAA',
@@ -28,6 +34,8 @@ module.exports = {
     },
     height: {
       2.5: '2.5rem',
+      20: '5rem',
+      45: '45px',
     },
   },
   plugins: [],
