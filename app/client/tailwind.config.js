@@ -8,10 +8,14 @@ module.exports = {
     extend: {
       spacing: {
         154: '154px',
+        64: '64px',
         22: '22px',
         19: '19px',
         32: '32px',
+        16: '16px',
+        13: '13px',
         10: '10px',
+        5: '5px',
       },
     },
     colors: {
@@ -37,6 +41,7 @@ module.exports = {
     height: {
       2.5: '2.5rem',
       20: '5rem',
+      64: '64px',
       45: '45px',
     },
   },

@@ -30,7 +30,7 @@ const NewTaskBlock = ({ storyId }: TaskBlockArgsType): JSX.Element => {
           <div
             {...provided.droppableProps}
             ref={provided.innerRef}
-            className="flex flex-wrap w-80 pt-3 pl-3"
+            className="flex flex-wrap w-80 pt-10 pl-10"
           >
             {data.getTasks.map((task: TaskType, index: number) => {
               return (
