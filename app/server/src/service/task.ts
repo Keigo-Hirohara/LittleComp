@@ -1,3 +1,7 @@
+import { CreatetaskArgsType } from '../types/CreateTaskArgsType';
+import { DeleteStoryArgsType } from '../types/DeleteStoryArgsType';
+import { RenameStoryArgsType } from '../types/RenameStoryArgsType';
+import { updateTaskStatusArgsType } from '../types/UpdateTaskStatusArgsType';
 import { prisma } from './prismaClient';
 
 export const getTasks = async (_: null, args: any) => {
@@ -11,14 +15,17 @@ export const getTasks = async (_: null, args: any) => {
 
 // Todo: add error handling and use these functions directly
 
-export const createTask = async (_: null, args: any) => {
+export const createTask = async (
+  _: null,
+  { taskName, storyId }: CreatetaskArgsType
+) => {
   const id = new Date().getTime().toString();
   const newTask = await prisma.task.create({
     data: {
       id,
-      name: args.taskName,
+      name: taskName,
       status: 'new',
-      story_id: args.storyId,
+      story_id: storyId,
     },
   });
   console.log(newTask);
@@ -30,13 +37,16 @@ export const createTask = async (_: null, args: any) => {
   };
 };
 
-export const renameTask = async (_: null, args: any) => {
+export const renameTask = async (
+  _: null,
+  { targetId, newName }: RenameStoryArgsType
+) => {
   const renamedTask = await prisma.task.update({
     where: {
-      id: args.targetId,
+      id: targetId,
     },
     data: {
-      name: args.newName,
+      name: newName,
     },
   });
 
@@ -48,14 +58,17 @@ export const renameTask = async (_: null, args: any) => {
   };
 };
 
-export const updateTaskStatus = async (_: null, args: any) => {
+export const updateTaskStatus = async (
+  _: null,
+  { targetId, newStatus }: updateTaskStatusArgsType
+) => {
   try {
     const movedTask = await prisma.task.update({
       where: {
-        id: args.targetId,
+        id: targetId,
       },
       data: {
-        status: args.newStatus,
+        status: newStatus,
       },
     });
     return {
@@ -69,10 +82,13 @@ export const updateTaskStatus = async (_: null, args: any) => {
   }
 };
 
-export const deleteTask = async (_: null, args: any) => {
+export const deleteTask = async (
+  _: null,
+  { targetId }: DeleteStoryArgsType
+) => {
   await prisma.task.delete({
     where: {
-      id: args.targetId,
+      id: targetId,
     },
   });
   return {
