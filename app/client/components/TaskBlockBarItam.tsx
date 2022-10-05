@@ -7,7 +7,7 @@ const TaskBlockBarItem = ({
   color,
 }: TaskBlockBarItemArgsType): JSX.Element => {
   return (
-    <div className={`flex items-center w-80 h-45 rounded-2xl ${className}`}>
+    <div className={`flex items-center w-3/12 h-45 rounded-2xl ${className}`}>
       <h2 className={`text-xl ml-19 ${color}`}>{text}</h2>
     </div>
   );

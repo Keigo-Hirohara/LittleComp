@@ -63,7 +63,7 @@ const StoryItem = ({ name, id }: StoryType): JSX.Element => {
           />
         </div>
       </div>
-      <div className="flex justify-between w-4/5 mr-10 ml-auto">
+      <div className="flex justify-between w-4/5 mr-32 ml-auto">
         <DragDropContext onDragEnd={onDragEnd}>
           <NewTaskBlock storyId={id} />
           <InProgressTaskBlock storyId={id} />

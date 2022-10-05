@@ -28,7 +28,7 @@ const InProgressTaskBlock = ({ storyId }: TaskBlockArgsType): JSX.Element => {
           <div
             {...provided.droppableProps}
             ref={provided.innerRef}
-            className="flex flex-wrap w-80 pt-10 pl-10"
+            className="flex flex-wrap w-3/12 pt-10 pl-10"
           >
             {data.getTasks.map((task: TaskType, index: number) => {
               return (
