@@ -29,10 +29,10 @@ const CreateStoryModal = ({
       >
         {/* Todo: Add new custom margin and width value to tailwind.config.js not use [] */}
         <div
-          className="bg-white h-80 w-[32rem] rounded-2xl shadow-2xl"
+          className="bg-white h-256 w-410 rounded-2xl shadow-2xl"
           onClick={(e) => e.stopPropagation()}
         >
-          <h2 className="mt-10 ml-12 text-xl">ストーリーの新規作成</h2>
+          <h2 className="mt-32 ml-38 text-xl">ストーリーの新規作成</h2>
           <form
             onSubmit={(event) => {
               event.preventDefault();
@@ -42,19 +42,19 @@ const CreateStoryModal = ({
           >
             {/* Todo: Arrange textarea input values font-size, padding, ... */}
             <textarea
-              className="block mx-auto my-7 border-[1px] border-black3 rounded-2xl w-4/5 h-40 resize-none"
+              className="block mx-auto my-22 border border-black3 rounded-2xl w-4/5 h-128 resize-none"
               onChange={handleChangeTextArea}
               value={inputStoryName}
             ></textarea>
-            <div className="text-right bg-black3 mt-5 w-full rounded-b-2xl py-5">
+            <div className="text-right bg-black3 mt-16 w-full rounded-b-2xl py-16">
               <button
-                className="mr-5 bg-black3 w-32 py-1 text-black2"
+                className="mr-16 bg-black3 w-102 py-3 text-black2"
                 onClick={onClose}
               >
                 キャンセル
               </button>
               <input
-                className="bg-blue1 w-40 mr-5 py-1 rounded-xl text-white"
+                className="bg-blue1 w-128 mr-16 py-3 rounded-xl text-white"
                 type="submit"
                 value="作成"
               />

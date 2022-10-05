@@ -24,17 +24,17 @@ const DeleteStoryAlert = ({
     >
       {/* Todo: Add new custom margin and width value to tailwind.config.js not use [] */}
       <div
-        className="flex flex-col items-center bg-white h-96 w-80 rounded-2xl shadow-2xl"
+        className="flex flex-col items-center bg-white h-307 rounded-2xl shadow-2xl px-16"
         onClick={(e) => e.stopPropagation()}
       >
-        <AlertCircle className="w-14 h-14 text-red1 mt-12 mb-7" />
-        <h2 className="text-xl mb-16">
-          ストーリー: {name}を削除して
+        <AlertCircle className="w-45 h-45 text-red1 mt-38 mb-22 py-10" />
+        <h2 className="text-xl mb-51">
+          {name}
           <br />
-          よろしいですか？
+          を削除してよろしいですか？
         </h2>
         <button
-          className="w-4/5 bg-red1 py-2 mb-3 rounded-xl text-white"
+          className="w-4/5 bg-red1 py-6 mb-10 rounded-xl text-white"
           onClick={(event) => {
             console.log(storyId);
             event.preventDefault();
@@ -44,7 +44,10 @@ const DeleteStoryAlert = ({
         >
           削除
         </button>
-        <button className="w-4/5 bg-black3 py-2 rounded-xl" onClick={onClose}>
+        <button
+          className="w-4/5 bg-black3 py-6 mb-16 rounded-xl"
+          onClick={onClose}
+        >
           キャンセル
         </button>
       </div>
