@@ -22,9 +22,12 @@ module.exports = {
       white: '#FFFFFF',
     },
     fontSize: {
-      xs: ['0.75rem', null],
-      xl: ['1.25rem', null],
-      '2xl': ['1.5rem', null],
+      xs: ['0.6rem', null],
+      xl: ['1rem', null],
+      '2xl': ['1.2rem', null],
+    },
+    height: {
+      2.5: '2.5rem',
     },
   },
   plugins: [],
