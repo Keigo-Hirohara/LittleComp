@@ -46,7 +46,7 @@ const StoryItem = ({ name, id }: StoryType): JSX.Element => {
 
   return (
     <div className="flex border-t-2 border-black3">
-      <div className="mt-auto mb-auto pl-10 ml-19 h-full w-154">
+      <div className="mt-auto mb-auto pl-10 ml-19 w-154 break-words">
         <h1 className="text-2xl">{name}</h1>
         <div className="flex mt-10">
           <PlusSquare
