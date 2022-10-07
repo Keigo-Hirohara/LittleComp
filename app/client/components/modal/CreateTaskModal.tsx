@@ -3,6 +3,8 @@ import { useMutation } from '@apollo/client';
 import { CREATE_TASK } from '../../query/task/createTask';
 import { GET_TASKS } from '../../query/task/getTasks';
 import { TaskModalArgsType } from '../../types/TaskModalArgsType';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 // Todo: define and specify more explicative argument type
 const CreateTaskModal = ({

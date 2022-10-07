@@ -5,6 +5,8 @@ import { DELETE_TASK } from '../../query/task/deleteTask';
 import { GET_TASKS } from '../../query/task/getTasks';
 import { RENAME_TASK } from '../../query/task/renameTask';
 import { TaskModalArgsType } from '../../types/TaskModalArgsType';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const EditTaskModal = ({
   name,

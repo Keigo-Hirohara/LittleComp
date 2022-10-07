@@ -1,8 +1,10 @@
 import { useMutation } from '@apollo/client';
-import { ChangeEventHandler, ChangeEvent, useState } from 'react';
+import { ChangeEventHandler, ChangeEvent, useState, useCallback } from 'react';
 import { GET_STORIES } from '../../query/story/getStories';
 import MAKE_STORY from '../../query/story/makeStory';
 import { StoryModalArgsType } from '../../types/StoryModalArgsType';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const CreateStoryModal = ({
   isOpen,
@@ -25,7 +27,10 @@ const CreateStoryModal = ({
     <div>
       <div
         className="flex justify-center items-center overflow-auto fixed inset-0 m-auto bg-black1 bg-opacity-20 backdrop-blur-md z-20"
-        onClick={onClose}
+        onClick={() => {
+          setInputStoryName('');
+          onClose();
+        }}
       >
         {/* Todo: Add new custom margin and width value to tailwind.config.js not use [] */}
         <div
@@ -34,9 +39,19 @@ const CreateStoryModal = ({
         >
           <h2 className="mt-32 ml-38 text-xl">ストーリーの新規作成</h2>
           <form
-            onSubmit={(event) => {
+            onSubmit={async (event) => {
               event.preventDefault();
-              makeStory({ variables: { name: inputStoryName } });
+              const {
+                data: {
+                  createStory: { success, message },
+                },
+              } = await makeStory({
+                variables: { name: inputStoryName },
+              });
+              if (success) {
+                toast.success(message);
+              }
+              setInputStoryName('');
               onClose();
             }}
           >
@@ -49,7 +64,10 @@ const CreateStoryModal = ({
             <div className="text-right bg-black3 mt-16 w-full rounded-b-2xl py-16">
               <button
                 className="mr-16 bg-black3 w-102 py-3 text-black2"
-                onClick={onClose}
+                onClick={() => {
+                  setInputStoryName('');
+                  onClose();
+                }}
               >
                 キャンセル
               </button>

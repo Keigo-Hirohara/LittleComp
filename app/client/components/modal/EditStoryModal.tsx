@@ -1,8 +1,10 @@
 import { useMutation } from '@apollo/client';
-import { ChangeEvent, ChangeEventHandler, useState } from 'react';
+import { ChangeEvent, ChangeEventHandler, useEffect, useState } from 'react';
 import { GET_STORIES } from '../../query/story/getStories';
 import EDIT_STORY from '../../query/story/editStory';
 import { StoryModalArgsType } from '../../types/StoryModalArgsType';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const EditStoryModal = ({
   name,
@@ -37,16 +39,22 @@ const EditStoryModal = ({
       >
         <h2 className="mt-32 ml-38 text-xl"> ストーリーの編集</h2>
         <form
-          onSubmit={(event) => {
+          onSubmit={async (event) => {
             event.preventDefault();
-            renameStory({
+            const {
+              data: {
+                renameStory: { success, message },
+              },
+            } = await renameStory({
               variables: {
                 targetId: storyId,
                 newName: consideredStoryName,
               },
             });
-            // Todo: Set empty value of textarea
-            // setConsideredStoryName('');
+            if (success) {
+              toast.success(message);
+            }
+            setConsideredStoryName('');
             onClose();
           }}
         >

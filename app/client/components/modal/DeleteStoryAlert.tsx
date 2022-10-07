@@ -4,6 +4,8 @@ import { AlertCircle } from 'react-feather';
 import { GET_STORIES } from '../../query/story/getStories';
 import DELETE_STORY from '../../query/story/deleteStory';
 import { StoryModalArgsType } from '../../types/StoryModalArgsType';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const DeleteStoryAlert = ({
   isOpen,
@@ -35,10 +37,17 @@ const DeleteStoryAlert = ({
         </h2>
         <button
           className="w-4/5 bg-red1 py-6 mb-10 rounded-xl text-white"
-          onClick={(event) => {
+          onClick={async (event) => {
             console.log(storyId);
             event.preventDefault();
-            deleteStory({ variables: { targetId: storyId } });
+            const {
+              data: {
+                deleteStory: { success, message },
+              },
+            } = await deleteStory({ variables: { targetId: storyId } });
+            if (success) {
+              toast.success(message);
+            }
             onClose();
           }}
         >

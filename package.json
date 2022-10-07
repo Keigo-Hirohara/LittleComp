@@ -19,5 +19,8 @@
   "bugs": {
     "url": "https://github.com/hirokei-camel/Gent/issues"
   },
-  "homepage": "https://github.com/hirokei-camel/Gent#readme"
+  "homepage": "https://github.com/hirokei-camel/Gent#readme",
+  "dependencies": {
+    "graphql": "^16.6.0"
+  }
 }
