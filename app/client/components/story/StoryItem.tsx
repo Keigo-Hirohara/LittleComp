@@ -22,7 +22,6 @@ const StoryItem = ({ name, id }: StoryType): JSX.Element => {
       { query: GET_TASKS, variables: { storyId: id, status: 'new' } },
       { query: GET_TASKS, variables: { storyId: id, status: 'inprogress' } },
       { query: GET_TASKS, variables: { storyId: id, status: 'done' } },
-      'getStories',
     ],
   });
 

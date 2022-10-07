@@ -11,7 +11,7 @@ const CreateStoryModal = ({
   onClose,
 }: StoryModalArgsType): JSX.Element | null => {
   const [makeStory] = useMutation(MAKE_STORY, {
-    refetchQueries: [{ query: GET_STORIES }, 'getStories'],
+    refetchQueries: [{ query: GET_STORIES }],
   });
   const [inputStoryName, setInputStoryName] = useState<string>('');
   const handleChangeTextArea: ChangeEventHandler<HTMLElement> = (

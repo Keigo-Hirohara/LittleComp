@@ -14,7 +14,7 @@ const DeleteStoryAlert = ({
   storyId,
 }: StoryModalArgsType): JSX.Element | null => {
   const [deleteStory] = useMutation(DELETE_STORY, {
-    refetchQueries: [{ query: GET_STORIES }, 'getStories'],
+    refetchQueries: [{ query: GET_STORIES }],
   });
   if (!isOpen) {
     return null;

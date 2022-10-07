@@ -13,7 +13,7 @@ const EditStoryModal = ({
   storyId,
 }: StoryModalArgsType): JSX.Element | null => {
   const [renameStory] = useMutation(EDIT_STORY, {
-    refetchQueries: [{ query: GET_STORIES }, 'getStories'],
+    refetchQueries: [{ query: GET_STORIES }],
   });
   const [consideredStoryName, setConsideredStoryName] = useState<
     string | undefined

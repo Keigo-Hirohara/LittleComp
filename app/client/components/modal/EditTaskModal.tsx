@@ -1,5 +1,5 @@
 import { useMutation } from '@apollo/client';
-import { useState, ChangeEvent, ChangeEventHandler } from 'react';
+import { useState, ChangeEvent, ChangeEventHandler, useEffect } from 'react';
 import { Trash2 } from 'react-feather';
 import { DELETE_TASK } from '../../query/task/deleteTask';
 import { GET_TASKS } from '../../query/task/getTasks';
@@ -17,13 +17,15 @@ const EditTaskModal = ({
   id,
 }: TaskModalArgsType): JSX.Element | null => {
   const [consideredTaskName, setConsideredTaskName] = useState(name);
+  useEffect(() => {
+    setConsideredTaskName(name);
+  }, [name]);
   const [renameTask] = useMutation(RENAME_TASK, {
     refetchQueries: [
       {
         query: GET_TASKS,
         variables: { storyId: storyId, status: status },
       },
-      'getTasks',
     ],
   });
   const [deleteTask] = useMutation(DELETE_TASK, {
@@ -32,7 +34,6 @@ const EditTaskModal = ({
         query: GET_TASKS,
         variables: { storyId: storyId, status: status },
       },
-      'getTasks',
     ],
   });
   const handleTaskNameChanged: ChangeEventHandler<HTMLElement> = (
@@ -55,14 +56,21 @@ const EditTaskModal = ({
       >
         <h2 className="mt-32 ml-38 text-xl"> タスクの編集</h2>
         <form
-          onSubmit={(event) => {
+          onSubmit={async (event) => {
             event.preventDefault();
-            renameTask({
+            const {
+              data: {
+                renameTask: { success, message },
+              },
+            } = await renameTask({
               variables: {
                 targetId: id,
                 newName: consideredTaskName,
               },
             });
+            if (success) {
+              toast.success(message);
+            }
             onClose();
           }}
         >
@@ -76,12 +84,18 @@ const EditTaskModal = ({
             <Trash2
               strokeWidth={1}
               className="absolute inline left-16 top-19"
-              onClick={(event) => {
-                console.log(status);
+              onClick={async (event) => {
                 event.preventDefault();
-                deleteTask({
+                const {
+                  data: {
+                    deleteTask: { success, message },
+                  },
+                } = await deleteTask({
                   variables: { targetId: id },
                 });
+                if (success) {
+                  toast.success(message);
+                }
                 onClose();
               }}
             />

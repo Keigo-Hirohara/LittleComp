@@ -24,7 +24,6 @@ const CreateTaskModal = ({
         query: GET_TASKS,
         variables: { storyId: storyId, status: 'new' },
       },
-      'getTasks',
     ],
   });
   if (!isOpen) {
@@ -33,7 +32,10 @@ const CreateTaskModal = ({
   return (
     <div
       className="flex justify-center items-center overflow-auto fixed inset-0 m-auto bg-black1 bg-opacity-20 backdrop-blur-md z-20"
-      onClick={onClose}
+      onClick={() => {
+        setInputTaskName('');
+        onClose();
+      }}
     >
       {/* Todo: Add new custom margin and width value to tailwind.config.js not use [] */}
       <div
@@ -42,11 +44,19 @@ const CreateTaskModal = ({
       >
         <h2 className="mt-32 ml-38 text-xl">タスクの追加</h2>
         <form
-          onSubmit={(event) => {
+          onSubmit={async (event) => {
             event.preventDefault();
-            createTask({
+            const {
+              data: {
+                createTask: { success, message },
+              },
+            } = await createTask({
               variables: { storyId: storyId, taskName: inputTaskName },
             });
+            if (success) {
+              toast.success(message);
+            }
+            setInputTaskName('');
             onClose();
           }}
         >
@@ -59,7 +69,10 @@ const CreateTaskModal = ({
           <div className="text-right bg-black3 w-full rounded-b-2xl py-16">
             <button
               className="mr-16 bg-black3 w-102 py-3 text-black2"
-              onClick={onClose}
+              onClick={() => {
+                setInputTaskName('');
+                onClose();
+              }}
             >
               キャンセル
             </button>
