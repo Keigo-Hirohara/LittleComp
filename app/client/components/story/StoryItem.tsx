@@ -29,8 +29,6 @@ const StoryItem = ({ name, id }: StoryType): JSX.Element => {
     if (!result.destination) {
       return;
     }
-    console.log(result.draggableId);
-    console.log(result.destination.droppableId);
     try {
       updateTaskStatus({
         variables: {

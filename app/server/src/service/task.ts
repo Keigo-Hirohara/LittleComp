@@ -28,7 +28,6 @@ export const createTask = async (
       story_id: storyId,
     },
   });
-  console.log(newTask);
   return {
     code: 201,
     success: true,
