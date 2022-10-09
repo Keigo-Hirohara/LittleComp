@@ -21,7 +21,7 @@ const EditStoryModal = (): JSX.Element | null => {
   };
   useEffect(() => {
     setConsideredStoryName(editStoryModal.name);
-  }, [editStoryModal]);
+  }, [editStoryModal.name]);
   if (!editStoryModal.isOpen) {
     return null;
   }

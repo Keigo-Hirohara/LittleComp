@@ -19,7 +19,7 @@ const Home: NextPage = () => {
       <EditStoryModal />
       <DeleteStoryAlert />
       <CreateTaskModal />
-      {/* <EditTaskModal/> */}
+      <EditTaskModal />
     </>
   );
 };

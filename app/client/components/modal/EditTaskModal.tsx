@@ -1,34 +1,37 @@
-import { useState, ChangeEvent, ChangeEventHandler } from 'react';
+import { useState, ChangeEvent, ChangeEventHandler, useEffect } from 'react';
 import { Trash2 } from 'react-feather';
-import { TaskModalArgsType } from '../../types/TaskModalArgsType';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useTask } from '../../hooks/useTask';
+import { useReactiveVar } from '@apollo/client';
+import {
+  editTaskModalState,
+  initStateOfEditTaskModal,
+} from '../../context/taskState';
 
-const EditTaskModal = ({
-  name,
-  storyId,
-  status,
-  isOpen,
-  onClose,
-  id,
-}: TaskModalArgsType): JSX.Element | null => {
+const EditTaskModal = (): JSX.Element | null => {
+  const editTaskModal = useReactiveVar(editTaskModalState);
+  useEffect(() => {
+    setConsideredTaskName(editTaskModal.name);
+  }, [editTaskModal.name]);
   const [consideredTaskName, setConsideredTaskName] = useState<string>(
-    name || ''
+    editTaskModal.name
   );
-  const { renameTask, deleteTask } = useTask(storyId, status);
+  const { renameTask, deleteTask } = useTask(editTaskModal.storyId);
   const handleTaskNameChanged: ChangeEventHandler<HTMLElement> = (
     event: ChangeEvent<HTMLInputElement>
   ) => {
     setConsideredTaskName(event.target.value);
   };
-  if (!isOpen) {
+  if (!editTaskModal.isOpen) {
     return null;
   }
   return (
     <div
       className="flex justify-center items-center overflow-auto fixed inset-0 m-auto bg-black1 bg-opacity-20 backdrop-blur-md z-20"
-      onClick={onClose}
+      onClick={() => {
+        editTaskModalState(initStateOfEditTaskModal);
+      }}
     >
       <div
         className="bg-white h-256 w-410 rounded-2xl shadow-2xl"
@@ -38,18 +41,15 @@ const EditTaskModal = ({
         <form
           onSubmit={async (event) => {
             event.preventDefault();
-            if (!id) {
-              return;
-            }
             const {
               data: {
                 renameTask: { success, message },
               },
-            } = await renameTask(id, consideredTaskName);
+            } = await renameTask(editTaskModal.id, consideredTaskName);
             if (success) {
               toast.success(message);
             }
-            onClose();
+            editTaskModalState(initStateOfEditTaskModal);
           }}
         >
           <textarea
@@ -62,24 +62,23 @@ const EditTaskModal = ({
               strokeWidth={1}
               className="absolute inline left-16 top-19"
               onClick={async (event) => {
-                if (!id) {
-                  return;
-                }
                 event.preventDefault();
                 const {
                   data: {
                     deleteTask: { success, message },
                   },
-                } = await deleteTask(id);
+                } = await deleteTask(editTaskModal.id);
                 if (success) {
                   toast.success(message);
                 }
-                onClose();
+                editTaskModalState(initStateOfEditTaskModal);
               }}
             />
             <button
               className="mr-16 bg-black3 w-102 py-3 text-black2"
-              onClick={onClose}
+              onClick={() => {
+                editTaskModalState(initStateOfEditTaskModal);
+              }}
             >
               キャンセル
             </button>
