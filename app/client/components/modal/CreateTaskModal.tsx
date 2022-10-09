@@ -1,15 +1,15 @@
-import { ChangeEventHandler, ChangeEvent, useState } from 'react';
-import { TaskModalArgsType } from '../../types/TaskModalArgsType';
+import { ChangeEventHandler, ChangeEvent, useState, useEffect } from 'react';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useTask } from '../../hooks/useTask';
+import { useReactiveVar } from '@apollo/client';
+import {
+  createTaskModalState,
+  initStateOfTaskModal,
+} from '../../context/taskState';
 
-// Todo: define and specify more explicative argument type
-const CreateTaskModal = ({
-  storyId,
-  isOpen,
-  onClose,
-}: TaskModalArgsType): JSX.Element | null => {
+const CreateTaskModal = (): JSX.Element | null => {
+  const createTaskModal = useReactiveVar(createTaskModalState);
   const [inputTaskName, setInputTaskName] = useState<string>('');
   const handleChangeTextArea: ChangeEventHandler<HTMLElement> = (
     event: ChangeEvent<HTMLInputElement>
@@ -17,8 +17,8 @@ const CreateTaskModal = ({
     setInputTaskName(event.target.value);
   };
 
-  const { createTask } = useTask(storyId, 'new');
-  if (!isOpen) {
+  const { createTask } = useTask(createTaskModal.storyId, 'new');
+  if (!createTaskModal.isOpen) {
     return null;
   }
   return (
@@ -26,7 +26,7 @@ const CreateTaskModal = ({
       className="flex justify-center items-center overflow-auto fixed inset-0 m-auto bg-black1 bg-opacity-20 backdrop-blur-md z-20"
       onClick={() => {
         setInputTaskName('');
-        onClose();
+        createTaskModalState(initStateOfTaskModal);
       }}
     >
       <div
@@ -41,15 +41,14 @@ const CreateTaskModal = ({
               data: {
                 createTask: { success, message },
               },
-            } = await createTask(storyId, inputTaskName);
+            } = await createTask(inputTaskName, createTaskModal.storyId);
             if (success) {
               toast.success(message);
             }
             setInputTaskName('');
-            onClose();
+            createTaskModalState(initStateOfTaskModal);
           }}
         >
-          {/* Todo: Arrange textarea input values font-size, padding, ... */}
           <textarea
             className="block mx-auto my-22 p-5 border border-black3 rounded-2xl w-4/5 h-128 resize-none"
             onChange={handleChangeTextArea}
@@ -60,7 +59,7 @@ const CreateTaskModal = ({
               className="mr-16 bg-black3 w-102 py-3 text-black2"
               onClick={() => {
                 setInputTaskName('');
-                onClose();
+                createTaskModalState(initStateOfTaskModal);
               }}
             >
               キャンセル

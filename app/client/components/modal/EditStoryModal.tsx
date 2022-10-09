@@ -5,7 +5,7 @@ import { useStory } from '../../hooks/useStory';
 import { useReactiveVar } from '@apollo/client';
 import {
   editStoryModalState,
-  initStateOfModal,
+  initStateOfStoryModal,
 } from '../../context/storyState';
 
 const EditStoryModal = (): JSX.Element | null => {
@@ -29,7 +29,7 @@ const EditStoryModal = (): JSX.Element | null => {
     <div
       className="flex justify-center items-center overflow-auto fixed inset-0 m-auto bg-black1 bg-opacity-20 backdrop-blur-md z-20"
       onClick={() => {
-        editStoryModalState(initStateOfModal);
+        editStoryModalState(initStateOfStoryModal);
       }}
     >
       <div
@@ -49,7 +49,7 @@ const EditStoryModal = (): JSX.Element | null => {
               toast.success(message);
             }
             setConsideredStoryName('');
-            editStoryModalState(initStateOfModal);
+            editStoryModalState(initStateOfStoryModal);
           }}
         >
           <textarea
@@ -61,7 +61,7 @@ const EditStoryModal = (): JSX.Element | null => {
             <button
               className="mr-16 bg-black3 w-102 py-3 text-black2"
               onClick={() => {
-                editStoryModalState(initStateOfModal);
+                editStoryModalState(initStateOfStoryModal);
               }}
             >
               キャンセル

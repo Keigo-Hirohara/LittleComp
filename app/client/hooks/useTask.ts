@@ -18,11 +18,11 @@ export const useTask = (storyId: string, status?: string) => {
     },
   });
 
-  const createTask = useCallback(async (storyId: string, taskName: string) => {
+  const createTask = useCallback(async (taskName: string, storyId: string) => {
     return await createTaskMutation({
       variables: {
-        storyId,
         taskName,
+        storyId,
       },
       onCompleted: () => {
         getTasks.refetch();

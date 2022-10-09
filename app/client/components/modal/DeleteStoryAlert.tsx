@@ -6,7 +6,7 @@ import { useStory } from '../../hooks/useStory';
 import { useReactiveVar } from '@apollo/client';
 import {
   deleteStoryAlertState,
-  initStateOfModal,
+  initStateOfStoryModal,
 } from '../../context/storyState';
 
 const DeleteStoryAlert = (): JSX.Element | null => {
@@ -20,7 +20,7 @@ const DeleteStoryAlert = (): JSX.Element | null => {
     <div
       className="flex justify-center items-center overflow-auto fixed inset-0 m-auto z-20 bg-black1 bg-opacity-20"
       onClick={() => {
-        deleteStoryAlertState(initStateOfModal);
+        deleteStoryAlertState(initStateOfStoryModal);
       }}
     >
       <div
@@ -45,7 +45,7 @@ const DeleteStoryAlert = (): JSX.Element | null => {
             if (success) {
               toast.success(message);
             }
-            deleteStoryAlertState(initStateOfModal);
+            deleteStoryAlertState(initStateOfStoryModal);
           }}
         >
           削除
@@ -53,7 +53,7 @@ const DeleteStoryAlert = (): JSX.Element | null => {
         <button
           className="w-4/5 bg-black3 py-6 mb-16 rounded-xl"
           onClick={() => {
-            deleteStoryAlertState(initStateOfModal);
+            deleteStoryAlertState(initStateOfStoryModal);
           }}
         >
           キャンセル

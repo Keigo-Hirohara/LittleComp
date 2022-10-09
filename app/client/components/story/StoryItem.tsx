@@ -1,20 +1,18 @@
-import React, { useState, useCallback } from 'react';
+import { useCallback } from 'react';
 import { DragDropContext, DropResult } from 'react-beautiful-dnd';
 import NewTaskBlock from '../task/NewTaskBlock';
 import InProgressTaskBlock from '../task/InProgressTaskBlock';
 import DoneTaskBlock from '../task/DoneTaskBlock';
 import { PlusSquare, Edit2, Trash2 } from 'react-feather';
-import CreateTaskModal from '../modal/CreateTaskModal';
 import { StoryType } from '../../types/StoryType';
 import { useTask } from '../../hooks/useTask';
 import {
   deleteStoryAlertState,
   editStoryModalState,
 } from '../../context/storyState';
+import { createTaskModalState } from '../../context/taskState';
 
 const StoryItem = ({ name, id }: StoryType): JSX.Element => {
-  const [isCreateTaskModalOpen, setIsCreateTaskModalOpen] = useState(false);
-
   const { updateTaskStatus } = useTask(id);
 
   const onDragEnd = useCallback((result: DropResult) => {
@@ -36,7 +34,7 @@ const StoryItem = ({ name, id }: StoryType): JSX.Element => {
           <PlusSquare
             className="h-22 w-22 mr-10 mb-10"
             onClick={() => {
-              return setIsCreateTaskModalOpen(true);
+              createTaskModalState({ isOpen: true, storyId: id });
             }}
           />
           <Edit2
@@ -64,12 +62,6 @@ const StoryItem = ({ name, id }: StoryType): JSX.Element => {
           <DoneTaskBlock storyId={id} />
         </DragDropContext>
       </div>
-
-      <CreateTaskModal
-        isOpen={isCreateTaskModalOpen}
-        onClose={() => setIsCreateTaskModalOpen(false)}
-        storyId={id}
-      />
     </div>
   );
 };
