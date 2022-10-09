@@ -21,6 +21,7 @@
   },
   "homepage": "https://github.com/hirokei-camel/Gent#readme",
   "dependencies": {
-    "graphql": "^16.6.0"
+    "graphql": "^16.6.0",
+    "recoil": "^0.7.5"
   }
 }

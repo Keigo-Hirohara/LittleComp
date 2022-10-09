@@ -1,11 +1,9 @@
-import { useMutation } from '@apollo/client';
 import React from 'react';
 import { AlertCircle } from 'react-feather';
-import { GET_STORIES } from '../../query/story/getStories';
-import DELETE_STORY from '../../query/story/deleteStory';
 import { StoryModalArgsType } from '../../types/StoryModalArgsType';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { useStory } from '../../hooks/useStory';
 
 const DeleteStoryAlert = ({
   isOpen,
@@ -13,9 +11,7 @@ const DeleteStoryAlert = ({
   name,
   storyId,
 }: StoryModalArgsType): JSX.Element | null => {
-  const [deleteStory] = useMutation(DELETE_STORY, {
-    refetchQueries: [{ query: GET_STORIES }],
-  });
+  const { deleteStory } = useStory();
   if (!isOpen) {
     return null;
   }
@@ -24,7 +20,6 @@ const DeleteStoryAlert = ({
       className="flex justify-center items-center overflow-auto fixed inset-0 m-auto z-20 bg-black1 bg-opacity-20"
       onClick={onClose}
     >
-      {/* Todo: Add new custom margin and width value to tailwind.config.js not use [] */}
       <div
         className="flex flex-col items-center bg-white h-307 rounded-2xl shadow-2xl px-16"
         onClick={(e) => e.stopPropagation()}
@@ -44,7 +39,7 @@ const DeleteStoryAlert = ({
               data: {
                 deleteStory: { success, message },
               },
-            } = await deleteStory({ variables: { targetId: storyId } });
+            } = await deleteStory(storyId);
             if (success) {
               toast.success(message);
             }

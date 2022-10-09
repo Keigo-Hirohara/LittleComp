@@ -1,18 +1,17 @@
 import { useMutation } from '@apollo/client';
 import { ChangeEventHandler, ChangeEvent, useState, useCallback } from 'react';
 import { GET_STORIES } from '../../query/story/getStories';
-import MAKE_STORY from '../../query/story/makeStory';
+import CREATE_STORY from '../../query/story/createStory';
 import { StoryModalArgsType } from '../../types/StoryModalArgsType';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { useStory } from '../../hooks/useStory';
 
 const CreateStoryModal = ({
   isOpen,
   onClose,
 }: StoryModalArgsType): JSX.Element | null => {
-  const [makeStory] = useMutation(MAKE_STORY, {
-    refetchQueries: [{ query: GET_STORIES }],
-  });
+  const { createStory } = useStory();
   const [inputStoryName, setInputStoryName] = useState<string>('');
   const handleChangeTextArea: ChangeEventHandler<HTMLElement> = (
     event: ChangeEvent<HTMLInputElement>
@@ -32,7 +31,6 @@ const CreateStoryModal = ({
           onClose();
         }}
       >
-        {/* Todo: Add new custom margin and width value to tailwind.config.js not use [] */}
         <div
           className="bg-white h-256 w-410 rounded-2xl shadow-2xl"
           onClick={(e) => e.stopPropagation()}
@@ -45,9 +43,7 @@ const CreateStoryModal = ({
                 data: {
                   createStory: { success, message },
                 },
-              } = await makeStory({
-                variables: { name: inputStoryName },
-              });
+              } = await createStory(inputStoryName);
               if (success) {
                 toast.success(message);
               }

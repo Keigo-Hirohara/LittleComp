@@ -1,6 +1,6 @@
 import { gql } from '@apollo/client';
 
-export const MAKE_STORY = gql`
+export const CREATE_STORY = gql`
   mutation Mutation($name: String!) {
     createStory(name: $name) {
       code
@@ -14,4 +14,4 @@ export const MAKE_STORY = gql`
   }
 `;
 
-export default MAKE_STORY;
+export default CREATE_STORY;

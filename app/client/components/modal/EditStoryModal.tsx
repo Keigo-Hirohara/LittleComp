@@ -1,10 +1,8 @@
-import { useMutation } from '@apollo/client';
-import { ChangeEvent, ChangeEventHandler, useEffect, useState } from 'react';
-import { GET_STORIES } from '../../query/story/getStories';
-import EDIT_STORY from '../../query/story/editStory';
+import { ChangeEvent, ChangeEventHandler, useState } from 'react';
 import { StoryModalArgsType } from '../../types/StoryModalArgsType';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { useStory } from '../../hooks/useStory';
 
 const EditStoryModal = ({
   name,
@@ -12,12 +10,8 @@ const EditStoryModal = ({
   onClose,
   storyId,
 }: StoryModalArgsType): JSX.Element | null => {
-  const [renameStory] = useMutation(EDIT_STORY, {
-    refetchQueries: [{ query: GET_STORIES }],
-  });
-  const [consideredStoryName, setConsideredStoryName] = useState<
-    string | undefined
-  >(name);
+  const { renameStory } = useStory();
+  const [consideredStoryName, setConsideredStoryName] = useState<string>(name);
 
   const handleStoryNameChanged: ChangeEventHandler<HTMLElement> = (
     event: ChangeEvent<HTMLInputElement>
@@ -32,7 +26,6 @@ const EditStoryModal = ({
       className="flex justify-center items-center overflow-auto fixed inset-0 m-auto bg-black1 bg-opacity-20 backdrop-blur-md z-20"
       onClick={onClose}
     >
-      {/* Todo: Add new custom margin and width value to tailwind.config.js not use [] */}
       <div
         className="bg-white h-256 w-410 rounded-2xl shadow-2xl"
         onClick={(e) => e.stopPropagation()}
@@ -45,12 +38,7 @@ const EditStoryModal = ({
               data: {
                 renameStory: { success, message },
               },
-            } = await renameStory({
-              variables: {
-                targetId: storyId,
-                newName: consideredStoryName,
-              },
-            });
+            } = await renameStory(storyId, consideredStoryName);
             if (success) {
               toast.success(message);
             }
