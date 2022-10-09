@@ -14,10 +14,11 @@ const Home: NextPage = () => {
       <TaskBlockBar />
       <StoryList />
       <CreateNewStoryButton />
+      {/* Todo: use destructuring assignment to each components */}
       <CreateStoryModal />
       <EditStoryModal />
-      {/* <DeleteStoryAlert/>
-      <CreateTaskModal/>
+      <DeleteStoryAlert />
+      {/* <CreateTaskModal/>
       <EditTaskModal/> */}
     </>
   );
