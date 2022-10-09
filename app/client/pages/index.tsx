@@ -15,8 +15,8 @@ const Home: NextPage = () => {
       <StoryList />
       <CreateNewStoryButton />
       <CreateStoryModal />
+      <EditStoryModal />
       {/* <DeleteStoryAlert/>
-      <EditStoryModal/>
       <CreateTaskModal/>
       <EditTaskModal/> */}
     </>

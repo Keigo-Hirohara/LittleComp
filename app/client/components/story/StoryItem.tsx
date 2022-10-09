@@ -5,15 +5,13 @@ import InProgressTaskBlock from '../task/InProgressTaskBlock';
 import DoneTaskBlock from '../task/DoneTaskBlock';
 import { PlusSquare, Edit2, Trash2 } from 'react-feather';
 import CreateTaskModal from '../modal/CreateTaskModal';
-import EditStoryModal from '../modal/EditStoryModal';
 import DeleteStoryAlert from '../modal/DeleteStoryAlert';
 import { StoryType } from '../../types/StoryType';
 import { useTask } from '../../hooks/useTask';
-import { createStoryModalState } from '../../context/storyState';
+import { editStoryModalState } from '../../context/storyState';
 
 const StoryItem = ({ name, id }: StoryType): JSX.Element => {
   const [isCreateTaskModalOpen, setIsCreateTaskModalOpen] = useState(false);
-  const [isEditStoryModalOpen, setIsEditStoryModalOpen] = useState(false);
   const [isDeleteStoryAlertOpen, setIsDeleteStoryAlertOpen] = useState(false);
 
   const { updateTaskStatus } = useTask(id);
@@ -43,7 +41,7 @@ const StoryItem = ({ name, id }: StoryType): JSX.Element => {
           <Edit2
             className="h-22 w-22 mr-10 mb-10"
             onClick={() => {
-              return setIsEditStoryModalOpen(true);
+              editStoryModalState({ isOpen: true, name, storyId: id });
             }}
           />
           <Trash2
@@ -66,12 +64,6 @@ const StoryItem = ({ name, id }: StoryType): JSX.Element => {
         storyId={id}
       />
 
-      <EditStoryModal
-        isOpen={isEditStoryModalOpen}
-        onClose={() => setIsEditStoryModalOpen(false)}
-        name={name}
-        storyId={id}
-      />
       <DeleteStoryAlert
         isOpen={isDeleteStoryAlertOpen}
         onClose={() => setIsDeleteStoryAlertOpen(false)}

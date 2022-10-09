@@ -47,7 +47,6 @@ const CreateStoryModal = (): JSX.Element | null => {
               createStoryModalState({ isOpen: false });
             }}
           >
-            {/* Todo: Arrange textarea input values font-size, padding, ... */}
             <textarea
               className="block mx-auto my-22 p-5 border border-black3 rounded-2xl w-4/5 h-128 resize-none"
               onChange={handleChangeTextArea}

@@ -1,30 +1,36 @@
-import { ChangeEvent, ChangeEventHandler, useState } from 'react';
-import { StoryModalArgsType } from '../../types/StoryModalArgsType';
+import { ChangeEvent, ChangeEventHandler, useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useStory } from '../../hooks/useStory';
+import { useReactiveVar } from '@apollo/client';
+import {
+  editStoryModalState,
+  initStateOfEditStory,
+} from '../../context/storyState';
 
-const EditStoryModal = ({
-  name,
-  isOpen,
-  onClose,
-  storyId,
-}: StoryModalArgsType): JSX.Element | null => {
+const EditStoryModal = (): JSX.Element | null => {
   const { renameStory } = useStory();
-  const [consideredStoryName, setConsideredStoryName] = useState<string>(name);
-
+  const editStoryModal = useReactiveVar(editStoryModalState);
+  const [consideredStoryName, setConsideredStoryName] = useState<string>(
+    editStoryModal.name
+  );
   const handleStoryNameChanged: ChangeEventHandler<HTMLElement> = (
     event: ChangeEvent<HTMLInputElement>
   ) => {
     setConsideredStoryName(event.target.value);
   };
-  if (!isOpen) {
+  useEffect(() => {
+    setConsideredStoryName(editStoryModal.name);
+  }, [editStoryModal]);
+  if (!editStoryModal.isOpen) {
     return null;
   }
   return (
     <div
       className="flex justify-center items-center overflow-auto fixed inset-0 m-auto bg-black1 bg-opacity-20 backdrop-blur-md z-20"
-      onClick={onClose}
+      onClick={() => {
+        editStoryModalState(initStateOfEditStory);
+      }}
     >
       <div
         className="bg-white h-256 w-410 rounded-2xl shadow-2xl"
@@ -38,15 +44,14 @@ const EditStoryModal = ({
               data: {
                 renameStory: { success, message },
               },
-            } = await renameStory(storyId, consideredStoryName);
+            } = await renameStory(editStoryModal.storyId, consideredStoryName);
             if (success) {
               toast.success(message);
             }
             setConsideredStoryName('');
-            onClose();
+            editStoryModalState(initStateOfEditStory);
           }}
         >
-          {/* Todo: Arrange textarea input values font-size, padding, ... */}
           <textarea
             className="block mx-auto my-22 p-5 border border-black3 rounded-2xl w-4/5 h-128 resize-none"
             value={consideredStoryName}
@@ -55,7 +60,9 @@ const EditStoryModal = ({
           <div className="text-right bg-black3 w-full rounded-b-2xl py-16">
             <button
               className="mr-16 bg-black3 w-102 py-3 text-black2"
-              onClick={onClose}
+              onClick={() => {
+                editStoryModalState(initStateOfEditStory);
+              }}
             >
               キャンセル
             </button>
