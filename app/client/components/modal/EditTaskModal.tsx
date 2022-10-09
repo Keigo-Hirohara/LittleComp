@@ -1,12 +1,9 @@
-import { useMutation } from '@apollo/client';
-import { useState, ChangeEvent, ChangeEventHandler, useEffect } from 'react';
+import { useState, ChangeEvent, ChangeEventHandler } from 'react';
 import { Trash2 } from 'react-feather';
-import { DELETE_TASK } from '../../query/task/deleteTask';
-import { GET_TASKS } from '../../query/task/getTasks';
-import { RENAME_TASK } from '../../query/task/renameTask';
 import { TaskModalArgsType } from '../../types/TaskModalArgsType';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { useTask } from '../../hooks/useTask';
 
 const EditTaskModal = ({
   name,
@@ -16,26 +13,10 @@ const EditTaskModal = ({
   onClose,
   id,
 }: TaskModalArgsType): JSX.Element | null => {
-  const [consideredTaskName, setConsideredTaskName] = useState(name);
-  useEffect(() => {
-    setConsideredTaskName(name);
-  }, [name]);
-  const [renameTask] = useMutation(RENAME_TASK, {
-    refetchQueries: [
-      {
-        query: GET_TASKS,
-        variables: { storyId: storyId, status: status },
-      },
-    ],
-  });
-  const [deleteTask] = useMutation(DELETE_TASK, {
-    refetchQueries: [
-      {
-        query: GET_TASKS,
-        variables: { storyId: storyId, status: status },
-      },
-    ],
-  });
+  const [consideredTaskName, setConsideredTaskName] = useState<string>(
+    name || ''
+  );
+  const { renameTask, deleteTask } = useTask(storyId, status);
   const handleTaskNameChanged: ChangeEventHandler<HTMLElement> = (
     event: ChangeEvent<HTMLInputElement>
   ) => {
@@ -49,7 +30,6 @@ const EditTaskModal = ({
       className="flex justify-center items-center overflow-auto fixed inset-0 m-auto bg-black1 bg-opacity-20 backdrop-blur-md z-20"
       onClick={onClose}
     >
-      {/* Todo: Add new custom margin and width value to tailwind.config.js not use [] */}
       <div
         className="bg-white h-256 w-410 rounded-2xl shadow-2xl"
         onClick={(e) => e.stopPropagation()}
@@ -58,23 +38,20 @@ const EditTaskModal = ({
         <form
           onSubmit={async (event) => {
             event.preventDefault();
+            if (!id) {
+              return;
+            }
             const {
               data: {
                 renameTask: { success, message },
               },
-            } = await renameTask({
-              variables: {
-                targetId: id,
-                newName: consideredTaskName,
-              },
-            });
+            } = await renameTask(id, consideredTaskName);
             if (success) {
               toast.success(message);
             }
             onClose();
           }}
         >
-          {/* Todo: Arrange textarea input values font-size, padding, ... */}
           <textarea
             className="block mx-auto my-22 p-5 border border-black3 rounded-2xl w-4/5 h-128 resize-none"
             onChange={handleTaskNameChanged}
@@ -85,14 +62,15 @@ const EditTaskModal = ({
               strokeWidth={1}
               className="absolute inline left-16 top-19"
               onClick={async (event) => {
+                if (!id) {
+                  return;
+                }
                 event.preventDefault();
                 const {
                   data: {
                     deleteTask: { success, message },
                   },
-                } = await deleteTask({
-                  variables: { targetId: id },
-                });
+                } = await deleteTask(id);
                 if (success) {
                   toast.success(message);
                 }

@@ -7,35 +7,22 @@ import { PlusSquare, Edit2, Trash2 } from 'react-feather';
 import CreateTaskModal from '../modal/CreateTaskModal';
 import EditStoryModal from '../modal/EditStoryModal';
 import DeleteStoryAlert from '../modal/DeleteStoryAlert';
-import { UPDATE_TASK_STATUS } from '../../query/task/updateTaskStatus';
-import { GET_TASKS } from '../../query/task/getTasks';
-import { useMutation } from '@apollo/client';
 import { StoryType } from '../../types/StoryType';
+import { useTask } from '../../hooks/useTask';
 
 const StoryItem = ({ name, id }: StoryType): JSX.Element => {
   const [isCreateTaskModalOpen, setIsCreateTaskModalOpen] = useState(false);
   const [isEditStoryModalOpen, setIsEditStoryModalOpen] = useState(false);
   const [isDeleteStoryAlertOpen, setIsDeleteStoryAlertOpen] = useState(false);
 
-  const [updateTaskStatus] = useMutation(UPDATE_TASK_STATUS, {
-    refetchQueries: [
-      { query: GET_TASKS, variables: { storyId: id, status: 'new' } },
-      { query: GET_TASKS, variables: { storyId: id, status: 'inprogress' } },
-      { query: GET_TASKS, variables: { storyId: id, status: 'done' } },
-    ],
-  });
+  const { updateTaskStatus } = useTask(id);
 
   const onDragEnd = useCallback((result: DropResult) => {
     if (!result.destination) {
       return;
     }
     try {
-      updateTaskStatus({
-        variables: {
-          targetId: result.draggableId,
-          newStatus: result.destination.droppableId,
-        },
-      });
+      updateTaskStatus(result.draggableId, result.destination.droppableId);
     } catch (error) {
       console.log(error);
     }

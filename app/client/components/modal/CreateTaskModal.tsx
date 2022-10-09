@@ -1,10 +1,8 @@
 import { ChangeEventHandler, ChangeEvent, useState } from 'react';
-import { useMutation } from '@apollo/client';
-import { CREATE_TASK } from '../../query/task/createTask';
-import { GET_TASKS } from '../../query/task/getTasks';
 import { TaskModalArgsType } from '../../types/TaskModalArgsType';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { useTask } from '../../hooks/useTask';
 
 // Todo: define and specify more explicative argument type
 const CreateTaskModal = ({
@@ -18,14 +16,8 @@ const CreateTaskModal = ({
   ): void => {
     setInputTaskName(event.target.value);
   };
-  const [createTask] = useMutation(CREATE_TASK, {
-    refetchQueries: [
-      {
-        query: GET_TASKS,
-        variables: { storyId: storyId, status: 'new' },
-      },
-    ],
-  });
+
+  const { createTask } = useTask(storyId, 'new');
   if (!isOpen) {
     return null;
   }
@@ -37,7 +29,6 @@ const CreateTaskModal = ({
         onClose();
       }}
     >
-      {/* Todo: Add new custom margin and width value to tailwind.config.js not use [] */}
       <div
         className="bg-white h-256 w-410 rounded-2xl shadow-2xl"
         onClick={(e) => e.stopPropagation()}
@@ -50,9 +41,7 @@ const CreateTaskModal = ({
               data: {
                 createTask: { success, message },
               },
-            } = await createTask({
-              variables: { storyId: storyId, taskName: inputTaskName },
-            });
+            } = await createTask(storyId, inputTaskName);
             if (success) {
               toast.success(message);
             }
