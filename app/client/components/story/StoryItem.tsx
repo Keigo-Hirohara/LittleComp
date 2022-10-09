@@ -9,6 +9,7 @@ import EditStoryModal from '../modal/EditStoryModal';
 import DeleteStoryAlert from '../modal/DeleteStoryAlert';
 import { StoryType } from '../../types/StoryType';
 import { useTask } from '../../hooks/useTask';
+import { createStoryModalState } from '../../context/storyState';
 
 const StoryItem = ({ name, id }: StoryType): JSX.Element => {
   const [isCreateTaskModalOpen, setIsCreateTaskModalOpen] = useState(false);
@@ -35,11 +36,15 @@ const StoryItem = ({ name, id }: StoryType): JSX.Element => {
         <div className="flex mt-10">
           <PlusSquare
             className="h-22 w-22 mr-10 mb-10"
-            onClick={() => setIsCreateTaskModalOpen(true)}
+            onClick={() => {
+              return setIsCreateTaskModalOpen(true);
+            }}
           />
           <Edit2
             className="h-22 w-22 mr-10 mb-10"
-            onClick={() => setIsEditStoryModalOpen(true)}
+            onClick={() => {
+              return setIsEditStoryModalOpen(true);
+            }}
           />
           <Trash2
             className="h-22 w-22 mr-10 mb-10"

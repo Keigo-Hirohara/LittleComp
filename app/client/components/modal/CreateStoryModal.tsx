@@ -1,24 +1,20 @@
-import { useMutation } from '@apollo/client';
-import { ChangeEventHandler, ChangeEvent, useState, useCallback } from 'react';
-import { GET_STORIES } from '../../query/story/getStories';
-import CREATE_STORY from '../../query/story/createStory';
-import { StoryModalArgsType } from '../../types/StoryModalArgsType';
+import { ChangeEventHandler, ChangeEvent, useState } from 'react';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useStory } from '../../hooks/useStory';
+import { createStoryModalState } from '../../context/storyState';
+import { useReactiveVar } from '@apollo/client';
 
-const CreateStoryModal = ({
-  isOpen,
-  onClose,
-}: StoryModalArgsType): JSX.Element | null => {
+const CreateStoryModal = (): JSX.Element | null => {
   const { createStory } = useStory();
   const [inputStoryName, setInputStoryName] = useState<string>('');
+  const createStoryModal = useReactiveVar(createStoryModalState);
   const handleChangeTextArea: ChangeEventHandler<HTMLElement> = (
     event: ChangeEvent<HTMLInputElement>
   ): void => {
     setInputStoryName(event.target.value);
   };
-  if (!isOpen) {
+  if (!createStoryModal.isOpen) {
     return null;
   }
 
@@ -28,7 +24,7 @@ const CreateStoryModal = ({
         className="flex justify-center items-center overflow-auto fixed inset-0 m-auto bg-black1 bg-opacity-20 backdrop-blur-md z-20"
         onClick={() => {
           setInputStoryName('');
-          onClose();
+          createStoryModalState({ isOpen: false });
         }}
       >
         <div
@@ -48,7 +44,7 @@ const CreateStoryModal = ({
                 toast.success(message);
               }
               setInputStoryName('');
-              onClose();
+              createStoryModalState({ isOpen: false });
             }}
           >
             {/* Todo: Arrange textarea input values font-size, padding, ... */}
@@ -62,7 +58,7 @@ const CreateStoryModal = ({
                 className="mr-16 bg-black3 w-102 py-3 text-black2"
                 onClick={() => {
                   setInputStoryName('');
-                  onClose();
+                  createStoryModalState({ isOpen: false });
                 }}
               >
                 キャンセル
