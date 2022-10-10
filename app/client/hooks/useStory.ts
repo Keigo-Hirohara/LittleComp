@@ -1,6 +1,5 @@
 import { useMutation, useQuery } from '@apollo/client';
 import { useCallback } from 'react';
-import { atom } from 'recoil';
 import CREATE_STORY from '../query/story/createStory';
 import DELETE_STORY from '../query/story/deleteStory';
 import EDIT_STORY from '../query/story/editStory';

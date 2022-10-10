@@ -14,6 +14,7 @@ const TaskItem = (props: TaskType): JSX.Element => {
             isOpen: true,
             storyId: props.storyId,
             name: props.name,
+            status: props.status,
             id: props.id,
           })
         }

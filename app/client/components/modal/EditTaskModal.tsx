@@ -17,7 +17,10 @@ const EditTaskModal = (): JSX.Element | null => {
   const [consideredTaskName, setConsideredTaskName] = useState<string>(
     editTaskModal.name
   );
-  const { renameTask, deleteTask } = useTask(editTaskModal.storyId);
+  const { renameTask, deleteTask } = useTask(
+    editTaskModal.storyId,
+    editTaskModal.status
+  );
   const handleTaskNameChanged: ChangeEventHandler<HTMLElement> = (
     event: ChangeEvent<HTMLInputElement>
   ) => {

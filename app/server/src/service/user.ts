@@ -24,6 +24,8 @@ const findByEmail = async (email: string) => {
   });
 };
 
+const verifyUser = async () => {};
+
 const validatePassword = async (inputPassword: string, dbPassword: string) => {
   return await bcrypt.compare(inputPassword, dbPassword);
 };
@@ -54,6 +56,7 @@ export const signIn = async (
   { jwt }: any
 ) => {
   const user = await findByEmail(email);
+  console.log(user);
   if (!user) throw new UserInputError('ユーザーが見つかりませんでした');
   const isValid = await validatePassword(password, user.password);
   if (!isValid) throw new AuthenticationError('パスワードが異なります');

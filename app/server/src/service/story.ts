@@ -2,12 +2,20 @@ import { CreateStoryArgsType } from '../types/CreateStoryArgsType';
 import { RenameStoryArgsType } from '../types/RenameStoryArgsType';
 import { DeleteStoryArgsType } from '../types/DeleteStoryArgsType';
 import { prisma } from './prismaClient';
+import { AuthenticationError } from 'apollo-server';
 
-export const getStories = async () => {
+export const getStories = async (_: null, __: null, { verified }: any) => {
+  if (!verified) {
+    throw new AuthenticationError('please login again!');
+  }
   return await prisma.story.findMany();
 };
 // Todo: add error handling and use these functions directly
-export const createStory = async (_: null, { name }: CreateStoryArgsType) => {
+export const createStory = async (
+  _: null,
+  { name }: CreateStoryArgsType,
+  { verified }: any
+) => {
   const id = new Date().getTime().toString();
   const newStory = await prisma.story.create({
     data: {

@@ -9,6 +9,7 @@ export const initStateOfEditTaskModal = {
   isOpen: false,
   storyId: '',
   name: '',
+  status: '',
   id: '',
 };
 
