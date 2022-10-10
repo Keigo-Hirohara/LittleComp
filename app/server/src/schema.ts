@@ -8,6 +8,9 @@ export const typeDefs = gql`
   }
 
   type Mutation {
+    signUp(username: String!, email: String!, password: String!): Token!
+    signIn(email: String!, password: String!): Token!
+
     createStory(name: String!): StoryResponse
     renameStory(targetId: ID!, newName: String!): StoryResponse
     deleteStory(targetId: ID!): DeleteStoryResponse
@@ -29,6 +32,16 @@ export const typeDefs = gql`
     code: Int!
     success: Boolean!
     message: String!
+  }
+
+  type Token {
+    token: String!
+  }
+
+  type User {
+    id: ID!
+    username: String!
+    email: String!
   }
 
   type Story {

@@ -1,3 +1,5 @@
+import { signUp, signIn } from './service/user';
+
 import {
   getStories,
   createStory,
@@ -19,6 +21,8 @@ export const resolvers = {
     getTasks,
   },
   Mutation: {
+    signUp,
+    signIn,
     createStory,
     renameStory,
     deleteStory,
