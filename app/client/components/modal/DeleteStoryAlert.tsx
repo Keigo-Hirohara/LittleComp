@@ -8,8 +8,10 @@ import {
   deleteStoryAlertState,
   initStateOfStoryModal,
 } from '../../context/storyState';
+import { useRouter } from 'next/router';
 
 const DeleteStoryAlert = (): JSX.Element | null => {
+  const router = useRouter();
   const { deleteStory } = useStory();
   const deleteStoryAlert = useReactiveVar(deleteStoryAlertState);
 
@@ -37,15 +39,20 @@ const DeleteStoryAlert = (): JSX.Element | null => {
           className="w-4/5 bg-red1 py-6 mb-10 rounded-xl text-white"
           onClick={async (event) => {
             event.preventDefault();
-            const {
-              data: {
-                deleteStory: { success, message },
-              },
-            } = await deleteStory(deleteStoryAlert.storyId);
-            if (success) {
-              toast.success(message);
+            try {
+              const {
+                data: {
+                  deleteStory: { success, message },
+                },
+              } = await deleteStory(deleteStoryAlert.storyId);
+              if (success) {
+                toast.success(message);
+              }
+              deleteStoryAlertState(initStateOfStoryModal);
+            } catch (error) {
+              toast.error('セッションの有効期限が切れました');
+              router.push('/signin');
             }
-            deleteStoryAlertState(initStateOfStoryModal);
           }}
         >
           削除

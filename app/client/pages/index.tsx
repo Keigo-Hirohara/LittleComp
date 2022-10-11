@@ -9,6 +9,7 @@ import CreateTaskModal from '../components/modal/CreateTaskModal';
 import EditTaskModal from '../components/modal/EditTaskModal';
 
 const Home: NextPage = () => {
+  // Todo: add validataUser if respond with error, move to login page
   return (
     <>
       <TaskBlockBar />

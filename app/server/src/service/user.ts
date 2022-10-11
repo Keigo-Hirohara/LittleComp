@@ -10,12 +10,10 @@ const createToken = async (
 ) => {
   return await jwt.sign({ id, email }, secret, { expiresIn });
 };
-
 const generatePasswordHash = async (password: any) => {
   const saltRounds = 10;
   return bcrypt.hash(password, saltRounds);
 };
-
 const findByEmail = async (email: string) => {
   return await prisma.user.findFirst({
     where: {
@@ -23,11 +21,16 @@ const findByEmail = async (email: string) => {
     },
   });
 };
-
-const verifyUser = async () => {};
-
 const validatePassword = async (inputPassword: string, dbPassword: string) => {
   return await bcrypt.compare(inputPassword, dbPassword);
+};
+
+export const getUser = async (_: null, __: null, { verified }: any) => {
+  return await prisma.user.findFirst({
+    where: {
+      id: verified.id,
+    },
+  });
 };
 
 export const signUp = async (
@@ -56,7 +59,6 @@ export const signIn = async (
   { jwt }: any
 ) => {
   const user = await findByEmail(email);
-  console.log(user);
   if (!user) throw new UserInputError('ユーザーが見つかりませんでした');
   const isValid = await validatePassword(password, user.password);
   if (!isValid) throw new AuthenticationError('パスワードが異なります');

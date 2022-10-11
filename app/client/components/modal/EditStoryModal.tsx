@@ -7,8 +7,10 @@ import {
   editStoryModalState,
   initStateOfStoryModal,
 } from '../../context/storyState';
+import { useRouter } from 'next/router';
 
 const EditStoryModal = (): JSX.Element | null => {
+  const router = useRouter();
   const { renameStory } = useStory();
   const editStoryModal = useReactiveVar(editStoryModalState);
   const [consideredStoryName, setConsideredStoryName] = useState<string>(
@@ -40,16 +42,24 @@ const EditStoryModal = (): JSX.Element | null => {
         <form
           onSubmit={async (event) => {
             event.preventDefault();
-            const {
-              data: {
-                renameStory: { success, message },
-              },
-            } = await renameStory(editStoryModal.storyId, consideredStoryName);
-            if (success) {
-              toast.success(message);
+            try {
+              const {
+                data: {
+                  renameStory: { success, message },
+                },
+              } = await renameStory(
+                editStoryModal.storyId,
+                consideredStoryName
+              );
+              if (success) {
+                toast.success(message);
+              }
+              setConsideredStoryName('');
+              editStoryModalState(initStateOfStoryModal);
+            } catch (error) {
+              toast.error('セッションの有効期限が切れました');
+              router.push('/signin');
             }
-            setConsideredStoryName('');
-            editStoryModalState(initStateOfStoryModal);
           }}
         >
           <textarea

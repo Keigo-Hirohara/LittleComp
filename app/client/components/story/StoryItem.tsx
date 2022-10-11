@@ -11,17 +11,23 @@ import {
   editStoryModalState,
 } from '../../context/storyState';
 import { createTaskModalState } from '../../context/taskState';
+import { useRouter } from 'next/router';
 
 const StoryItem = ({ name, id }: StoryType): JSX.Element => {
   const { updateTaskStatus } = useTask(id);
+  const router = useRouter();
 
-  const onDragEnd = useCallback((result: DropResult) => {
+  const onDragEnd = useCallback(async (result: DropResult) => {
     if (!result.destination) {
       return;
     }
     try {
-      updateTaskStatus(result.draggableId, result.destination.droppableId);
+      await updateTaskStatus(
+        result.draggableId,
+        result.destination.droppableId
+      );
     } catch (error) {
+      router.push('/signin');
       console.log(error);
     }
   }, []);

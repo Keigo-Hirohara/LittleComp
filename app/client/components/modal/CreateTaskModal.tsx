@@ -7,8 +7,10 @@ import {
   createTaskModalState,
   initStateOfTaskModal,
 } from '../../context/taskState';
+import { useRouter } from 'next/router';
 
 const CreateTaskModal = (): JSX.Element | null => {
+  const router = useRouter();
   const createTaskModal = useReactiveVar(createTaskModalState);
   const [inputTaskName, setInputTaskName] = useState<string>('');
   const handleChangeTextArea: ChangeEventHandler<HTMLElement> = (
@@ -37,16 +39,21 @@ const CreateTaskModal = (): JSX.Element | null => {
         <form
           onSubmit={async (event) => {
             event.preventDefault();
-            const {
-              data: {
-                createTask: { success, message },
-              },
-            } = await createTask(inputTaskName, createTaskModal.storyId);
-            if (success) {
-              toast.success(message);
+            try {
+              const {
+                data: {
+                  createTask: { success, message },
+                },
+              } = await createTask(inputTaskName, createTaskModal.storyId);
+              if (success) {
+                toast.success(message);
+              }
+              setInputTaskName('');
+              createTaskModalState(initStateOfTaskModal);
+            } catch (error: any) {
+              toast.error('セッションの有効期限が切れています');
+              router.push('/signin');
             }
-            setInputTaskName('');
-            createTaskModalState(initStateOfTaskModal);
           }}
         >
           <textarea

@@ -2,6 +2,7 @@ import { gql } from 'apollo-server';
 
 export const typeDefs = gql`
   type Query {
+    getUser: User
     getStories: [Story]
 
     getTasks(storyId: String, status: String): [Task]
@@ -47,6 +48,7 @@ export const typeDefs = gql`
   type Story {
     id: ID!
     name: String!
+    user_id: String!
   }
 
   type TaskResponse {

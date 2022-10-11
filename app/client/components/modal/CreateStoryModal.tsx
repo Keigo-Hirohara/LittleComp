@@ -4,8 +4,10 @@ import 'react-toastify/dist/ReactToastify.css';
 import { useStory } from '../../hooks/useStory';
 import { createStoryModalState } from '../../context/storyState';
 import { useReactiveVar } from '@apollo/client';
+import { useRouter } from 'next/router';
 
 const CreateStoryModal = (): JSX.Element | null => {
+  const router = useRouter();
   const { createStory } = useStory();
   const [inputStoryName, setInputStoryName] = useState<string>('');
   const createStoryModal = useReactiveVar(createStoryModalState);
@@ -35,16 +37,21 @@ const CreateStoryModal = (): JSX.Element | null => {
           <form
             onSubmit={async (event) => {
               event.preventDefault();
-              const {
-                data: {
-                  createStory: { success, message },
-                },
-              } = await createStory(inputStoryName);
-              if (success) {
-                toast.success(message);
+              try {
+                const {
+                  data: {
+                    createStory: { success, message },
+                  },
+                } = await createStory(inputStoryName);
+                if (success) {
+                  toast.success(message);
+                }
+                setInputStoryName('');
+                createStoryModalState({ isOpen: false });
+              } catch (error: any) {
+                toast.error('セッションの有効期限が切れています');
+                router.push('/signin');
               }
-              setInputStoryName('');
-              createStoryModalState({ isOpen: false });
             }}
           >
             <textarea

@@ -1,11 +1,18 @@
+import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { UserCheck } from 'react-feather';
 import { useUser } from '../hooks/useUser';
 
 const Signin = () => {
-  const { signIn, cookies } = useUser();
+  const { signIn, cookies, getUser } = useUser();
   const router = useRouter();
+  useEffect(() => {
+    console.log(getUser.data);
+    if (getUser.data && cookies.get('token')) {
+      router.push('/');
+    }
+  }, []);
   const [emailInput, setEmailInput] = useState<string>('');
   const [passwordInput, setPasswordInput] = useState<string>('');
   return (
@@ -22,8 +29,8 @@ const Signin = () => {
             email: emailInput,
             password: passwordInput,
           });
-          console.log(response);
           cookies.set('token', response.data.signIn.token);
+          getUser.refetch();
           router.push('/');
         }}
         action=""
@@ -59,6 +66,11 @@ const Signin = () => {
         <button className="mt-38 text-2xl w-3/5 h-45 bg-blue1 text-white rounded-xl">
           ログイン
         </button>
+        <Link href="/signup">
+          <a className="mt-32 hover:bg-green3 p-13 rounded-md">
+            初めてご利用の方へ
+          </a>
+        </Link>
       </form>
     </div>
   );

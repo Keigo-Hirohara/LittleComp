@@ -8,8 +8,10 @@ import {
   editTaskModalState,
   initStateOfEditTaskModal,
 } from '../../context/taskState';
+import { useRouter } from 'next/router';
 
 const EditTaskModal = (): JSX.Element | null => {
+  const router = useRouter();
   const editTaskModal = useReactiveVar(editTaskModalState);
   useEffect(() => {
     setConsideredTaskName(editTaskModal.name);
@@ -66,15 +68,20 @@ const EditTaskModal = (): JSX.Element | null => {
               className="absolute inline left-16 top-19"
               onClick={async (event) => {
                 event.preventDefault();
-                const {
-                  data: {
-                    deleteTask: { success, message },
-                  },
-                } = await deleteTask(editTaskModal.id);
-                if (success) {
-                  toast.success(message);
+                try {
+                  const {
+                    data: {
+                      deleteTask: { success, message },
+                    },
+                  } = await deleteTask(editTaskModal.id);
+                  if (success) {
+                    toast.success(message);
+                  }
+                  editTaskModalState(initStateOfEditTaskModal);
+                } catch (error) {
+                  toast.error('セッションの有効期限が切れました');
+                  router.push('/signin');
                 }
-                editTaskModalState(initStateOfEditTaskModal);
               }}
             />
             <button

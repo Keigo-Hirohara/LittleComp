@@ -9,15 +9,17 @@ dotenv.config();
 
 const authContext = async ({ req }: any) => {
   const token = req.headers.authorization.split(' ');
-  console.log(token[1]);
+  const { email, password } = req.body.variables;
   let verified = null;
   const secret = process.env.JWT_SECRET || '';
 
   try {
     verified = await jwt.verify(token[1], secret);
-  } catch (error) {
-    console.log(error);
-    // throw new AuthenticationError('トークンが有効ではありません');
+  } catch (error: any) {
+    console.log(error.message);
+    if (!email || !password) {
+      throw new AuthenticationError('トークンが有効ではありません');
+    }
   }
   return {
     jwt: {

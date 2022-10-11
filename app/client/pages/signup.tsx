@@ -2,6 +2,7 @@ import { UserPlus } from 'react-feather';
 import { useUser } from '../hooks/useUser';
 import { useState } from 'react';
 import { useRouter } from 'next/router';
+import Link from 'next/link';
 
 const Signup = () => {
   const { signUp, cookies } = useUser();
@@ -35,22 +36,22 @@ const Signup = () => {
         </div>
         <div className="flex flex-col justify-center w-3/5 basis-20">
           <div>
-            <h2>Eメール</h2>
-          </div>
-          <input
-            type="text"
-            className="h-40 border-solid border border-black3 rounded-md p-5"
-            onChange={(event) => setEmailInput(event.target.value)}
-          />
-        </div>
-        <div className="flex flex-col justify-center w-3/5 basis-20">
-          <div>
             <h2>ユーザーネーム</h2>
           </div>
           <input
             type="text"
             className="h-40 border-solid border border-black3 rounded-md p-5"
             onChange={(event) => setUsernameInput(event.target.value)}
+          />
+        </div>
+        <div className="flex flex-col justify-center w-3/5 basis-20">
+          <div>
+            <h2>Eメール</h2>
+          </div>
+          <input
+            type="text"
+            className="h-40 border-solid border border-black3 rounded-md p-5"
+            onChange={(event) => setEmailInput(event.target.value)}
           />
         </div>
         <div className="flex flex-col justify-center w-3/5 basis-20">
@@ -66,6 +67,9 @@ const Signup = () => {
         <button className="mt-38 text-2xl w-3/5 h-45 bg-green1 text-white rounded-xl">
           新規登録
         </button>
+        <Link href="/signin">
+          <a className="mt-32 hover:bg-blue3 p-13 rounded-md">またはログイン</a>
+        </Link>
       </form>
     </div>
   );

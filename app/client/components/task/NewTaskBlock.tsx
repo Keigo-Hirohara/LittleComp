@@ -28,7 +28,11 @@ const NewTaskBlock = ({ storyId }: TaskBlockArgsType): JSX.Element => {
           >
             {getTasks.data.getTasks.map((task: TaskType, index: number) => {
               return (
-                <Draggable key={task.id} draggableId={task.id} index={index}>
+                <Draggable
+                  key={`key:${task.id}`}
+                  draggableId={task.id}
+                  index={index}
+                >
                   {(provided) => {
                     return (
                       <div

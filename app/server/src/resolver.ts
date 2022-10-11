@@ -1,4 +1,4 @@
-import { signUp, signIn } from './service/user';
+import { getUser, signUp, signIn } from './service/user';
 
 import {
   getStories,
@@ -17,6 +17,7 @@ import {
 
 export const resolvers = {
   Query: {
+    getUser,
     getStories,
     getTasks,
   },
