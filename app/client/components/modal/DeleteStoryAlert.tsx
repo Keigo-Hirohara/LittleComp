@@ -9,9 +9,11 @@ import {
   initStateOfStoryModal,
 } from '../../context/storyState';
 import { useRouter } from 'next/router';
+import { useUser } from '../../hooks/useUser';
 
 const DeleteStoryAlert = (): JSX.Element | null => {
   const router = useRouter();
+  const { getUser } = useUser();
   const { deleteStory } = useStory();
   const deleteStoryAlert = useReactiveVar(deleteStoryAlertState);
 
@@ -49,9 +51,16 @@ const DeleteStoryAlert = (): JSX.Element | null => {
                 toast.success(message);
               }
               deleteStoryAlertState(initStateOfStoryModal);
-            } catch (error) {
-              toast.error('セッションの有効期限が切れました');
-              router.push('/signin');
+            } catch (error: any) {
+              if (error.message == 'ログインし直してください') {
+                try {
+                  await getUser.client.resetStore();
+                } catch (error: any) {
+                  console.log(error.message);
+                }
+                toast.error(error.message);
+                router.push('/signin');
+              }
             }
           }}
         >

@@ -1,3 +1,4 @@
+import { AuthenticationError } from 'apollo-server';
 import { CreatetaskArgsType } from '../types/CreateTaskArgsType';
 import { DeleteStoryArgsType } from '../types/DeleteStoryArgsType';
 import { RenameStoryArgsType } from '../types/RenameStoryArgsType';
@@ -17,8 +18,12 @@ export const getTasks = async (_: null, args: any) => {
 
 export const createTask = async (
   _: null,
-  { taskName, storyId }: CreatetaskArgsType
+  { taskName, storyId }: CreatetaskArgsType,
+  { verified }: any
 ) => {
+  if (!verified) {
+    throw new AuthenticationError('ログインし直してください');
+  }
   const id = new Date().getTime().toString();
   const newTask = await prisma.task.create({
     data: {
@@ -38,8 +43,12 @@ export const createTask = async (
 
 export const renameTask = async (
   _: null,
-  { targetId, newName }: RenameStoryArgsType
+  { targetId, newName }: RenameStoryArgsType,
+  { verified }: any
 ) => {
+  if (!verified) {
+    throw new AuthenticationError('ログインし直してください');
+  }
   const renamedTask = await prisma.task.update({
     where: {
       id: targetId,
@@ -59,8 +68,12 @@ export const renameTask = async (
 
 export const updateTaskStatus = async (
   _: null,
-  { targetId, newStatus }: updateTaskStatusArgsType
+  { targetId, newStatus }: updateTaskStatusArgsType,
+  { verified }: any
 ) => {
+  if (!verified) {
+    throw new AuthenticationError('ログインし直してください');
+  }
   const movedTask = await prisma.task.update({
     where: {
       id: targetId,
@@ -79,8 +92,12 @@ export const updateTaskStatus = async (
 
 export const deleteTask = async (
   _: null,
-  { targetId }: DeleteStoryArgsType
+  { targetId }: DeleteStoryArgsType,
+  { verified }: any
 ) => {
+  if (!verified) {
+    throw new AuthenticationError('ログインし直してください');
+  }
   await prisma.task.delete({
     where: {
       id: targetId,

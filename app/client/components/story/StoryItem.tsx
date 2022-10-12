@@ -1,4 +1,4 @@
-import { useCallback } from 'react';
+import { useCallback, useEffect } from 'react';
 import { DragDropContext, DropResult } from 'react-beautiful-dnd';
 import NewTaskBlock from '../task/NewTaskBlock';
 import InProgressTaskBlock from '../task/InProgressTaskBlock';
@@ -12,10 +12,13 @@ import {
 } from '../../context/storyState';
 import { createTaskModalState } from '../../context/taskState';
 import { useRouter } from 'next/router';
+import { useUser } from '../../hooks/useUser';
+import { toast } from 'react-toastify';
 
 const StoryItem = ({ name, id }: StoryType): JSX.Element => {
   const { updateTaskStatus } = useTask(id);
   const router = useRouter();
+  const { getUser, cookies } = useUser();
 
   const onDragEnd = useCallback(async (result: DropResult) => {
     if (!result.destination) {
@@ -26,11 +29,22 @@ const StoryItem = ({ name, id }: StoryType): JSX.Element => {
         result.draggableId,
         result.destination.droppableId
       );
-    } catch (error) {
-      router.push('/signin');
-      console.log(error);
+    } catch (error: any) {
+      if (error.message == 'ログインし直してください') {
+        try {
+          await getUser.client.resetStore();
+        } catch (error: any) {
+          console.log(error.message);
+        }
+        toast.error(error.message);
+        router.push('/signin');
+      }
     }
   }, []);
+
+  if (getUser.error) {
+    return <></>;
+  }
 
   return (
     <div className="flex border-t-2 border-black3">

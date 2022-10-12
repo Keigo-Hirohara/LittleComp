@@ -9,9 +9,11 @@ import {
   initStateOfEditTaskModal,
 } from '../../context/taskState';
 import { useRouter } from 'next/router';
+import { useUser } from '../../hooks/useUser';
 
 const EditTaskModal = (): JSX.Element | null => {
   const router = useRouter();
+  const { getUser } = useUser();
   const editTaskModal = useReactiveVar(editTaskModalState);
   useEffect(() => {
     setConsideredTaskName(editTaskModal.name);
@@ -46,13 +48,23 @@ const EditTaskModal = (): JSX.Element | null => {
         <form
           onSubmit={async (event) => {
             event.preventDefault();
-            const {
-              data: {
-                renameTask: { success, message },
-              },
-            } = await renameTask(editTaskModal.id, consideredTaskName);
-            if (success) {
-              toast.success(message);
+            try {
+              const {
+                data: {
+                  renameTask: { success, message },
+                },
+              } = await renameTask(editTaskModal.id, consideredTaskName);
+              if (success) {
+                toast.success(message);
+              }
+            } catch (error: any) {
+              try {
+                await getUser.client.resetStore();
+              } catch (error: any) {
+                console.log(error.message);
+              }
+              toast.error(error.message);
+              router.push('/signin');
             }
             editTaskModalState(initStateOfEditTaskModal);
           }}
@@ -78,9 +90,16 @@ const EditTaskModal = (): JSX.Element | null => {
                     toast.success(message);
                   }
                   editTaskModalState(initStateOfEditTaskModal);
-                } catch (error) {
-                  toast.error('セッションの有効期限が切れました');
-                  router.push('/signin');
+                } catch (error: any) {
+                  if (error.message == 'ログインし直してください') {
+                    try {
+                      await getUser.client.resetStore();
+                    } catch (error: any) {
+                      console.log(error.message);
+                    }
+                    toast.error(error.message);
+                    router.push('/signin');
+                  }
                 }
               }}
             />

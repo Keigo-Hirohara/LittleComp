@@ -8,7 +8,9 @@ import { GET_USER } from '../query/user/getUser';
 export const useUser = () => {
   const [signUpMutation] = useMutation(SIGNUP);
   const [signInMutation] = useMutation(SIGNIN);
-  const getUser = useQuery(GET_USER);
+  const getUser = useQuery(GET_USER, {
+    fetchPolicy: 'cache-and-network',
+  });
   const cookies = new Cookies();
 
   const signUp = useCallback(async ({ username, email, password }: any) => {

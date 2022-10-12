@@ -7,12 +7,12 @@ import { useUser } from '../hooks/useUser';
 const Signin = () => {
   const { signIn, cookies, getUser } = useUser();
   const router = useRouter();
+
   useEffect(() => {
-    console.log(getUser.data);
     if (getUser.data && cookies.get('token')) {
       router.push('/');
     }
-  }, []);
+  }, [getUser]);
   const [emailInput, setEmailInput] = useState<string>('');
   const [passwordInput, setPasswordInput] = useState<string>('');
   return (
@@ -30,7 +30,7 @@ const Signin = () => {
             password: passwordInput,
           });
           cookies.set('token', response.data.signIn.token);
-          getUser.refetch();
+          // getUser.refetch();
           router.push('/');
         }}
         action=""

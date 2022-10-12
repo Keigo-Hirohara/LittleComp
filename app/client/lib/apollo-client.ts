@@ -9,7 +9,7 @@ import Cookies from 'cookies-ts';
 const cache = new InMemoryCache();
 
 const httpLink = new HttpLink({
-  uri: 'http://localhost:4000/',
+  uri: 'http://localhost:4000/graphql',
   credentials: 'include',
 });
 

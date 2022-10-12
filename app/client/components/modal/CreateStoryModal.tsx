@@ -5,10 +5,12 @@ import { useStory } from '../../hooks/useStory';
 import { createStoryModalState } from '../../context/storyState';
 import { useReactiveVar } from '@apollo/client';
 import { useRouter } from 'next/router';
+import { useUser } from '../../hooks/useUser';
 
 const CreateStoryModal = (): JSX.Element | null => {
   const router = useRouter();
   const { createStory } = useStory();
+  const { getUser } = useUser();
   const [inputStoryName, setInputStoryName] = useState<string>('');
   const createStoryModal = useReactiveVar(createStoryModalState);
   const handleChangeTextArea: ChangeEventHandler<HTMLElement> = (
@@ -49,8 +51,15 @@ const CreateStoryModal = (): JSX.Element | null => {
                 setInputStoryName('');
                 createStoryModalState({ isOpen: false });
               } catch (error: any) {
-                toast.error('セッションの有効期限が切れています');
-                router.push('/signin');
+                if (error.message == 'ログインし直してください') {
+                  try {
+                    await getUser.client.resetStore();
+                  } catch (error: any) {
+                    console.log(error.message);
+                  }
+                  toast.error(error.message);
+                  router.push('/signin');
+                }
               }
             }}
           >

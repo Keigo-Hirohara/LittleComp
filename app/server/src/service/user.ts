@@ -26,6 +26,9 @@ const validatePassword = async (inputPassword: string, dbPassword: string) => {
 };
 
 export const getUser = async (_: null, __: null, { verified }: any) => {
+  if (!verified) {
+    throw new AuthenticationError('ログインし直してください');
+  }
   return await prisma.user.findFirst({
     where: {
       id: verified.id,

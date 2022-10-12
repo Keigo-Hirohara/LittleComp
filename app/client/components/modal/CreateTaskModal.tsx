@@ -8,9 +8,11 @@ import {
   initStateOfTaskModal,
 } from '../../context/taskState';
 import { useRouter } from 'next/router';
+import { useUser } from '../../hooks/useUser';
 
 const CreateTaskModal = (): JSX.Element | null => {
   const router = useRouter();
+  const { getUser } = useUser();
   const createTaskModal = useReactiveVar(createTaskModalState);
   const [inputTaskName, setInputTaskName] = useState<string>('');
   const handleChangeTextArea: ChangeEventHandler<HTMLElement> = (
@@ -51,8 +53,15 @@ const CreateTaskModal = (): JSX.Element | null => {
               setInputTaskName('');
               createTaskModalState(initStateOfTaskModal);
             } catch (error: any) {
-              toast.error('セッションの有効期限が切れています');
-              router.push('/signin');
+              if (error.message == 'ログインし直してください') {
+                try {
+                  await getUser.client.resetStore();
+                } catch (error: any) {
+                  console.log(error.message);
+                }
+                toast.error(error.message);
+                router.push('/signin');
+              }
             }
           }}
         >

@@ -7,15 +7,16 @@ import { useUser } from '../../hooks/useUser';
 
 const StoryList = (): JSX.Element => {
   const { getStories } = useStory();
-  const { getUser } = useUser();
+  // const { getUser } = useUser();
   const router = useRouter();
-  useEffect(() => {
-    getStories.refetch();
-  }, [getUser]);
+  // useEffect(() => {
+  //   getStories.refetch();
+  // }, [getUser]);
   if (getStories.loading) {
     return <h1>loading</h1>;
   }
   if (getStories.error) {
+    // getUser.refetch();
     router.push('/signin');
     return <h1>Something went wrong... </h1>;
   }

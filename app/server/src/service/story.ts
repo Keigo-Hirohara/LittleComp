@@ -2,9 +2,12 @@ import { CreateStoryArgsType } from '../types/CreateStoryArgsType';
 import { RenameStoryArgsType } from '../types/RenameStoryArgsType';
 import { DeleteStoryArgsType } from '../types/DeleteStoryArgsType';
 import { prisma } from './prismaClient';
+import { AuthenticationError } from 'apollo-server';
 
 export const getStories = async (_: null, __: null, { verified }: any) => {
-  console.log(verified.email);
+  if (!verified) {
+    throw new AuthenticationError('ログインし直してください');
+  }
   return await prisma.story.findMany({
     where: {
       user_id: verified.id,
@@ -17,6 +20,9 @@ export const createStory = async (
   { name }: CreateStoryArgsType,
   { verified }: any
 ) => {
+  if (!verified) {
+    throw new AuthenticationError('ログインし直してください');
+  }
   const id = new Date().getTime().toString();
   const newStory = await prisma.story.create({
     data: {
@@ -35,8 +41,12 @@ export const createStory = async (
 
 export const renameStory = async (
   _: null,
-  { targetId, newName }: RenameStoryArgsType
+  { targetId, newName }: RenameStoryArgsType,
+  { verified }: any
 ) => {
+  if (!verified) {
+    throw new AuthenticationError('ログインし直してください');
+  }
   const renamedStory = await prisma.story.update({
     where: {
       id: targetId,
@@ -55,8 +65,12 @@ export const renameStory = async (
 
 export const deleteStory = async (
   _: null,
-  { targetId }: DeleteStoryArgsType
+  { targetId }: DeleteStoryArgsType,
+  { verified }: any
 ) => {
+  if (!verified) {
+    throw new AuthenticationError('ログインし直してください');
+  }
   await prisma.story.delete({
     where: {
       id: targetId,

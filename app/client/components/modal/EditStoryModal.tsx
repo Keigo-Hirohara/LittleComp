@@ -8,10 +8,12 @@ import {
   initStateOfStoryModal,
 } from '../../context/storyState';
 import { useRouter } from 'next/router';
+import { useUser } from '../../hooks/useUser';
 
 const EditStoryModal = (): JSX.Element | null => {
   const router = useRouter();
   const { renameStory } = useStory();
+  const { getUser } = useUser();
   const editStoryModal = useReactiveVar(editStoryModalState);
   const [consideredStoryName, setConsideredStoryName] = useState<string>(
     editStoryModal.name
@@ -56,9 +58,16 @@ const EditStoryModal = (): JSX.Element | null => {
               }
               setConsideredStoryName('');
               editStoryModalState(initStateOfStoryModal);
-            } catch (error) {
-              toast.error('セッションの有効期限が切れました');
-              router.push('/signin');
+            } catch (error: any) {
+              if (error.message == 'ログインし直してください') {
+                try {
+                  await getUser.client.resetStore();
+                } catch (error: any) {
+                  console.log(error.message);
+                }
+                toast.error(error.message);
+                router.push('/signin');
+              }
             }
           }}
         >

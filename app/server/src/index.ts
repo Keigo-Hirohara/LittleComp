@@ -3,13 +3,11 @@ import { typeDefs } from './schema';
 import { resolvers } from './resolver';
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
-import { AuthenticationError } from 'apollo-server';
 // Todo: Federate each service into subqueries locatedError...
 dotenv.config();
 
 const authContext = async ({ req }: any) => {
   const token = req.headers.authorization.split(' ');
-  const { email, password } = req.body.variables;
   let verified = null;
   const secret = process.env.JWT_SECRET || '';
 
@@ -17,9 +15,6 @@ const authContext = async ({ req }: any) => {
     verified = await jwt.verify(token[1], secret);
   } catch (error: any) {
     console.log(error.message);
-    if (!email || !password) {
-      throw new AuthenticationError('トークンが有効ではありません');
-    }
   }
   return {
     jwt: {
