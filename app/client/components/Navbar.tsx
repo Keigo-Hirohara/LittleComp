@@ -5,10 +5,13 @@ const Navbar = (): JSX.Element => {
   const router = useRouter();
   const { getUser, cookies } = useUser();
   const [shouldShowUser, setShouldShowUser] = useState(false);
-  const [username, setUsername] = useState('');
+  const [username, setUsername] = useState<string | null>('');
   useEffect(() => {
     if (getUser.error) {
       setShouldShowUser(false);
+      return;
+    }
+    if (!getUser.data?.getUser) {
       return;
     }
     setShouldShowUser(true);

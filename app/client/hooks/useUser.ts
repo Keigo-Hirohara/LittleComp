@@ -10,6 +10,8 @@ export const useUser = () => {
   const [signInMutation] = useMutation(SIGNIN);
   const getUser = useQuery(GET_USER, {
     fetchPolicy: 'cache-and-network',
+    // Note: cache not updated when query returns error (https://github.com/apollographql/apollo-client/issues/4806)
+    errorPolicy: 'all',
   });
   const cookies = new Cookies();
 

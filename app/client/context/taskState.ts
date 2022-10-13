@@ -1,16 +1,18 @@
 import { makeVar } from '@apollo/client';
+import { CreateTaskModalState } from '../types/CreateTaskModalState';
+import { EditTaskModalState } from '../types/EditTaskModalState';
 
-export const initStateOfTaskModal = {
+export const initStateOfTaskModal: CreateTaskModalState = {
   isOpen: false,
   storyId: '',
 };
 
-export const initStateOfEditTaskModal = {
+export const initStateOfEditTaskModal: EditTaskModalState = {
   isOpen: false,
   storyId: '',
   name: '',
   status: '',
-  id: '',
+  taskId: '',
 };
 
 export const createTaskModalState = makeVar(initStateOfTaskModal);

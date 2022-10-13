@@ -1,21 +1,23 @@
 import React from 'react';
-import { AlertCircle } from 'react-feather';
 import { toast } from 'react-toastify';
+import { AlertCircle } from 'react-feather';
 import 'react-toastify/dist/ReactToastify.css';
-import { useStory } from '../../hooks/useStory';
 import { useReactiveVar } from '@apollo/client';
+import { NextRouter, useRouter } from 'next/router';
 import {
   deleteStoryAlertState,
   initStateOfStoryModal,
 } from '../../context/storyState';
-import { useRouter } from 'next/router';
 import { useUser } from '../../hooks/useUser';
+import { useStory } from '../../hooks/useStory';
+import { DeleteStoryAlertState } from '../../types/DeleteStoryAlertState';
 
 const DeleteStoryAlert = (): JSX.Element | null => {
-  const router = useRouter();
+  const router: NextRouter = useRouter();
   const { getUser } = useUser();
   const { deleteStory } = useStory();
-  const deleteStoryAlert = useReactiveVar(deleteStoryAlertState);
+  const deleteStoryAlert: DeleteStoryAlertState =
+    useReactiveVar<DeleteStoryAlertState>(deleteStoryAlertState);
 
   if (!deleteStoryAlert.isOpen) {
     return null;

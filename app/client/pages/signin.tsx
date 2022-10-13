@@ -9,7 +9,8 @@ const Signin = () => {
   const router = useRouter();
 
   useEffect(() => {
-    if (getUser.data && cookies.get('token')) {
+    console.log(getUser);
+    if (getUser.data?.getUser && cookies.get('token')) {
       router.push('/');
     }
   }, [getUser]);
@@ -30,7 +31,7 @@ const Signin = () => {
             password: passwordInput,
           });
           cookies.set('token', response.data.signIn.token);
-          // getUser.refetch();
+          getUser.refetch();
           router.push('/');
         }}
         action=""

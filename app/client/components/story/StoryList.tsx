@@ -1,22 +1,16 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import StoryItem from './StoryItem';
-import { StoryType } from '../../types/StoryType';
+import { NextRouter, useRouter } from 'next/router';
 import { useStory } from '../../hooks/useStory';
-import { useRouter } from 'next/router';
-import { useUser } from '../../hooks/useUser';
+import { StoryType } from '../../types/StoryType';
 
 const StoryList = (): JSX.Element => {
   const { getStories } = useStory();
-  // const { getUser } = useUser();
-  const router = useRouter();
-  // useEffect(() => {
-  //   getStories.refetch();
-  // }, [getUser]);
+  const router: NextRouter = useRouter();
   if (getStories.loading) {
     return <h1>loading</h1>;
   }
   if (getStories.error) {
-    // getUser.refetch();
     router.push('/signin');
     return <h1>Something went wrong... </h1>;
   }

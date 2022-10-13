@@ -1,31 +1,42 @@
-import { ChangeEvent, ChangeEventHandler, useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { useStory } from '../../hooks/useStory';
 import { useReactiveVar } from '@apollo/client';
+import { NextRouter, useRouter } from 'next/router';
+import {
+  ChangeEvent,
+  ChangeEventHandler,
+  useCallback,
+  useEffect,
+  useState,
+} from 'react';
 import {
   editStoryModalState,
   initStateOfStoryModal,
 } from '../../context/storyState';
-import { useRouter } from 'next/router';
 import { useUser } from '../../hooks/useUser';
+import { useStory } from '../../hooks/useStory';
+import { StoryModalState } from '../../types/StoryModalState';
 
 const EditStoryModal = (): JSX.Element | null => {
-  const router = useRouter();
+  const router: NextRouter = useRouter();
   const { renameStory } = useStory();
   const { getUser } = useUser();
-  const editStoryModal = useReactiveVar(editStoryModalState);
+  const editStoryModal: StoryModalState =
+    useReactiveVar<StoryModalState>(editStoryModalState);
   const [consideredStoryName, setConsideredStoryName] = useState<string>(
     editStoryModal.name
   );
-  const handleStoryNameChanged: ChangeEventHandler<HTMLElement> = (
-    event: ChangeEvent<HTMLInputElement>
-  ) => {
-    setConsideredStoryName(event.target.value);
-  };
   useEffect(() => {
     setConsideredStoryName(editStoryModal.name);
   }, [editStoryModal.name]);
+
+  const handleStoryNameChanged: ChangeEventHandler<HTMLElement> = useCallback(
+    (event: ChangeEvent<HTMLInputElement>) => {
+      setConsideredStoryName(event.target.value);
+    },
+    []
+  );
+
   if (!editStoryModal.isOpen) {
     return null;
   }

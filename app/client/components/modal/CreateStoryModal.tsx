@@ -1,35 +1,40 @@
-import { ChangeEventHandler, ChangeEvent, useState } from 'react';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { useReactiveVar } from '@apollo/client';
+import { NextRouter, useRouter } from 'next/router';
+import { ChangeEventHandler, ChangeEvent, useState, useCallback } from 'react';
+import { useUser } from '../../hooks/useUser';
 import { useStory } from '../../hooks/useStory';
 import { createStoryModalState } from '../../context/storyState';
-import { useReactiveVar } from '@apollo/client';
-import { useRouter } from 'next/router';
-import { useUser } from '../../hooks/useUser';
+import { CreateStoryModalState } from '../../types/CreateStoryModalState';
 
 const CreateStoryModal = (): JSX.Element | null => {
-  const router = useRouter();
+  const router: NextRouter = useRouter();
   const { createStory } = useStory();
   const { getUser } = useUser();
   const [inputStoryName, setInputStoryName] = useState<string>('');
-  const createStoryModal = useReactiveVar(createStoryModalState);
-  const handleChangeTextArea: ChangeEventHandler<HTMLElement> = (
-    event: ChangeEvent<HTMLInputElement>
-  ): void => {
-    setInputStoryName(event.target.value);
-  };
+  const createStoryModal: CreateStoryModalState =
+    useReactiveVar<CreateStoryModalState>(createStoryModalState);
+
+  const handleChangeTextArea: ChangeEventHandler<HTMLElement> = useCallback(
+    (event: ChangeEvent<HTMLInputElement>): void => {
+      setInputStoryName(event.target.value);
+    },
+    []
+  );
+  const initModalState = useCallback(() => {
+    setInputStoryName('');
+    createStoryModalState({ isOpen: false });
+  }, []);
+
   if (!createStoryModal.isOpen) {
     return null;
   }
-
   return (
     <div>
       <div
         className="flex justify-center items-center overflow-auto fixed inset-0 m-auto bg-black1 bg-opacity-20 backdrop-blur-md z-20"
-        onClick={() => {
-          setInputStoryName('');
-          createStoryModalState({ isOpen: false });
-        }}
+        onClick={initModalState}
       >
         <div
           className="bg-white h-256 w-410 rounded-2xl shadow-2xl"
@@ -48,8 +53,7 @@ const CreateStoryModal = (): JSX.Element | null => {
                 if (success) {
                   toast.success(message);
                 }
-                setInputStoryName('');
-                createStoryModalState({ isOpen: false });
+                initModalState();
               } catch (error: any) {
                 if (error.message == 'ログインし直してください') {
                   try {
@@ -71,10 +75,7 @@ const CreateStoryModal = (): JSX.Element | null => {
             <div className="text-right bg-black3 mt-16 w-full rounded-b-2xl py-16">
               <button
                 className="mr-16 bg-black3 w-102 py-3 text-black2"
-                onClick={() => {
-                  setInputStoryName('');
-                  createStoryModalState({ isOpen: false });
-                }}
+                onClick={initModalState}
               >
                 キャンセル
               </button>

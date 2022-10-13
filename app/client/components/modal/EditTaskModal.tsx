@@ -1,20 +1,28 @@
-import { useState, ChangeEvent, ChangeEventHandler, useEffect } from 'react';
+import {
+  useState,
+  ChangeEvent,
+  ChangeEventHandler,
+  useEffect,
+  useCallback,
+} from 'react';
 import { Trash2 } from 'react-feather';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { useTask } from '../../hooks/useTask';
 import { useReactiveVar } from '@apollo/client';
+import { NextRouter, useRouter } from 'next/router';
 import {
   editTaskModalState,
   initStateOfEditTaskModal,
 } from '../../context/taskState';
-import { useRouter } from 'next/router';
+import { useTask } from '../../hooks/useTask';
 import { useUser } from '../../hooks/useUser';
+import { EditTaskModalState } from '../../types/EditTaskModalState';
 
 const EditTaskModal = (): JSX.Element | null => {
-  const router = useRouter();
+  const router: NextRouter = useRouter();
   const { getUser } = useUser();
-  const editTaskModal = useReactiveVar(editTaskModalState);
+  const editTaskModal: EditTaskModalState =
+    useReactiveVar<EditTaskModalState>(editTaskModalState);
   useEffect(() => {
     setConsideredTaskName(editTaskModal.name);
   }, [editTaskModal.name]);
@@ -25,11 +33,14 @@ const EditTaskModal = (): JSX.Element | null => {
     editTaskModal.storyId,
     editTaskModal.status
   );
-  const handleTaskNameChanged: ChangeEventHandler<HTMLElement> = (
-    event: ChangeEvent<HTMLInputElement>
-  ) => {
-    setConsideredTaskName(event.target.value);
-  };
+
+  const handleTaskNameChanged: ChangeEventHandler<HTMLElement> = useCallback(
+    (event: ChangeEvent<HTMLInputElement>) => {
+      setConsideredTaskName(event.target.value);
+    },
+    []
+  );
+
   if (!editTaskModal.isOpen) {
     return null;
   }
@@ -53,7 +64,7 @@ const EditTaskModal = (): JSX.Element | null => {
                 data: {
                   renameTask: { success, message },
                 },
-              } = await renameTask(editTaskModal.id, consideredTaskName);
+              } = await renameTask(editTaskModal.taskId, consideredTaskName);
               if (success) {
                 toast.success(message);
               }
@@ -85,7 +96,7 @@ const EditTaskModal = (): JSX.Element | null => {
                     data: {
                       deleteTask: { success, message },
                     },
-                  } = await deleteTask(editTaskModal.id);
+                  } = await deleteTask(editTaskModal.taskId);
                   if (success) {
                     toast.success(message);
                   }

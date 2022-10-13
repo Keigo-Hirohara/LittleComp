@@ -1,37 +1,42 @@
-import { ChangeEventHandler, ChangeEvent, useState, useEffect } from 'react';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { useTask } from '../../hooks/useTask';
 import { useReactiveVar } from '@apollo/client';
+import { NextRouter, useRouter } from 'next/router';
+import { ChangeEventHandler, ChangeEvent, useState, useCallback } from 'react';
 import {
   createTaskModalState,
   initStateOfTaskModal,
 } from '../../context/taskState';
-import { useRouter } from 'next/router';
+import { useTask } from '../../hooks/useTask';
 import { useUser } from '../../hooks/useUser';
+import { CreateTaskModalState } from '../../types/CreateTaskModalState';
 
 const CreateTaskModal = (): JSX.Element | null => {
-  const router = useRouter();
+  const router: NextRouter = useRouter();
   const { getUser } = useUser();
-  const createTaskModal = useReactiveVar(createTaskModalState);
-  const [inputTaskName, setInputTaskName] = useState<string>('');
-  const handleChangeTextArea: ChangeEventHandler<HTMLElement> = (
-    event: ChangeEvent<HTMLInputElement>
-  ): void => {
-    setInputTaskName(event.target.value);
-  };
-
+  const createTaskModal: CreateTaskModalState =
+    useReactiveVar<CreateTaskModalState>(createTaskModalState);
   const { createTask } = useTask(createTaskModal.storyId, 'new');
+  const [inputTaskName, setInputTaskName] = useState<string>('');
+
+  const handleChangeTextArea: ChangeEventHandler<HTMLElement> = useCallback(
+    (event: ChangeEvent<HTMLInputElement>): void => {
+      setInputTaskName(event.target.value);
+    },
+    []
+  );
+  const initModalState = useCallback(() => {
+    setInputTaskName('');
+    createTaskModalState(initStateOfTaskModal);
+  }, []);
+
   if (!createTaskModal.isOpen) {
     return null;
   }
   return (
     <div
       className="flex justify-center items-center overflow-auto fixed inset-0 m-auto bg-black1 bg-opacity-20 backdrop-blur-md z-20"
-      onClick={() => {
-        setInputTaskName('');
-        createTaskModalState(initStateOfTaskModal);
-      }}
+      onClick={initModalState}
     >
       <div
         className="bg-white h-256 w-410 rounded-2xl shadow-2xl"
@@ -74,8 +79,7 @@ const CreateTaskModal = (): JSX.Element | null => {
             <button
               className="mr-16 bg-black3 w-102 py-3 text-black2"
               onClick={() => {
-                setInputTaskName('');
-                createTaskModalState(initStateOfTaskModal);
+                initModalState();
               }}
             >
               キャンセル
