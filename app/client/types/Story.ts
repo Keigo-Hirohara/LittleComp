@@ -1,4 +1,4 @@
-export type StoryType = {
+export type Story = {
   id: string;
   name: string;
 };

@@ -1,13 +1,12 @@
 import React from 'react';
 import TaskItem from './TaskItem';
 import { Droppable, Draggable } from 'react-beautiful-dnd';
-import { TaskBlockArgsType } from '../../types/TaskBlockArgsType';
-import { TaskType } from '../../types/TaskType';
+import { Task } from '../../types/Task';
 import { useTask } from '../../hooks/useTask';
 
 // Todo: Integrate into one component new, inprogress, done
 
-const NewTaskBlock = ({ storyId }: TaskBlockArgsType): JSX.Element => {
+const NewTaskBlock = ({ storyId }: { storyId: string }): JSX.Element => {
   const { getTasks } = useTask(storyId, 'new');
 
   if (getTasks.loading) {
@@ -26,7 +25,7 @@ const NewTaskBlock = ({ storyId }: TaskBlockArgsType): JSX.Element => {
             ref={provided.innerRef}
             className="flex flex-wrap w-3/12 pt-10 pl-10"
           >
-            {getTasks.data.getTasks.map((task: TaskType, index: number) => {
+            {getTasks.data.getTasks.map((task: Task, index: number) => {
               return (
                 <Draggable
                   key={`key:${task.id}`}

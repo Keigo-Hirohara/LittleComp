@@ -2,7 +2,7 @@ import React from 'react';
 import StoryItem from './StoryItem';
 import { NextRouter, useRouter } from 'next/router';
 import { useStory } from '../../hooks/useStory';
-import { StoryType } from '../../types/StoryType';
+import { Story } from '../../types/Story';
 
 const StoryList = (): JSX.Element => {
   const { getStories } = useStory();
@@ -16,11 +16,9 @@ const StoryList = (): JSX.Element => {
   }
   return (
     <div className="z-0 border-b-2 border-black3">
-      {getStories.data.getStories.map(
-        ({ name, id }: StoryType, index: number) => (
-          <StoryItem name={name} id={id} key={index} />
-        )
-      )}
+      {getStories.data.getStories.map(({ name, id }: Story, index: number) => (
+        <StoryItem name={name} id={id} key={index} />
+      ))}
     </div>
   );
 };

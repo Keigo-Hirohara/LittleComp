@@ -4,7 +4,7 @@ import NewTaskBlock from '../task/NewTaskBlock';
 import InProgressTaskBlock from '../task/InProgressTaskBlock';
 import DoneTaskBlock from '../task/DoneTaskBlock';
 import { PlusSquare, Edit2, Trash2 } from 'react-feather';
-import { StoryType } from '../../types/StoryType';
+import { Story } from '../../types/Story';
 import { useTask } from '../../hooks/useTask';
 import {
   deleteStoryAlertState,
@@ -15,7 +15,7 @@ import { useRouter } from 'next/router';
 import { useUser } from '../../hooks/useUser';
 import { toast } from 'react-toastify';
 
-const StoryItem = ({ name, id }: StoryType): JSX.Element => {
+const StoryItem = ({ name, id }: Story): JSX.Element => {
   const { updateTaskStatus } = useTask(id);
   const router = useRouter();
   const { getUser, cookies } = useUser();

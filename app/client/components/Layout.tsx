@@ -1,7 +1,7 @@
-import { LayoutArgsType } from '../types/LayoutArgsType';
+import { Layout } from '../types/Layout';
 import Navbar from './Navbar';
 
-const Layout = ({ children }: LayoutArgsType): JSX.Element => {
+const Layout = ({ children }: Layout): JSX.Element => {
   return (
     <>
       <Navbar />
