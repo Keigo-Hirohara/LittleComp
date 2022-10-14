@@ -4,7 +4,6 @@ import CREATE_STORY from '../query/story/createStory';
 import DELETE_STORY from '../query/story/deleteStory';
 import EDIT_STORY from '../query/story/editStory';
 import { GET_STORIES } from '../query/story/getStories';
-import { Story } from '../types/Story';
 
 export const useStory = () => {
   // Todo: specify more detailed type instead of any
