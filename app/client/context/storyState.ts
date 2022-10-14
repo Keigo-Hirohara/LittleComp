@@ -1,5 +1,5 @@
 import { makeVar } from '@apollo/client';
-import { StoryModalState } from '../types/StoryModalState';
+import { StoryModalState } from '../types/state/StoryModalState';
 
 export const initStateOfStoryModal: StoryModalState = {
   isOpen: false,

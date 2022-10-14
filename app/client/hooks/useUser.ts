@@ -6,11 +6,18 @@ import Cookies from 'cookies-ts';
 import { GET_USER } from '../query/user/getUser';
 
 export const useUser = () => {
-  const [signUpMutation] = useMutation(SIGNUP);
-  const [signInMutation] = useMutation(SIGNIN);
+  // Todo: specify more detailed type instead of any
+  const [signUpMutation] = useMutation<
+    any,
+    { username: string; email: string; password: string }
+  >(SIGNUP);
+  const [signInMutation] = useMutation<
+    any,
+    { email: string; password: string }
+  >(SIGNIN);
   const getUser = useQuery(GET_USER, {
     fetchPolicy: 'cache-and-network',
-    // Note: cache not updated when query returns error (https://github.com/apollographql/apollo-client/issues/4806)
+    // Note: cache not updated entirely when query returns error (https://github.com/apollographql/apollo-client/issues/4806)
     errorPolicy: 'all',
   });
   const cookies = new Cookies();

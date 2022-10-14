@@ -10,7 +10,7 @@ import {
 } from '../../context/storyState';
 import { useUser } from '../../hooks/useUser';
 import { useStory } from '../../hooks/useStory';
-import { DeleteStoryAlertState } from '../../types/DeleteStoryAlertState';
+import { DeleteStoryAlertState } from '../../types/state/DeleteStoryAlertState';
 
 const DeleteStoryAlert = (): JSX.Element | null => {
   const router: NextRouter = useRouter();

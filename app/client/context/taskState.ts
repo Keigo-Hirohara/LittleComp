@@ -1,6 +1,6 @@
 import { makeVar } from '@apollo/client';
-import { CreateTaskModalState } from '../types/CreateTaskModalState';
-import { EditTaskModalState } from '../types/EditTaskModalState';
+import { CreateTaskModalState } from '../types/state/CreateTaskModalState';
+import { EditTaskModalState } from '../types/state/EditTaskModalState';
 
 export const initStateOfTaskModal: CreateTaskModalState = {
   isOpen: false,

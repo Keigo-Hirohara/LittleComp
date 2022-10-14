@@ -15,7 +15,7 @@ import {
 } from '../../context/storyState';
 import { useUser } from '../../hooks/useUser';
 import { useStory } from '../../hooks/useStory';
-import { StoryModalState } from '../../types/StoryModalState';
+import { StoryModalState } from '../../types/state/StoryModalState';
 
 const EditStoryModal = (): JSX.Element | null => {
   const router: NextRouter = useRouter();

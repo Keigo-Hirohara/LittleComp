@@ -6,17 +6,32 @@ import { GET_TASKS } from '../query/task/getTasks';
 import { RENAME_TASK } from '../query/task/renameTask';
 import { UPDATE_TASK_STATUS } from '../query/task/updateTaskStatus';
 
-export const useTask = (storyId: string, status?: string) => {
-  const [createTaskMutation] = useMutation(CREATE_TASK);
-  const [renameTaskMutation] = useMutation(RENAME_TASK);
-  const [updateTaskStatusMutation] = useMutation(UPDATE_TASK_STATUS);
-  const [deleteTaskMutation] = useMutation(DELETE_TASK);
-  const getTasks = useQuery(GET_TASKS, {
-    variables: {
-      storyId,
-      status,
-    },
-  });
+export const useTask = (storyId: string, status: string) => {
+  // Todo: specify more detailed type instead of any
+  const [createTaskMutation] = useMutation<
+    any,
+    { taskName: string; storyId: string }
+  >(CREATE_TASK);
+  const [renameTaskMutation] = useMutation<
+    any,
+    { targetId: string; newName: string }
+  >(RENAME_TASK);
+  const [updateTaskStatusMutation] = useMutation<
+    any,
+    { targetId: string; newStatus: string }
+  >(UPDATE_TASK_STATUS);
+  const [deleteTaskMutation] = useMutation<any, { targetId: string }>(
+    DELETE_TASK
+  );
+  const getTasks = useQuery<any, { storyId: string; status: string }>(
+    GET_TASKS,
+    {
+      variables: {
+        storyId,
+        status,
+      },
+    }
+  );
 
   const createTask = useCallback(async (taskName: string, storyId: string) => {
     return await createTaskMutation({

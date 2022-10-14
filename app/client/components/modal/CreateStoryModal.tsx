@@ -6,7 +6,7 @@ import { ChangeEventHandler, ChangeEvent, useState, useCallback } from 'react';
 import { useUser } from '../../hooks/useUser';
 import { useStory } from '../../hooks/useStory';
 import { createStoryModalState } from '../../context/storyState';
-import { CreateStoryModalState } from '../../types/CreateStoryModalState';
+import { CreateStoryModalState } from '../../types/state/CreateStoryModalState';
 
 const CreateStoryModal = (): JSX.Element | null => {
   const router: NextRouter = useRouter();

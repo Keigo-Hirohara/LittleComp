@@ -9,7 +9,7 @@ import {
 } from '../../context/taskState';
 import { useTask } from '../../hooks/useTask';
 import { useUser } from '../../hooks/useUser';
-import { CreateTaskModalState } from '../../types/CreateTaskModalState';
+import { CreateTaskModalState } from '../../types/state/CreateTaskModalState';
 
 const CreateTaskModal = (): JSX.Element | null => {
   const router: NextRouter = useRouter();

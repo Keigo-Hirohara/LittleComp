@@ -16,7 +16,7 @@ import {
 } from '../../context/taskState';
 import { useTask } from '../../hooks/useTask';
 import { useUser } from '../../hooks/useUser';
-import { EditTaskModalState } from '../../types/EditTaskModalState';
+import { EditTaskModalState } from '../../types/state/EditTaskModalState';
 
 const EditTaskModal = (): JSX.Element | null => {
   const router: NextRouter = useRouter();
