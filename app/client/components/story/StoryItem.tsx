@@ -1,24 +1,24 @@
-import { useCallback, useEffect } from 'react';
-import { DragDropContext, DropResult } from 'react-beautiful-dnd';
-import NewTaskBlock from '../task/NewTaskBlock';
-import InProgressTaskBlock from '../task/InProgressTaskBlock';
-import DoneTaskBlock from '../task/DoneTaskBlock';
+import { useCallback } from 'react';
+import { toast } from 'react-toastify';
+import { NextRouter, useRouter } from 'next/router';
 import { PlusSquare, Edit2, Trash2 } from 'react-feather';
-import { Story } from '../../types/Story';
-import { useTask } from '../../hooks/useTask';
+import { DragDropContext, DropResult } from 'react-beautiful-dnd';
 import {
   deleteStoryAlertState,
   editStoryModalState,
 } from '../../context/storyState';
-import { createTaskModalState } from '../../context/taskState';
-import { useRouter } from 'next/router';
+import { Story } from '../../types/Story';
+import { useTask } from '../../hooks/useTask';
 import { useUser } from '../../hooks/useUser';
-import { toast } from 'react-toastify';
+import NewTaskBlock from '../task/NewTaskBlock';
+import DoneTaskBlock from '../task/DoneTaskBlock';
+import InProgressTaskBlock from '../task/InProgressTaskBlock';
+import { createTaskModalState } from '../../context/taskState';
 
 const StoryItem = ({ name, id }: Story): JSX.Element => {
-  const { updateTaskStatus } = useTask(id);
-  const router = useRouter();
-  const { getUser, cookies } = useUser();
+  const { updateTaskStatus } = useTask(id, 'new');
+  const router: NextRouter = useRouter();
+  const { getUser } = useUser();
 
   const onDragEnd = useCallback(async (result: DropResult) => {
     if (!result.destination) {
@@ -43,9 +43,8 @@ const StoryItem = ({ name, id }: Story): JSX.Element => {
   }, []);
 
   if (getUser.error) {
-    return <></>;
+    return <>error</>;
   }
-
   return (
     <div className="flex border-t-2 border-black3">
       <div className="mt-auto mb-auto pl-10 ml-19 w-154 break-words">

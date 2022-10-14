@@ -1,6 +1,6 @@
 import React from 'react';
-import TaskItem from './TaskItem';
 import { Droppable, Draggable } from 'react-beautiful-dnd';
+import TaskItem from './TaskItem';
 import { Task } from '../../types/Task';
 import { useTask } from '../../hooks/useTask';
 
@@ -8,11 +8,10 @@ const DoneTaskBlock = ({ storyId }: { storyId: string }): JSX.Element => {
   const { getTasks } = useTask(storyId, 'done');
 
   if (getTasks.loading) {
-    return <div className="">読み込み中</div>;
+    return <div className="">loading</div>;
   }
-
   if (getTasks.error) {
-    return <div className="">エラー</div>;
+    return <div className="">error</div>;
   }
   return (
     <Droppable droppableId="done">

@@ -1,6 +1,6 @@
 import { Edit2 } from 'react-feather';
-import { editTaskModalState } from '../../context/taskState';
 import { Task } from '../../types/Task';
+import { editTaskModalState } from '../../context/taskState';
 
 const TaskItem = (props: Task): JSX.Element => {
   return (

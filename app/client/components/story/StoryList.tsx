@@ -11,7 +11,9 @@ const StoryList = (): JSX.Element => {
     return <h1>loading</h1>;
   }
   if (getStories.error) {
-    router.push('/signin');
+    if (getStories.error.message == 'ログインし直してください') {
+      router.push('/signin');
+    }
     return <h1>Something went wrong... </h1>;
   }
   return (

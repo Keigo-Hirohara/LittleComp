@@ -1,15 +1,17 @@
-import { UserPlus } from 'react-feather';
-import { useUser } from '../hooks/useUser';
-import { useState } from 'react';
-import { useRouter } from 'next/router';
 import Link from 'next/link';
+import { NextPage } from 'next';
+import { useState } from 'react';
+import { UserPlus } from 'react-feather';
+import { NextRouter, useRouter } from 'next/router';
+import { useUser } from '../hooks/useUser';
 
-const Signup = () => {
+const Signup: NextPage = () => {
   const { signUp, cookies } = useUser();
-  const router = useRouter();
+  const router: NextRouter = useRouter();
   const [emailInput, setEmailInput] = useState<string>('');
   const [usernameInput, setUsernameInput] = useState<string>('');
   const [passwordInput, setPasswordInput] = useState<string>('');
+
   return (
     <div className="lerative min-h-screen bg-green3">
       <UserPlus

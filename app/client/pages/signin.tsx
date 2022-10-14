@@ -1,21 +1,21 @@
 import Link from 'next/link';
-import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
+import { NextPage } from 'next';
 import { UserCheck } from 'react-feather';
+import { useEffect, useState } from 'react';
+import { NextRouter, useRouter } from 'next/router';
 import { useUser } from '../hooks/useUser';
 
-const Signin = () => {
+const Signin: NextPage = () => {
   const { signIn, cookies, getUser } = useUser();
-  const router = useRouter();
-
+  const router: NextRouter = useRouter();
+  const [emailInput, setEmailInput] = useState<string>('');
+  const [passwordInput, setPasswordInput] = useState<string>('');
   useEffect(() => {
-    console.log(getUser);
     if (getUser.data?.getUser && cookies.get('token')) {
       router.push('/');
     }
   }, [getUser]);
-  const [emailInput, setEmailInput] = useState<string>('');
-  const [passwordInput, setPasswordInput] = useState<string>('');
+
   return (
     <div className="lerative min-h-screen bg-blue3">
       <UserCheck
@@ -25,13 +25,12 @@ const Signin = () => {
       <form
         onSubmit={async (event) => {
           event.preventDefault();
-          // Todo: add error handling when input is empty
+          // Todo: add error handling when input is empty and signin is invalid
           const response = await signIn({
             email: emailInput,
             password: passwordInput,
           });
           cookies.set('token', response.data.signIn.token);
-          getUser.refetch();
           router.push('/');
         }}
         action=""
