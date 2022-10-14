@@ -1,4 +1,4 @@
-export type RenameStoryArgsType = {
+export type RenameStory = {
   targetId: string;
   newName: string;
 };

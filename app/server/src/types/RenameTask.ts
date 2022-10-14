@@ -1,4 +1,4 @@
-export type RenameTaskArgsType = {
+export type RenameTask = {
   targetId: string;
   newName: string;
 };

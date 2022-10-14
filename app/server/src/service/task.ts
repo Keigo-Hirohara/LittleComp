@@ -1,9 +1,10 @@
 import { AuthenticationError } from 'apollo-server';
-import { CreatetaskArgsType } from '../types/CreateTaskArgsType';
-import { DeleteStoryArgsType } from '../types/DeleteStoryArgsType';
-import { RenameStoryArgsType } from '../types/RenameStoryArgsType';
-import { updateTaskStatusArgsType } from '../types/UpdateTaskStatusArgsType';
 import { prisma } from './prismaClient';
+import { VerifiedObject } from '../types/Context';
+import { CreateTask } from '../types/CreateTask';
+import { DeleteStory } from '../types/DeleteStory';
+import { RenameStory } from '../types/RenameStory';
+import { UpdateTaskStatus } from '../types/UpdateTaskStatus';
 
 export const getTasks = async (_: null, args: any) => {
   return await prisma.task.findMany({
@@ -14,12 +15,10 @@ export const getTasks = async (_: null, args: any) => {
   });
 };
 
-// Todo: add error handling and use these functions directly
-
 export const createTask = async (
   _: null,
-  { taskName, storyId }: CreatetaskArgsType,
-  { verified }: any
+  { taskName, storyId }: CreateTask,
+  { verified }: { verified: VerifiedObject }
 ) => {
   if (!verified) {
     throw new AuthenticationError('ログインし直してください');
@@ -43,8 +42,8 @@ export const createTask = async (
 
 export const renameTask = async (
   _: null,
-  { targetId, newName }: RenameStoryArgsType,
-  { verified }: any
+  { targetId, newName }: RenameStory,
+  { verified }: { verified: VerifiedObject }
 ) => {
   if (!verified) {
     throw new AuthenticationError('ログインし直してください');
@@ -68,8 +67,8 @@ export const renameTask = async (
 
 export const updateTaskStatus = async (
   _: null,
-  { targetId, newStatus }: updateTaskStatusArgsType,
-  { verified }: any
+  { targetId, newStatus }: UpdateTaskStatus,
+  { verified }: { verified: VerifiedObject }
 ) => {
   if (!verified) {
     throw new AuthenticationError('ログインし直してください');
@@ -92,8 +91,8 @@ export const updateTaskStatus = async (
 
 export const deleteTask = async (
   _: null,
-  { targetId }: DeleteStoryArgsType,
-  { verified }: any
+  { targetId }: DeleteStory,
+  { verified }: { verified: VerifiedObject }
 ) => {
   if (!verified) {
     throw new AuthenticationError('ログインし直してください');

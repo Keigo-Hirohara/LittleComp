@@ -2,6 +2,7 @@ import { prisma } from './prismaClient';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import { AuthenticationError, UserInputError } from 'apollo-server';
+import { Jwt, VerifiedObject } from '../types/Context';
 
 const createToken = async (
   { id, email }: any,
@@ -25,7 +26,11 @@ const validatePassword = async (inputPassword: string, dbPassword: string) => {
   return await bcrypt.compare(inputPassword, dbPassword);
 };
 
-export const getUser = async (_: null, __: null, { verified }: any) => {
+export const getUser = async (
+  _: null,
+  __: null,
+  { verified }: { verified: VerifiedObject }
+) => {
   if (!verified) {
     throw new AuthenticationError('ログインし直してください');
   }
@@ -39,7 +44,7 @@ export const getUser = async (_: null, __: null, { verified }: any) => {
 export const signUp = async (
   _: null,
   { username, email, password }: any,
-  { jwt }: any
+  { jwt }: { jwt: Jwt }
 ) => {
   const hashPass = await generatePasswordHash(password);
   const id = new Date().getTime().toString();
@@ -59,7 +64,7 @@ export const signUp = async (
 export const signIn = async (
   _: null,
   { email, password }: any,
-  { jwt }: any
+  { jwt }: { jwt: Jwt }
 ) => {
   const user = await findByEmail(email);
   if (!user) throw new UserInputError('ユーザーが見つかりませんでした');

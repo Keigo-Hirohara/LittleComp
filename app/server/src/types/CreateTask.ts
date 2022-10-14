@@ -1,4 +1,4 @@
-export type CreatetaskArgsType = {
+export type CreateTask = {
   taskName: string;
   storyId: string;
 };

@@ -1,4 +1,4 @@
-export type updateTaskStatusArgsType = {
+export type UpdateTaskStatus = {
   targetId: string;
   newStatus: string;
 };

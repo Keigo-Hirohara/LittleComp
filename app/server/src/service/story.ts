@@ -1,10 +1,15 @@
-import { CreateStoryArgsType } from '../types/CreateStoryArgsType';
-import { RenameStoryArgsType } from '../types/RenameStoryArgsType';
-import { DeleteStoryArgsType } from '../types/DeleteStoryArgsType';
-import { prisma } from './prismaClient';
 import { AuthenticationError } from 'apollo-server';
+import { prisma } from './prismaClient';
+import { VerifiedObject } from '../types/Context';
+import { CreateStory } from '../types/CreateStory';
+import { RenameStory } from '../types/RenameStory';
+import { DeleteStory } from '../types/DeleteStory';
 
-export const getStories = async (_: null, __: null, { verified }: any) => {
+export const getStories = async (
+  _: null,
+  __: null,
+  { verified }: { verified: VerifiedObject }
+) => {
   if (!verified) {
     throw new AuthenticationError('ログインし直してください');
   }
@@ -14,11 +19,10 @@ export const getStories = async (_: null, __: null, { verified }: any) => {
     },
   });
 };
-// Todo: add error handling and use these functions directly
 export const createStory = async (
   _: null,
-  { name }: CreateStoryArgsType,
-  { verified }: any
+  { name }: CreateStory,
+  { verified }: { verified: VerifiedObject }
 ) => {
   if (!verified) {
     throw new AuthenticationError('ログインし直してください');
@@ -41,8 +45,8 @@ export const createStory = async (
 
 export const renameStory = async (
   _: null,
-  { targetId, newName }: RenameStoryArgsType,
-  { verified }: any
+  { targetId, newName }: RenameStory,
+  { verified }: { verified: VerifiedObject }
 ) => {
   if (!verified) {
     throw new AuthenticationError('ログインし直してください');
@@ -65,8 +69,8 @@ export const renameStory = async (
 
 export const deleteStory = async (
   _: null,
-  { targetId }: DeleteStoryArgsType,
-  { verified }: any
+  { targetId }: DeleteStory,
+  { verified }: { verified: VerifiedObject }
 ) => {
   if (!verified) {
     throw new AuthenticationError('ログインし直してください');

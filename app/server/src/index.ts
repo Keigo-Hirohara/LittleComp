@@ -3,10 +3,11 @@ import { typeDefs } from './schema';
 import { resolvers } from './resolver';
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
+import { Context } from './types/Context';
 // Todo: Federate each service into subqueries locatedError...
 dotenv.config();
 
-const authContext = async ({ req }: any) => {
+const authContext = async ({ req }: any): Promise<Context> => {
   const token = req.headers.authorization.split(' ');
   let verified = null;
   const secret = process.env.JWT_SECRET || '';
@@ -18,8 +19,8 @@ const authContext = async ({ req }: any) => {
   }
   return {
     jwt: {
-      secret: process.env.JWT_SECRET,
-      expiresIn: process.env.JWT_EXPIRES_IN,
+      secret: process.env.JWT_SECRET || 'secret',
+      expiresIn: process.env.JWT_EXPIRES_IN || '1d',
     },
     verified,
   };
