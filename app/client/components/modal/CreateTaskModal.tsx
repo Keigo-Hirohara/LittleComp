@@ -46,6 +46,10 @@ const CreateTaskModal = (): JSX.Element | null => {
         <form
           onSubmit={async (event) => {
             event.preventDefault();
+            if (!inputTaskName) {
+              toast.error('タスク名を入力してください');
+              return;
+            }
             try {
               const {
                 data: {

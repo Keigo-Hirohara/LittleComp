@@ -55,6 +55,10 @@ const EditStoryModal = (): JSX.Element | null => {
         <form
           onSubmit={async (event) => {
             event.preventDefault();
+            if (!consideredStoryName) {
+              toast.error('ストーリー名を入力してください');
+              return;
+            }
             try {
               const {
                 data: {

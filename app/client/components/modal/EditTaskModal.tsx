@@ -59,6 +59,11 @@ const EditTaskModal = (): JSX.Element | null => {
         <form
           onSubmit={async (event) => {
             event.preventDefault();
+
+            if (!consideredTaskName) {
+              toast.error('タスク名を入力してください');
+              return;
+            }
             try {
               const {
                 data: {
