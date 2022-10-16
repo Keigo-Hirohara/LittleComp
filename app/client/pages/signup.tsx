@@ -1,7 +1,9 @@
 import Link from 'next/link';
 import { NextPage } from 'next';
 import { useState } from 'react';
+import { toast } from 'react-toastify';
 import { UserPlus } from 'react-feather';
+import 'react-toastify/dist/ReactToastify.css';
 import { NextRouter, useRouter } from 'next/router';
 import { useUser } from '../hooks/useUser';
 
@@ -21,7 +23,21 @@ const Signup: NextPage = () => {
       <form
         onSubmit={async (event) => {
           event.preventDefault();
-          // Todo: add error handling when input is empty
+          if (!usernameInput) {
+            console.log('ユーザーネームを入力してください');
+            toast.error('ユーザーネームを入力してください');
+            return;
+          }
+          if (!emailInput) {
+            console.log('Eメールを入力してください');
+            toast.error('Eメールを入力してください');
+            return;
+          }
+          if (!passwordInput) {
+            console.log('パスワードを設定してください');
+            toast.error('パスワードを設定してください');
+            return;
+          }
           const response = await signUp({
             email: emailInput,
             username: usernameInput,
