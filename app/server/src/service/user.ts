@@ -67,7 +67,10 @@ export const signIn = async (
   { jwt }: { jwt: Jwt }
 ) => {
   const user = await findByEmail(email);
-  if (!user) throw new UserInputError('ユーザーが見つかりませんでした');
+  if (!user)
+    throw new UserInputError(
+      'ユーザーが見つかりませんでした。Eメールを確認してください'
+    );
   const isValid = await validatePassword(password, user.password);
   if (!isValid) throw new AuthenticationError('パスワードが異なります');
   return {

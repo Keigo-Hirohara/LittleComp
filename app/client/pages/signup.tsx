@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { NextPage } from 'next';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import { UserPlus } from 'react-feather';
 import 'react-toastify/dist/ReactToastify.css';
@@ -8,11 +8,16 @@ import { NextRouter, useRouter } from 'next/router';
 import { useUser } from '../hooks/useUser';
 
 const Signup: NextPage = () => {
-  const { signUp, cookies } = useUser();
+  const { getUser, signUp, cookies } = useUser();
   const router: NextRouter = useRouter();
   const [emailInput, setEmailInput] = useState<string>('');
   const [usernameInput, setUsernameInput] = useState<string>('');
   const [passwordInput, setPasswordInput] = useState<string>('');
+  useEffect(() => {
+    if (getUser.data?.getUser) {
+      router.push('/');
+    }
+  }, [getUser]);
 
   return (
     <div className="lerative min-h-screen bg-green3">

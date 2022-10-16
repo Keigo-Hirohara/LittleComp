@@ -13,7 +13,7 @@ const Signin: NextPage = () => {
   const [emailInput, setEmailInput] = useState<string>('');
   const [passwordInput, setPasswordInput] = useState<string>('');
   useEffect(() => {
-    if (getUser.data?.getUser && cookies.get('token')) {
+    if (getUser.data?.getUser) {
       router.push('/');
     }
   }, [getUser]);
@@ -36,12 +36,16 @@ const Signin: NextPage = () => {
             console.log('パスワードを入力してください');
             toast.error('パスワードを入力してください');
           }
-          const response = await signIn({
-            email: emailInput,
-            password: passwordInput,
-          });
-          cookies.set('token', response.data.signIn.token);
-          router.push('/');
+          try {
+            const response = await signIn({
+              email: emailInput,
+              password: passwordInput,
+            });
+            cookies.set('token', response.data.signIn.token);
+            router.push('/');
+          } catch (error: any) {
+            toast.error(error.message);
+          }
         }}
         action=""
         className="flex flex-col items-center ml-auto min-h-screen w-1/2 h-256 bg-white"
