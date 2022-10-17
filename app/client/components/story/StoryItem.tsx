@@ -20,27 +20,30 @@ const StoryItem = ({ name, id }: Story): JSX.Element => {
   const router: NextRouter = useRouter();
   const { getUser } = useUser();
 
-  const onDragEnd = useCallback(async (result: DropResult) => {
-    if (!result.destination) {
-      return;
-    }
-    try {
-      await updateTaskStatus(
-        result.draggableId,
-        result.destination.droppableId
-      );
-    } catch (error: any) {
-      if (error.message == 'ログインし直してください') {
-        try {
-          await getUser.client.resetStore();
-        } catch (error: any) {
-          console.log(error.message);
-        }
-        toast.error(error.message);
-        router.push('/signin');
+  const onDragEnd = useCallback(
+    async (result: DropResult) => {
+      if (!result.destination) {
+        return;
       }
-    }
-  }, []);
+      try {
+        await updateTaskStatus(
+          result.draggableId,
+          result.destination.droppableId
+        );
+      } catch (error: any) {
+        if (error.message == 'ログインし直してください') {
+          try {
+            await getUser.client.resetStore();
+          } catch (error: any) {
+            console.log(error.message);
+          }
+          toast.error(error.message);
+          router.push('/signin');
+        }
+      }
+    },
+    [getUser, router, updateTaskStatus]
+  );
 
   if (getUser.error) {
     return <>error</>;

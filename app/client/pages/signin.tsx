@@ -16,7 +16,7 @@ const Signin: NextPage = () => {
     if (getUser.data?.getUser) {
       router.push('/');
     }
-  }, [getUser]);
+  }, [getUser, router]);
 
   return (
     <div className="lerative min-h-screen bg-blue3">
