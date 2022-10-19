@@ -3,7 +3,6 @@ import 'react-toastify/dist/ReactToastify.css';
 import { useReactiveVar } from '@apollo/client';
 import { NextRouter, useRouter } from 'next/router';
 import { ChangeEventHandler, ChangeEvent, useState, useCallback } from 'react';
-import { useUser } from '../../hooks/useUser';
 import { useStory } from '../../hooks/useStory';
 import { createStoryModalState } from '../../context/storyState';
 import { CreateStoryModalState } from '../../types/state/CreateStoryModalState';
@@ -11,7 +10,6 @@ import { CreateStoryModalState } from '../../types/state/CreateStoryModalState';
 const CreateStoryModal = (): JSX.Element | null => {
   const router: NextRouter = useRouter();
   const { createStory } = useStory();
-  const { getUser } = useUser();
   const [inputStoryName, setInputStoryName] = useState<string>('');
   const createStoryModal: CreateStoryModalState =
     useReactiveVar<CreateStoryModalState>(createStoryModalState);
@@ -60,11 +58,6 @@ const CreateStoryModal = (): JSX.Element | null => {
                 initModalState();
               } catch (error: any) {
                 if (error.message == 'ログインし直してください') {
-                  try {
-                    await getUser.client.resetStore();
-                  } catch (error: any) {
-                    console.log(error.message);
-                  }
                   toast.error(error.message);
                   router.push('/signin');
                 }

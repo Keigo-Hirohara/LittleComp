@@ -8,12 +8,10 @@ import {
   initStateOfTaskModal,
 } from '../../context/taskState';
 import { useTask } from '../../hooks/useTask';
-import { useUser } from '../../hooks/useUser';
 import { CreateTaskModalState } from '../../types/state/CreateTaskModalState';
 
 const CreateTaskModal = (): JSX.Element | null => {
   const router: NextRouter = useRouter();
-  const { getUser } = useUser();
   const createTaskModal: CreateTaskModalState =
     useReactiveVar<CreateTaskModalState>(createTaskModalState);
   const { createTask } = useTask(createTaskModal.storyId, 'new');
@@ -63,11 +61,6 @@ const CreateTaskModal = (): JSX.Element | null => {
               createTaskModalState(initStateOfTaskModal);
             } catch (error: any) {
               if (error.message == 'ログインし直してください') {
-                try {
-                  await getUser.client.resetStore();
-                } catch (error: any) {
-                  console.log(error.message);
-                }
                 toast.error(error.message);
                 router.push('/signin');
               }

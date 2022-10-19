@@ -8,13 +8,11 @@ import {
   deleteStoryAlertState,
   initStateOfStoryModal,
 } from '../../context/storyState';
-import { useUser } from '../../hooks/useUser';
 import { useStory } from '../../hooks/useStory';
 import { DeleteStoryAlertState } from '../../types/state/DeleteStoryAlertState';
 
 const DeleteStoryAlert = (): JSX.Element | null => {
   const router: NextRouter = useRouter();
-  const { getUser } = useUser();
   const { deleteStory } = useStory();
   const deleteStoryAlert: DeleteStoryAlertState =
     useReactiveVar<DeleteStoryAlertState>(deleteStoryAlertState);
@@ -55,11 +53,6 @@ const DeleteStoryAlert = (): JSX.Element | null => {
               deleteStoryAlertState(initStateOfStoryModal);
             } catch (error: any) {
               if (error.message == 'ログインし直してください') {
-                try {
-                  await getUser.client.resetStore();
-                } catch (error: any) {
-                  console.log(error.message);
-                }
                 toast.error(error.message);
                 router.push('/signin');
               }

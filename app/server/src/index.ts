@@ -5,7 +5,9 @@ import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
 import { Context } from './types/Context';
 // Todo: Federate each service into subqueries locatedError...
-dotenv.config();
+if (process.env.NODE_ENV !== 'production') {
+  dotenv.config();
+}
 
 const authContext = async ({ req }: any): Promise<Context> => {
   const token = req.headers.authorization.split(' ');
@@ -29,11 +31,16 @@ const server = new ApolloServer({
   typeDefs,
   resolvers,
   cors: {
-    origin: ['http://localhost:3000', 'https://studio.apollographql.com'],
+    origin: [
+      process.env.CLIENT_URL || 'http://localhost:3000',
+      'https://studio.apollographql.com',
+    ],
     credentials: true,
   },
   context: authContext,
 });
-server.listen(4000).then(async () => {
-  console.log('server is listening on port 4000!');
+
+const PORT = process.env.PORT || 4000;
+server.listen(PORT).then(async () => {
+  console.log(`server is listening on port ${PORT}!`);
 });

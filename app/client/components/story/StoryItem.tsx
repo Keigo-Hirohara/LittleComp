@@ -32,11 +32,6 @@ const StoryItem = ({ name, id }: Story): JSX.Element => {
         );
       } catch (error: any) {
         if (error.message == 'ログインし直してください') {
-          try {
-            await getUser.client.resetStore();
-          } catch (error: any) {
-            console.log(error.message);
-          }
           toast.error(error.message);
           router.push('/signin');
         }

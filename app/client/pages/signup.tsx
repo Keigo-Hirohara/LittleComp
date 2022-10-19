@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { NextPage } from 'next';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { toast } from 'react-toastify';
 import { UserPlus } from 'react-feather';
 import 'react-toastify/dist/ReactToastify.css';
@@ -13,11 +13,15 @@ const Signup: NextPage = () => {
   const [emailInput, setEmailInput] = useState<string>('');
   const [usernameInput, setUsernameInput] = useState<string>('');
   const [passwordInput, setPasswordInput] = useState<string>('');
-  useEffect(() => {
-    if (getUser.data?.getUser) {
-      router.push('/');
-    }
-  }, [getUser, router]);
+
+  if (getUser.data?.getUser) {
+    router.push('/');
+    return null;
+  }
+
+  if (getUser.loading) {
+    return null;
+  }
 
   return (
     <div className="lerative min-h-screen bg-green3">

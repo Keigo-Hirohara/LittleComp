@@ -20,7 +20,6 @@ import { EditTaskModalState } from '../../types/EditTaskModalState';
 
 const EditTaskModal = (): JSX.Element | null => {
   const router: NextRouter = useRouter();
-  const { getUser } = useUser();
   const editTaskModal: EditTaskModalState =
     useReactiveVar<EditTaskModalState>(editTaskModalState);
   useEffect(() => {
@@ -74,11 +73,6 @@ const EditTaskModal = (): JSX.Element | null => {
                 toast.success(message);
               }
             } catch (error: any) {
-              try {
-                await getUser.client.resetStore();
-              } catch (error: any) {
-                console.log(error.message);
-              }
               toast.error(error.message);
               router.push('/signin');
             }
@@ -108,11 +102,6 @@ const EditTaskModal = (): JSX.Element | null => {
                   editTaskModalState(initStateOfEditTaskModal);
                 } catch (error: any) {
                   if (error.message == 'ログインし直してください') {
-                    try {
-                      await getUser.client.resetStore();
-                    } catch (error: any) {
-                      console.log(error.message);
-                    }
                     toast.error(error.message);
                     router.push('/signin');
                   }

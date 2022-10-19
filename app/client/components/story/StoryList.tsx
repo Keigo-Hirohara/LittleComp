@@ -1,12 +1,10 @@
 import StoryItem from './StoryItem';
 import React, { useEffect } from 'react';
-import { NextRouter, useRouter } from 'next/router';
 import { Story } from '../../types/Story';
 import { useStory } from '../../hooks/useStory';
 
 const StoryList = (): JSX.Element => {
   const { getStories } = useStory();
-  const router: NextRouter = useRouter();
   useEffect(() => {
     getStories.refetch();
   }, [getStories]);
@@ -15,9 +13,6 @@ const StoryList = (): JSX.Element => {
     return <h1>loading</h1>;
   }
   if (getStories.error) {
-    if (getStories.error.message == 'ログインし直してください') {
-      router.push('/signin');
-    }
     return <h1>Something went wrong... </h1>;
   }
   return (

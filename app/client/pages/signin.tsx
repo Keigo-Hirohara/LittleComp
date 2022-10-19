@@ -2,7 +2,7 @@ import Link from 'next/link';
 import { NextPage } from 'next';
 import { toast } from 'react-toastify';
 import { UserCheck } from 'react-feather';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import 'react-toastify/dist/ReactToastify.css';
 import { NextRouter, useRouter } from 'next/router';
 import { useUser } from '../hooks/useUser';
@@ -12,11 +12,15 @@ const Signin: NextPage = () => {
   const router: NextRouter = useRouter();
   const [emailInput, setEmailInput] = useState<string>('');
   const [passwordInput, setPasswordInput] = useState<string>('');
-  useEffect(() => {
-    if (getUser.data?.getUser) {
-      router.push('/');
-    }
-  }, [getUser, router]);
+
+  if (getUser.data?.getUser) {
+    router.push('/');
+    return null;
+  }
+
+  if (getUser.loading) {
+    return null;
+  }
 
   return (
     <div className="lerative min-h-screen bg-blue3">

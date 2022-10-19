@@ -13,14 +13,12 @@ import {
   editStoryModalState,
   initStateOfStoryModal,
 } from '../../context/storyState';
-import { useUser } from '../../hooks/useUser';
 import { useStory } from '../../hooks/useStory';
 import { StoryModalState } from '../../types/StoryModalState';
 
 const EditStoryModal = (): JSX.Element | null => {
   const router: NextRouter = useRouter();
   const { renameStory } = useStory();
-  const { getUser } = useUser();
   const editStoryModal: StoryModalState =
     useReactiveVar<StoryModalState>(editStoryModalState);
   const [consideredStoryName, setConsideredStoryName] = useState<string>(
@@ -75,11 +73,6 @@ const EditStoryModal = (): JSX.Element | null => {
               editStoryModalState(initStateOfStoryModal);
             } catch (error: any) {
               if (error.message == 'ログインし直してください') {
-                try {
-                  await getUser.client.resetStore();
-                } catch (error: any) {
-                  console.log(error.message);
-                }
                 toast.error(error.message);
                 router.push('/signin');
               }

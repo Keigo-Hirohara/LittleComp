@@ -1,6 +1,7 @@
 {
   "scripts": {
-    "dev": "nodemon src/index.ts",
+    "start:dev": "nodemon src/index.ts",
+    "start:prod": "NODE_ENV=production nodemon src/index.ts",
     "migrate": "npx prisma migrate dev",
     "generate": "prisma generate"
   },
