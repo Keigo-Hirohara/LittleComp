@@ -7,9 +7,10 @@ import {
 import Cookies from 'cookies-ts';
 
 const cache = new InMemoryCache();
+const uri = process.env.SERVER_URL || 'http://localhost:4000/graphql';
 
 const httpLink = new HttpLink({
-  uri: 'http://localhost:4000/graphql',
+  uri,
   credentials: 'include',
 });
 
