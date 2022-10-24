@@ -37,7 +37,7 @@ const StoryItem = ({ name, id }: Story): JSX.Element => {
         }
       }
     },
-    [getUser, router, updateTaskStatus]
+    [router, updateTaskStatus]
   );
 
   if (getUser.error) {
