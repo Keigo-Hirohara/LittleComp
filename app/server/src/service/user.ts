@@ -1,5 +1,5 @@
 import { prisma } from './prismaClient';
-import bcrypt from 'bcrypt';
+import bcryptjs from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import { AuthenticationError, UserInputError } from 'apollo-server';
 import { Jwt, VerifiedObject } from '../types/Context';
@@ -13,7 +13,7 @@ const createToken = async (
 };
 const generatePasswordHash = async (password: any) => {
   const saltRounds = 10;
-  return bcrypt.hash(password, saltRounds);
+  return bcryptjs.hash(password, saltRounds);
 };
 const findByEmail = async (email: string) => {
   return await prisma.user.findFirst({
@@ -23,7 +23,7 @@ const findByEmail = async (email: string) => {
   });
 };
 const validatePassword = async (inputPassword: string, dbPassword: string) => {
-  return await bcrypt.compare(inputPassword, dbPassword);
+  return await bcryptjs.compare(inputPassword, dbPassword);
 };
 
 export const getUser = async (

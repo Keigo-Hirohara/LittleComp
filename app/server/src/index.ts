@@ -4,10 +4,12 @@ import { resolvers } from './resolver';
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
 import { Context } from './types/Context';
+
 // Todo: Federate each service into subqueries locatedError...
 if (process.env.NODE_ENV !== 'production') {
   dotenv.config();
 }
+console.log(process.env.CLIENT_URL);
 
 const authContext = async ({ req }: any): Promise<Context> => {
   const token = req.headers.authorization.split(' ');
@@ -38,6 +40,7 @@ const server = new ApolloServer({
     credentials: true,
   },
   context: authContext,
+  cache: 'bounded',
 });
 
 const PORT = process.env.PORT || 4000;
