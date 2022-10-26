@@ -4,9 +4,6 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start-server:prod": "npm run start:prod --prefix server",
-    "start-client:prod": "npm run build --prefix client && npm run start --prefix client",
-    "start": "npm run start-server:prod & npm run start-client:prod",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],

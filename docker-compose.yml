@@ -11,18 +11,3 @@ services:
       POSTGRES_USER: "${POSTGRES_USER}"
       POSTGRES_PASSWORD: "${POSTGRES_PASSWORD}"
     restart: always
-
-
-
-
-
-
-  # app:
-  #   image: node:18-alpine
-  #   volumes:
-  #     - ./app/:/app/
-  #   ports:
-  #     - "3000:3000"
-  #   tty: true
-  #   working_dir: /app/client
-  #   command: npm run dev
