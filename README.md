@@ -5,7 +5,8 @@ URL: http://18.183.40.187:3000
 
 <img width="1167" alt="スクリーンショット 2022-10-26 14 30 49" src="https://user-images.githubusercontent.com/84382062/197942671-dd795240-7ccf-49c7-9561-ef97f5026ee0.png">
 
-##　使用技術
+## 使用技術
+
 * TypeScript
 * Next.js
 * TailwindCSS
