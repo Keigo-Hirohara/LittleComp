@@ -9,7 +9,6 @@ import { Context } from './types/Context';
 if (process.env.NODE_ENV !== 'production') {
   dotenv.config();
 }
-console.log(process.env.CLIENT_URL);
 
 const authContext = async ({ req }: any): Promise<Context> => {
   const token = req.headers.authorization.split(' ');
