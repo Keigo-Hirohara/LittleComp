@@ -10,7 +10,7 @@ const StoryList = (): JSX.Element => {
   }, [getStories]);
 
   if (getStories.loading) {
-    return <h1>loading</h1>;
+    return <div className="animate-spin h-8 w-8 bg-green3 rounded-xl"></div>;
   }
   if (getStories.error) {
     return <h1>Something went wrong... </h1>;

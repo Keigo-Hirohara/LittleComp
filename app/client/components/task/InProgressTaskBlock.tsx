@@ -8,7 +8,11 @@ const InProgressTaskBlock = ({ storyId }: { storyId: string }): JSX.Element => {
   const { getTasks } = useTask(storyId, 'inprogress');
 
   if (getTasks.loading) {
-    return <div className="">loading</div>;
+    return (
+      <div className="flex flex-wrap justify-center w-3/12 pt-10 pl-10">
+        <div className="animate-spin h-80 w-80 bg-green3 rounded-xl"></div>
+      </div>
+    );
   }
   if (getTasks.error) {
     return <div className="">error</div>;
