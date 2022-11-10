@@ -4,8 +4,8 @@ import { editTaskModalState } from '../../context/taskState';
 
 const TaskItem = (props: Task): JSX.Element => {
   return (
-    <div className="relative w-80 h-80 bg-green1 rounded-3xl ml-10 mb-10">
-      <p className="flex items-center h-64 text-white text-xs mx-5 w-4/5 break-words text-ellipsis">
+    <div className="relative flex items-center w-80 h-80 bg-green1 rounded-3xl ml-10 mb-10">
+      <p className=" text-white text-xs mx-5 break-words line-clamp-4">
         {props.name}
       </p>
       <Edit2
