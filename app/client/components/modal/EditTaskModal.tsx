@@ -83,6 +83,7 @@ const EditTaskModal = (): JSX.Element | null => {
             className="block mx-auto my-22 p-5 border border-black3 rounded-2xl w-4/5 h-128 resize-none"
             onChange={handleTaskNameChanged}
             value={consideredTaskName}
+            autoFocus
           ></textarea>
           <div className="relative text-right bg-black3 mt-16 w-full rounded-b-2xl py-16">
             <Trash2
