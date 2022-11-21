@@ -58,7 +58,7 @@ const CreateStoryModal = (): JSX.Element | null => {
         }
       }
     },
-    []
+    [inputStoryName]
   );
 
   if (!createStoryModal.isOpen) {

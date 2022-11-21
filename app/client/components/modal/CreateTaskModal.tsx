@@ -2,7 +2,14 @@ import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useReactiveVar } from '@apollo/client';
 import { NextRouter, useRouter } from 'next/router';
-import { ChangeEventHandler, ChangeEvent, useState, useCallback } from 'react';
+import {
+  ChangeEventHandler,
+  ChangeEvent,
+  useState,
+  useCallback,
+  FormEvent,
+  KeyboardEvent,
+} from 'react';
 import {
   createTaskModalState,
   initStateOfTaskModal,
@@ -28,6 +35,36 @@ const CreateTaskModal = (): JSX.Element | null => {
     createTaskModalState(initStateOfTaskModal);
   }, []);
 
+  const handleSubmit = useCallback(
+    async (
+      event: FormEvent<HTMLFormElement> | KeyboardEvent<HTMLTextAreaElement>
+    ) => {
+      event.preventDefault();
+      if (!inputTaskName) {
+        toast.error('タスク名を入力してください');
+        return;
+      }
+      try {
+        const {
+          data: {
+            createTask: { success, message },
+          },
+        } = await createTask(inputTaskName, createTaskModal.storyId);
+        if (success) {
+          toast.success(message);
+        }
+        setInputTaskName('');
+        createTaskModalState(initStateOfTaskModal);
+      } catch (error: any) {
+        if (error.message == 'ログインし直してください') {
+          toast.error(error.message);
+          router.push('/signin');
+        }
+      }
+    },
+    [inputTaskName]
+  );
+
   if (!createTaskModal.isOpen) {
     return null;
   }
@@ -41,36 +78,16 @@ const CreateTaskModal = (): JSX.Element | null => {
         onClick={(e) => e.stopPropagation()}
       >
         <h2 className="mt-32 ml-38 text-xl">タスクの追加</h2>
-        <form
-          onSubmit={async (event) => {
-            event.preventDefault();
-            if (!inputTaskName) {
-              toast.error('タスク名を入力してください');
-              return;
-            }
-            try {
-              const {
-                data: {
-                  createTask: { success, message },
-                },
-              } = await createTask(inputTaskName, createTaskModal.storyId);
-              if (success) {
-                toast.success(message);
-              }
-              setInputTaskName('');
-              createTaskModalState(initStateOfTaskModal);
-            } catch (error: any) {
-              if (error.message == 'ログインし直してください') {
-                toast.error(error.message);
-                router.push('/signin');
-              }
-            }
-          }}
-        >
+        <form onSubmit={handleSubmit}>
           <textarea
             className="block mx-auto my-22 p-5 border border-black3 rounded-2xl w-4/5 h-128 resize-none"
             onChange={handleChangeTextArea}
             value={inputTaskName}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) {
+                handleSubmit(e);
+              }
+            }}
             autoFocus
           ></textarea>
           <div className="text-right bg-black3 w-full rounded-b-2xl py-16">
