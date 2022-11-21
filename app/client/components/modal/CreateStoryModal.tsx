@@ -2,7 +2,14 @@ import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useReactiveVar } from '@apollo/client';
 import { NextRouter, useRouter } from 'next/router';
-import { ChangeEventHandler, ChangeEvent, useState, useCallback } from 'react';
+import {
+  ChangeEventHandler,
+  ChangeEvent,
+  useState,
+  useCallback,
+  FormEvent,
+  KeyboardEvent,
+} from 'react';
 import { useStory } from '../../hooks/useStory';
 import { createStoryModalState } from '../../context/storyState';
 import { CreateStoryModalState } from '../../types/state/CreateStoryModalState';
@@ -25,6 +32,35 @@ const CreateStoryModal = (): JSX.Element | null => {
     createStoryModalState({ isOpen: false });
   }, []);
 
+  const handleSubmit = useCallback(
+    async (
+      event: FormEvent<HTMLFormElement> | KeyboardEvent<HTMLTextAreaElement>
+    ) => {
+      event.preventDefault();
+      if (!inputStoryName) {
+        toast.error('ストーリー名を入力してください');
+        return;
+      }
+      try {
+        const {
+          data: {
+            createStory: { success, message },
+          },
+        } = await createStory(inputStoryName);
+        if (success) {
+          toast.success(message);
+        }
+        initModalState();
+      } catch (error: any) {
+        if (error.message == 'ログインし直してください') {
+          toast.error(error.message);
+          router.push('/signin');
+        }
+      }
+    },
+    []
+  );
+
   if (!createStoryModal.isOpen) {
     return null;
   }
@@ -39,35 +75,16 @@ const CreateStoryModal = (): JSX.Element | null => {
           onClick={(e) => e.stopPropagation()}
         >
           <h2 className="mt-32 ml-38 text-xl">ストーリーの新規作成</h2>
-          <form
-            onSubmit={async (event) => {
-              event.preventDefault();
-              if (!inputStoryName) {
-                toast.error('ストーリー名を入力してください');
-                return;
-              }
-              try {
-                const {
-                  data: {
-                    createStory: { success, message },
-                  },
-                } = await createStory(inputStoryName);
-                if (success) {
-                  toast.success(message);
-                }
-                initModalState();
-              } catch (error: any) {
-                if (error.message == 'ログインし直してください') {
-                  toast.error(error.message);
-                  router.push('/signin');
-                }
-              }
-            }}
-          >
+          <form onSubmit={handleSubmit}>
             <textarea
               className="block mx-auto my-22 p-5 border border-black3 rounded-2xl w-4/5 h-128 resize-none"
               onChange={handleChangeTextArea}
               value={inputStoryName}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) {
+                  handleSubmit(e);
+                }
+              }}
               autoFocus
             ></textarea>
             <div className="text-right bg-black3 mt-16 w-full rounded-b-2xl py-16">
