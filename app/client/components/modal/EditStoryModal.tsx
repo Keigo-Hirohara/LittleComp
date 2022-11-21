@@ -5,6 +5,8 @@ import { NextRouter, useRouter } from 'next/router';
 import {
   ChangeEvent,
   ChangeEventHandler,
+  FormEvent,
+  KeyboardEvent,
   useCallback,
   useEffect,
   useState,
@@ -35,6 +37,36 @@ const EditStoryModal = (): JSX.Element | null => {
     []
   );
 
+  const handleSubmit = useCallback(
+    async (
+      event: FormEvent<HTMLElement> | KeyboardEvent<HTMLTextAreaElement>
+    ) => {
+      event.preventDefault();
+      if (!consideredStoryName) {
+        toast.error('ストーリー名を入力してください');
+        return;
+      }
+      try {
+        const {
+          data: {
+            renameStory: { success, message },
+          },
+        } = await renameStory(editStoryModal.storyId, consideredStoryName);
+        if (success) {
+          toast.success(message);
+        }
+        setConsideredStoryName('');
+        editStoryModalState(initStateOfStoryModal);
+      } catch (error: any) {
+        if (error.message == 'ログインし直してください') {
+          toast.error(error.message);
+          router.push('/signin');
+        }
+      }
+    },
+    [consideredStoryName]
+  );
+
   if (!editStoryModal.isOpen) {
     return null;
   }
@@ -50,39 +82,16 @@ const EditStoryModal = (): JSX.Element | null => {
         onClick={(e) => e.stopPropagation()}
       >
         <h2 className="mt-32 ml-38 text-xl"> ストーリーの編集</h2>
-        <form
-          onSubmit={async (event) => {
-            event.preventDefault();
-            if (!consideredStoryName) {
-              toast.error('ストーリー名を入力してください');
-              return;
-            }
-            try {
-              const {
-                data: {
-                  renameStory: { success, message },
-                },
-              } = await renameStory(
-                editStoryModal.storyId,
-                consideredStoryName
-              );
-              if (success) {
-                toast.success(message);
-              }
-              setConsideredStoryName('');
-              editStoryModalState(initStateOfStoryModal);
-            } catch (error: any) {
-              if (error.message == 'ログインし直してください') {
-                toast.error(error.message);
-                router.push('/signin');
-              }
-            }
-          }}
-        >
+        <form onSubmit={handleSubmit}>
           <textarea
             className="block mx-auto my-22 p-5 border border-black3 rounded-2xl w-4/5 h-128 resize-none"
             value={consideredStoryName}
             onChange={handleStoryNameChanged}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) {
+                handleSubmit(e);
+              }
+            }}
             autoFocus
           ></textarea>
           <div className="text-right bg-black3 w-full rounded-b-2xl py-16">

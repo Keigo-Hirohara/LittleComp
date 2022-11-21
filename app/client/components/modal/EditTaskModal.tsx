@@ -4,6 +4,8 @@ import {
   ChangeEventHandler,
   useEffect,
   useCallback,
+  FormEvent,
+  KeyboardEvent,
 } from 'react';
 import { Trash2 } from 'react-feather';
 import { toast } from 'react-toastify';
@@ -15,7 +17,6 @@ import {
   initStateOfEditTaskModal,
 } from '../../context/taskState';
 import { useTask } from '../../hooks/useTask';
-import { useUser } from '../../hooks/useUser';
 import { EditTaskModalState } from '../../types/EditTaskModalState';
 
 const EditTaskModal = (): JSX.Element | null => {
@@ -39,6 +40,30 @@ const EditTaskModal = (): JSX.Element | null => {
     },
     []
   );
+  const handleSubmit = useCallback(
+    async (
+      event: FormEvent<HTMLFormElement> | KeyboardEvent<HTMLTextAreaElement>
+    ) => {
+      event.preventDefault();
+      try {
+        const {
+          data: {
+            deleteTask: { success, message },
+          },
+        } = await deleteTask(editTaskModal.taskId);
+        if (success) {
+          toast.success(message);
+        }
+        editTaskModalState(initStateOfEditTaskModal);
+      } catch (error: any) {
+        if (error.message == 'ログインし直してください') {
+          toast.error(error.message);
+          router.push('/signin');
+        }
+      }
+    },
+    []
+  );
 
   if (!editTaskModal.isOpen) {
     return null;
@@ -55,34 +80,16 @@ const EditTaskModal = (): JSX.Element | null => {
         onClick={(e) => e.stopPropagation()}
       >
         <h2 className="mt-32 ml-38 text-xl"> タスクの編集</h2>
-        <form
-          onSubmit={async (event) => {
-            event.preventDefault();
-
-            if (!consideredTaskName) {
-              toast.error('タスク名を入力してください');
-              return;
-            }
-            try {
-              const {
-                data: {
-                  renameTask: { success, message },
-                },
-              } = await renameTask(editTaskModal.taskId, consideredTaskName);
-              if (success) {
-                toast.success(message);
-              }
-            } catch (error: any) {
-              toast.error(error.message);
-              router.push('/signin');
-            }
-            editTaskModalState(initStateOfEditTaskModal);
-          }}
-        >
+        <form onSubmit={handleSubmit}>
           <textarea
             className="block mx-auto my-22 p-5 border border-black3 rounded-2xl w-4/5 h-128 resize-none"
             onChange={handleTaskNameChanged}
             value={consideredTaskName}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) {
+                handleSubmit(e);
+              }
+            }}
             autoFocus
           ></textarea>
           <div className="relative text-right bg-black3 mt-16 w-full rounded-b-2xl py-16">
