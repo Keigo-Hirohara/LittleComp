@@ -40,30 +40,30 @@ const EditTaskModal = (): JSX.Element | null => {
     },
     []
   );
-  const handleSubmit = useCallback(
-    async (
-      event: FormEvent<HTMLFormElement> | KeyboardEvent<HTMLTextAreaElement>
-    ) => {
-      event.preventDefault();
-      try {
-        const {
-          data: {
-            deleteTask: { success, message },
-          },
-        } = await deleteTask(editTaskModal.taskId);
-        if (success) {
-          toast.success(message);
-        }
-        editTaskModalState(initStateOfEditTaskModal);
-      } catch (error: any) {
-        if (error.message == 'ログインし直してください') {
-          toast.error(error.message);
-          router.push('/signin');
-        }
-      }
-    },
-    []
-  );
+  // const handleSubmit = useCallback(
+  //   async (
+  //     event: FormEvent<HTMLFormElement> | KeyboardEvent<HTMLTextAreaElement>
+  //   ) => {
+  //     event.preventDefault();
+  //     try {
+  //       const {
+  //         data: {
+  //           deleteTask: { success, message },
+  //         },
+  //       } = await deleteTask(editTaskModal.taskId);
+  //       if (success) {
+  //         toast.success(message);
+  //       }
+  //       editTaskModalState(initStateOfEditTaskModal);
+  //     } catch (error: any) {
+  //       if (error.message == 'ログインし直してください') {
+  //         toast.error(error.message);
+  //         router.push('/signin');
+  //       }
+  //     }
+  //   },
+  //   []
+  // );
 
   if (!editTaskModal.isOpen) {
     return null;
@@ -80,14 +80,20 @@ const EditTaskModal = (): JSX.Element | null => {
         onClick={(e) => e.stopPropagation()}
       >
         <h2 className="mt-32 ml-38 text-xl"> タスクの編集</h2>
-        <form onSubmit={handleSubmit}>
+        <form
+          onSubmit={() => {
+            renameTask(editTaskModal.taskId, consideredTaskName);
+            editTaskModalState(initStateOfEditTaskModal);
+          }}
+        >
           <textarea
             className="block mx-auto my-22 p-5 border border-black3 rounded-2xl w-4/5 h-128 resize-none"
             onChange={handleTaskNameChanged}
             value={consideredTaskName}
             onKeyDown={(e) => {
               if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) {
-                handleSubmit(e);
+                renameTask(editTaskModal.taskId, consideredTaskName);
+                editTaskModalState(initStateOfEditTaskModal);
               }
             }}
             autoFocus

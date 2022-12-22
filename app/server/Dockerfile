@@ -7,4 +7,4 @@ RUN npm i
 
 CMD npm run migrate:dev && npm run start:prod
 
-EXPOSE 4000
+EXPOSE 5000

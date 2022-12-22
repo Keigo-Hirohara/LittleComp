@@ -8,7 +8,7 @@ import Cookies from 'cookies-ts';
 
 const cache = new InMemoryCache();
 const uri =
-  process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:4000/graphql';
+  process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:5000/graphql';
 
 const httpLink = new HttpLink({
   uri,

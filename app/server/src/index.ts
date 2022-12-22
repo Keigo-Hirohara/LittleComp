@@ -33,7 +33,7 @@ const server = new ApolloServer({
   resolvers,
   cors: {
     origin: [
-      process.env.CLIENT_URL || 'http://localhost:3000',
+      process.env.CLIENT_URL || 'http://localhost:3002',
       'https://studio.apollographql.com',
     ],
     credentials: true,
@@ -42,7 +42,7 @@ const server = new ApolloServer({
   cache: 'bounded',
 });
 
-const PORT = process.env.PORT || 4000;
+const PORT = process.env.PORT || 5000;
 server.listen(PORT).then(async () => {
   console.log(`server is listening on port ${PORT}!`);
 });
