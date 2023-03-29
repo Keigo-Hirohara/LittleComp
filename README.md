@@ -41,21 +41,6 @@ ORマッパーにPrismaを使用していますので、migrationを行うこと
 
 ```cd app/server && npm run start:dev```
 
-## テーマ、きっかけ
-
-こちらのアプリは、「自分が実際に使っていく中で欲しいと思ったものを開発していく」というテーマで作成しました。現在は
-簡単なタスク管理アプリですが、将来的にPDCA日報のようなアプリに仕上げていくつもりでいます。
-![目標立てたい!](https://user-images.githubusercontent.com/84382062/197946344-6a65bb18-65af-4fa7-9654-a4157d61b1ab.png)
-
-具体的に欲しい機能としては
-* 月、週、日のスケジューリング
-* 一日にこなすタスクの目標設定
-* 見通しと実際のタスク達成の振り返り
-* 悩みに対する策の掲示板
-
-エンジニアの業務をこなして地肉となった技術をアウトプットする手段として、LittleCompの開発を個人的にしていきたいと思っています。
-![これ欲しい！](https://user-images.githubusercontent.com/84382062/197948046-1cfeb066-9e78-4a20-b051-3c40cf8f9333.png)
-
 (今後実装したい機能に関してはこちらの書籍が良いインスピレーションを与えてくれました)
 
 [エンジニアの知的生産術](https://www.amazon.co.jp/%E3%82%A8%E3%83%B3%E3%82%B8%E3%83%8B%E3%82%A2%E3%81%AE%E7%9F%A5%E7%9A%84%E7%94%9F%E7%94%A3%E8%A1%93-%E2%80%95%E5%8A%B9%E7%8E%87%E7%9A%84%E3%81%AB%E5%AD%A6%E3%81%B3%E3%80%81%E6%95%B4%E7%90%86%E3%81%97%E3%80%81%E3%82%A2%E3%82%A6%E3%83%88%E3%83%97%E3%83%83%E3%83%88%E3%81%99%E3%82%8B-WEB-PRESS-plus-ebook/dp/B07JFRF6MW/ref=sr_1_1?adgrpid=53431906556&gclid=Cj0KCQjwkt6aBhDKARIsAAyeLJ112vOvMEmX2MWG6jm_6hdXEP7e8HEszYCsIpHTDCgwGtlRAjROEdYaAvl4EALw_wcB&hvadid=618552905697&hvdev=c&hvlocphy=9053413&hvnetw=g&hvqmt=e&hvrand=4557717029985653798&hvtargid=kwd-484598975701&hydadcr=27264_14598071&jp-ad-ap=0&keywords=%E3%82%A8%E3%83%B3%E3%82%B8%E3%83%8B%E3%82%A2%E3%81%AE%E7%9F%A5%E7%9A%84%E7%94%9F%E7%94%A3%E8%A1%93&qid=1666764671&qu=eyJxc2MiOiIxLjM0IiwicXNhIjoiMS4xMyIsInFzcCI6IjEuMDgifQ%3D%3D&sr=8-1)
