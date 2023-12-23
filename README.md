@@ -1,8 +1,6 @@
 # タスク管理アプリ: LittleComp
 ドラッグ&ドロップでタスクの管理ができるアプリです。
 
-※ AWSの請求額がとんでもない額になってきたので、現在はデプロイしていない状態です。
-
 <img width="1167" alt="スクリーンショット 2022-10-26 14 30 49" src="https://user-images.githubusercontent.com/84382062/197942671-dd795240-7ccf-49c7-9561-ef97f5026ee0.png">
 
 ## 使用技術
@@ -39,7 +37,7 @@ ORマッパーにPrismaを使用していますので、migrationを行うこと
 
 ### サーバーの起動
 
-```cd app/server && npm run start:dev```
+```cd app/server && npm run dev```
 
 (今後実装したい機能に関してはこちらの書籍が良いインスピレーションを与えてくれました)
 
