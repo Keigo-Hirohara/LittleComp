@@ -1,10 +1,10 @@
-FROM --platform=linux/amd64 node:19
+FROM --platform=linux/x86_64 node:19
 
 WORKDIR /server
 
 COPY . .
 RUN npm i
 
-CMD npm run migrate:dev && npm run start:prod
+CMD npm run generate && npm run migrate:prod && npm run start:prod
 
 EXPOSE 5000

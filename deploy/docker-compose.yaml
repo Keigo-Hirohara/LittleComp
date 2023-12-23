@@ -1,0 +1,38 @@
+version: '3'
+services:
+  postgresql:
+    container_name: postgresql
+    build: ../postgresql
+    ports:
+      - "5111:5432"
+    volumes:
+      - ./postgresql/init:/docker-entrypoint-initdb.d
+    environment:
+      POSTGRES_USER: "${POSTGRES_USER}"
+      POSTGRES_PASSWORD: "${POSTGRES_PASSWORD}"
+    restart: always
+  server:
+    container_name: server
+    build: ../app/server
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./server:/usr/src/app
+    environment:
+      NODE_ENV: "${NODE_ENV}"
+      JWT_SECRET: "${JWT_SECRET}"
+      JWT_EXPIRES_IN: "${JWT_EXPIRES_IN}"
+      PORT: "${PORT}"
+      CLIENT_URL: "${CLIENT_URL}"
+      DATABASE_URL: "${DATABASE_URL}"
+    restart: always
+  client:
+    container_name: client
+    build: ../app/client
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./client:/usr/src/app
+    environment:
+      NEXT_PUBLIC_SERVER_URL: "${NEXT_PUBLIC_SERVER_URL}"
+    restart: always
