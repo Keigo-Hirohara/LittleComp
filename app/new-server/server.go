@@ -1,26 +1,19 @@
 package main
 
 import (
-	"log"
-	"net/http"
 	dbschema "new-server/db-schema"
 	"new-server/graph"
 	"new-server/resolvers"
-	"os"
 
 	"github.com/99designs/gqlgen/graphql/handler"
 	"github.com/99designs/gqlgen/graphql/playground"
+	"github.com/labstack/echo"
+	"github.com/labstack/echo/middleware"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
 
-const defaultPort = "8080"
-
 func main() {
-	port := os.Getenv("PORT")
-	if port == "" {
-		port = defaultPort
-	}
 
 	db, err := gorm.Open(postgres.Open("host=localhost user=user password=pass dbname=littlecomp port=5112"), &gorm.Config{})
 
@@ -34,11 +27,27 @@ func main() {
 		&dbschema.Task{},
 	)
 
-	srv := handler.NewDefaultServer(graph.NewExecutableSchema(graph.Config{Resolvers: &resolvers.Resolver{}}))
+	e := echo.New()
 
-	http.Handle("/", playground.Handler("GraphQL playground", "/query"))
-	http.Handle("/query", srv)
+	e.Use(middleware.Logger())
+	e.Use(middleware.Recover())
 
-	log.Printf("connect to http://localhost:%s/ for GraphQL playground", port)
-	log.Fatal(http.ListenAndServe(":"+port, nil))
+	graphqlHandler := handler.NewDefaultServer(graph.NewExecutableSchema(graph.Config{Resolvers: &resolvers.Resolver{DB: *db}}))
+
+	playgroundHandler := playground.Handler("GraphQL playground", "/query")
+
+	e.POST("/query", func(c echo.Context) error {
+		graphqlHandler.ServeHTTP(c.Response(), c.Request())
+		return nil
+	})
+
+	e.GET("/playground", func(c echo.Context) error {
+		playgroundHandler.ServeHTTP(c.Response(), c.Request())
+		return nil
+	})
+
+	err = e.Start(":8080")
+	if err != nil {
+		panic(err)
+	}
 }
