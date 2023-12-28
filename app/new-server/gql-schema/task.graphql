@@ -1,0 +1,6 @@
+type Task {
+  id: ID!
+  name: String!
+  status: String!
+  story_id: ID!
+}
