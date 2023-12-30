@@ -4,6 +4,8 @@ import (
 	dbschema "new-server/db-schema"
 	"new-server/graph"
 	"new-server/resolvers"
+	"new-server/utils"
+	"os"
 
 	"github.com/99designs/gqlgen/graphql/handler"
 	"github.com/99designs/gqlgen/graphql/playground"
@@ -15,10 +17,25 @@ import (
 
 func main() {
 
-	db, err := gorm.Open(postgres.Open("host=localhost user=user password=pass dbname=littlecomp port=5112"), &gorm.Config{})
+	err := utils.LoadEnv()
+	if err != nil {
+		panic(err)
+	}
+
+	dsn := "host=localhost user=user password=pass dbname=littlecomp port=5112"
+
+	if os.Getenv("DATABASE_HOST") != "" &&
+		os.Getenv("DATABASE_USER") != "" &&
+		os.Getenv("DATABASE_PASSWORD") != "" &&
+		os.Getenv("DATABASE_NAME") != "" &&
+		os.Getenv("DATABASE_PORT") != "" {
+		dsn = "host=" + os.Getenv("DATABASE_HOST") + " user=" + os.Getenv("DATABASE_USER") + " password=" + os.Getenv("DATABASE_PASSWORD") + " dbname=" + os.Getenv("DATABASE_NAME") + " port=" + os.Getenv("DATABASE_PORT")
+	}
+
+	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
 
 	if err != nil {
-		panic("failed to connect database")
+		panic("データベースの接続に失敗しました")
 	}
 
 	db.AutoMigrate(
@@ -46,7 +63,12 @@ func main() {
 		return nil
 	})
 
-	err = e.Start(":8080")
+	port := "8080"
+	if os.Getenv("PORT") != "" {
+		port = os.Getenv("PORT")
+	}
+
+	err = e.Start(":" + port)
 	if err != nil {
 		panic(err)
 	}

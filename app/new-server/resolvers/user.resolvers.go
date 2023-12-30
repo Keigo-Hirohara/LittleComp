@@ -6,17 +6,22 @@ package resolvers
 
 import (
 	"context"
+	"fmt"
+	dbschema "new-server/db-schema"
 	"new-server/graph"
 	"new-server/graph/model"
 )
 
 // CreateUser is the resolver for the createUser field.
 func (r *mutationResolver) CreateUser(ctx context.Context, input model.CreateUserInput) (*model.User, error) {
-	result := r.DB.Create(&model.User{
+	user := dbschema.User{
 		Username: input.Username,
 		Email:    input.Email,
 		Password: input.Password,
-	})
+	}
+	result := r.DB.Model(&user).Create(&user)
+
+	fmt.Printf("result: %v\n", result)
 
 	if result.Error != nil {
 		return nil, result.Error

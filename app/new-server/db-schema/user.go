@@ -1,12 +1,13 @@
 package dbschema
 
-import "gorm.io/gorm"
+import (
+	"new-server/db-schema/common"
+)
 
 type User struct {
-	gorm.Model
-	ID       string
-	Username string
-	Email    string
-	Password string
+	common.Metadata
+	Username string `gorm:"not null"`
+	Email    string `gorm:"not null;unique"`
+	Password string `gorm:"not null"`
 	Stories  []Story
 }

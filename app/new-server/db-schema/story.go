@@ -1,6 +1,8 @@
 package dbschema
 
-import "gorm.io/gorm"
+import (
+	"gorm.io/gorm"
+)
 
 type Story struct {
 	gorm.Model
