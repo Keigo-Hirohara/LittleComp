@@ -1,7 +1,10 @@
 package infrastructure
 
 import (
+	middlewareutils "new-server/adopter/middleware"
 	"new-server/graph"
+	"new-server/graph/generated"
+	customcontext "new-server/infrastructure/customContext"
 	"new-server/infrastructure/resolvers"
 	"os"
 
@@ -18,7 +21,19 @@ func SetupServer(db *gorm.DB) {
 	e.Use(middleware.Logger())
 	e.Use(middleware.Recover())
 
-	graphqlHandler := handler.NewDefaultServer(graph.NewExecutableSchema(graph.Config{Resolvers: &resolvers.Resolver{DB: *db}}))
+	e.Use(func(next echo.HandlerFunc) echo.HandlerFunc {
+		return func(c echo.Context) error {
+			cc := &customcontext.CustomContext{Context: c, DB: db}
+			return next(cc)
+		}
+	})
+
+	e.Use(middlewareutils.VerifyJwt)
+
+	graphqlHandler := handler.NewDefaultServer(generated.NewExecutableSchema(generated.Config{
+		Resolvers:  &resolvers.Resolver{DB: *db},
+		Directives: graph.NewDirective(),
+	}))
 
 	playgroundHandler := playground.Handler("GraphQL playground", "/query")
 

@@ -6,7 +6,7 @@ package resolvers
 
 import (
 	"context"
-	"new-server/graph"
+	"new-server/graph/generated"
 	"new-server/graph/model"
 	"new-server/usecase"
 )
@@ -22,7 +22,7 @@ func (r *mutationResolver) CreateUser(ctx context.Context, input model.CreateUse
 	return user, nil
 }
 
-// Mutation returns graph.MutationResolver implementation.
-func (r *Resolver) Mutation() graph.MutationResolver { return &mutationResolver{r} }
+// Mutation returns generated.MutationResolver implementation.
+func (r *Resolver) Mutation() generated.MutationResolver { return &mutationResolver{r} }
 
 type mutationResolver struct{ *Resolver }

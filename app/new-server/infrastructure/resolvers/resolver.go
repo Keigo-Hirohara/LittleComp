@@ -11,3 +11,7 @@ import (
 type Resolver struct {
 	DB gorm.DB
 }
+
+type PrivateResolvers struct {
+	DB gorm.DB
+}
