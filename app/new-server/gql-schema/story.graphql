@@ -1,0 +1,5 @@
+type Story {
+  id: ID!
+  name: String!
+  user_id: ID!
+}
