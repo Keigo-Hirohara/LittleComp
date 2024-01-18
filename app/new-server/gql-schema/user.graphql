@@ -13,6 +13,28 @@ input CreateUserInput {
   password: String!
 }
 
+type SignUpResponse {
+  user: User!
+  token: String!
+}
+
+input SignUpInput {
+  username: String!
+  email: String!
+  password: String!
+}
+
+type LoginResponse {
+  user: User!
+  token: String!
+}
+
+input LoginInput {
+  email: String!
+  password: String!
+}
+
 type Mutation {
-  createUser(input: CreateUserInput!): User!
+  signUp(input: SignUpInput!): SignUpResponse!
+  login(input: LoginInput!): LoginResponse!
 }

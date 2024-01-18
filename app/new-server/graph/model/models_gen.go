@@ -8,6 +8,27 @@ type CreateUserInput struct {
 	Password string `json:"password"`
 }
 
+type LoginInput struct {
+	Email    string `json:"email"`
+	Password string `json:"password"`
+}
+
+type LoginResponse struct {
+	User  *User  `json:"user"`
+	Token string `json:"token"`
+}
+
+type SignUpInput struct {
+	Username string `json:"username"`
+	Email    string `json:"email"`
+	Password string `json:"password"`
+}
+
+type SignUpResponse struct {
+	User  *User  `json:"user"`
+	Token string `json:"token"`
+}
+
 type Story struct {
 	ID     string `json:"id"`
 	Name   string `json:"name"`

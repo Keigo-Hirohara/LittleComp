@@ -2,8 +2,8 @@ package middleware
 
 import (
 	"fmt"
+	"new-server/infrastructure/auth"
 	customcontext "new-server/infrastructure/customContext"
-	"os"
 	"strings"
 
 	"github.com/dgrijalva/jwt-go"
@@ -11,10 +11,6 @@ import (
 )
 
 func VerifyJwt(next echo.HandlerFunc) echo.HandlerFunc {
-	jwtSecret := []byte("secret")
-	if os.Getenv("JWT_SECRET") != "" {
-		jwtSecret = []byte(os.Getenv("JWT_SECRET"))
-	}
 	return func(c echo.Context) error {
 		cc := c.(*customcontext.CustomContext)
 		authHeader := cc.Request().Header.Get("authorization")
@@ -29,17 +25,17 @@ func VerifyJwt(next echo.HandlerFunc) echo.HandlerFunc {
 
 		tokenString := authHeaderParts[1]
 
-		token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
-			if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
-				return nil, echo.NewHTTPError(401, "認証トークンの署名アルゴリズムが不正です")
-			}
-			return jwtSecret, nil
-		})
-		if err != nil || !token.Valid {
+		token, err := auth.VerifyJwt(tokenString)
+
+		if err != nil {
+			return err
+		}
+
+		if token == nil {
 			return next(c)
 		}
 
-		err = setContext(cc, token)
+		err = setTokenToContext(cc, token)
 
 		if err != nil {
 			return err
@@ -49,7 +45,7 @@ func VerifyJwt(next echo.HandlerFunc) echo.HandlerFunc {
 	}
 }
 
-func setContext(c echo.Context, token *jwt.Token) error {
+func setTokenToContext(c echo.Context, token *jwt.Token) error {
 	claims, ok := token.Claims.(jwt.MapClaims)
 	if !ok {
 		return nil

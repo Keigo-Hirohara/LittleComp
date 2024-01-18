@@ -11,10 +11,19 @@ import (
 	"new-server/usecase"
 )
 
-// CreateUser is the resolver for the createUser field.
-func (r *mutationResolver) CreateUser(ctx context.Context, input model.CreateUserInput) (*model.User, error) {
-	user, err := usecase.CreateUser(r.DB, input)
+// SignUp is the resolver for the signUp field.
+func (r *mutationResolver) SignUp(ctx context.Context, input model.SignUpInput) (*model.SignUpResponse, error) {
+	user, err := usecase.SignUp(r.DB, input)
+	if err != nil {
+		return nil, err
+	}
 
+	return user, nil
+}
+
+// Login is the resolver for the login field.
+func (r *mutationResolver) Login(ctx context.Context, input model.LoginInput) (*model.LoginResponse, error) {
+	user, err := usecase.Login(r.DB, input)
 	if err != nil {
 		return nil, err
 	}
@@ -26,3 +35,13 @@ func (r *mutationResolver) CreateUser(ctx context.Context, input model.CreateUse
 func (r *Resolver) Mutation() generated.MutationResolver { return &mutationResolver{r} }
 
 type mutationResolver struct{ *Resolver }
+
+// !!! WARNING !!!
+// The code below was going to be deleted when updating resolvers. It has been copied here so you have
+// one last chance to move it out of harms way if you want. There are two reasons this happens:
+//   - When renaming or deleting a resolver the old code will be put in here. You can safely delete
+//     it when you're done.
+//   - You have helper methods in this file. Move them out to keep these resolver files clean.
+func (r *mutationResolver) CreateUser(ctx context.Context, input model.CreateUserInput) (*model.User, error) {
+	return nil, nil
+}
